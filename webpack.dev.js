@@ -18,7 +18,7 @@ module.exports = merge(common, {
     mode: 'development',
     devServer: {
         allowedHosts: 'auto',
-        static: [path.join(__dirname, 'public')],
+        static: [path.join(__dirname, 'public'), __dirname],
         hot: true,
         proxy: {
             '/api': {...localProxy},

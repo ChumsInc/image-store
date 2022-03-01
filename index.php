@@ -15,7 +15,7 @@ $bodyPath = "apps/image-store";
 $title = "Image Repository";
 $description = "";
 
-$ui = new WebUI($bodyPath, $title, $description, false, true);
+$ui = new WebUI($bodyPath, $title, $description, false, 5);
 $ui->version = "2020.01.02";
 $ui->bodyClassName = 'container-fluid';
 $ui->AddCSS("public/styles.css");

@@ -20,9 +20,10 @@ import ImageSearch from "./ImageSearch";
 
 const mapStateToProps = ({settings, filters, user}) => {
     const {showFilters, productLine, itemCategory, itemCollection, itemBaseSKU, filterUnassigned} = settings;
-    const {canEdit} = user;
+    const {canEdit, profile} = user;
     const {} = filters;
-    return {showFilters, productLine, itemCategory, itemCollection, itemBaseSKU, filterUnassigned, canEdit};
+    const isUser = !!profile && !!profile.user && !!profile.user.id;
+    return {showFilters, productLine, itemCategory, itemCollection, itemBaseSKU, filterUnassigned, canEdit, isUser};
 };
 
 const mapDispatchToProps = {
@@ -42,6 +43,7 @@ class  FilterBar extends Component {
         itemBaseSKU: PropTypes.string,
         filterUnassigned: PropTypes.bool,
         canEdit: PropTypes.bool,
+        isUser: PropTypes.bool,
         toggleShowFilters: PropTypes.func.isRequired,
         setProductLine: PropTypes.func.isRequired,
         setItemCategory: PropTypes.func.isRequired,
@@ -58,6 +60,7 @@ class  FilterBar extends Component {
         itemBaseSKU: '',
         filterUnassigned: false,
         canEdit: false,
+        isUser: false,
     };
 
     state = {
@@ -84,7 +87,7 @@ class  FilterBar extends Component {
     }
 
     render() {
-        const {showFilters, filterUnassigned, canEdit} = this.props;
+        const {showFilters, filterUnassigned, canEdit, isUser} = this.props;
         const {inTransition} = this.state;
         return (
             <aside className={classNames("drawer", {'drawer--open': showFilters, 'drawer--in-transition': inTransition})}>
@@ -98,18 +101,20 @@ class  FilterBar extends Component {
                         <ImagesPerPageSelect/>
                         <ImageSizeSelect/>
                         <ImageSearch />
-                        {!!canEdit && (
+                        {!!isUser && (
                             <Fragment>
-                                <UnassignedImageFilter />
-                                <InactiveImageFilter/>
-                            </Fragment>
-                        )}
-                        {!!canEdit && !filterUnassigned && (
-                            <Fragment>
+                                <h4 className="mt-3">Filters</h4>
                                 <ProductTypeSelect />
                                 <ItemCategorySelect/>
                                 <ItemBaseSKUSelect/>
                                 <ItemCollectionSelect/>
+                            </Fragment>
+                        )}
+                        {!!canEdit && (
+                            <Fragment>
+                                <div>Options</div>
+                                <UnassignedImageFilter />
+                                <InactiveImageFilter/>
                             </Fragment>
                         )}
                     </div>

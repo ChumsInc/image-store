@@ -18,8 +18,8 @@ const mapDispatchToProps = {
 const ProductLineSelect = ({productLine = '', productLines = [], setProductLine}) => {
     const changeHandler = ({value}) => setProductLine(value);
     return (
-        <FormGroup label="Product Line">
-            <Select onChange={changeHandler} value={productLine}>
+        <FormGroup label="Product Line" className="mt-1">
+            <Select onChange={changeHandler} value={productLine} >
                 <option value="">All</option>
                 {productLines.map(pl => (
                     <option key={pl.ProductLine} value={pl.ProductLine}>{pl.ProductLineDesc || pl.ProductLine}</option>
