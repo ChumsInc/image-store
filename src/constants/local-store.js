@@ -1,0 +1,9 @@
+export const STORE_TOKEN = 'com.chums.intranet.token';
+export const PREF_SHOW_FILTERS = 'com.chums.intranet.image-store.showFilters';
+export const PREF_IMAGES_PER_PAGE = 'com.chums.intranet.image-store.imagesPerPage';
+export const PREF_IMAGE_SIZE = 'com.chums.intranet.image-store.imageSize';
+export const PREF_FILTER_INACTIVE = 'com.chums.intranet.image-store.filterInactive';
+export const PREF_FILTER_PRODUCT_LINE = 'com.chums.intranet.image-store.filterProductLine';
+export const PREF_FILTER_ITEM_CATEGORY = 'com.chums.intranet.image-store.filterItemCategory';
+export const PREF_FILTER_ITEM_COLLECTION = 'com.chums.intranet.image-store.filterItemCollection';
+export const PREF_FILTER_ITEM_BASE_SKU = 'com.chums.intranet.image-store.filterBaseSKU';

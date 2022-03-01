@@ -1,0 +1,3 @@
+<?php
+
+$allowedGroups = array('user');

@@ -1,0 +1,161 @@
+.app-columns {
+  display: flex;
+  flex-direction: row;
+}
+.app-columns aside.drawer {
+  padding: 0.25rem;
+  flex: 0 0 calc(56px + 0.5rem);
+  transition: flex-basis ease-in-out 450ms;
+  overflow: auto;
+  background-color: #f8f8f8;
+}
+.app-columns aside.drawer .navbar-toggler:focus {
+  outline-width: 0;
+}
+.app-columns aside.drawer.drawer--open {
+  flex-basis: 240px;
+  max-width: 40vw;
+}
+.app-columns aside.drawer.drawer--open .drawer-content {
+  width: 100%;
+}
+.app-columns aside.drawer.drawer--in-transition {
+  text-overflow: clip;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.app-columns .main-section {
+  flex: 1 1 auto;
+  display: flex;
+}
+.app-columns .main-section .app-left {
+  flex: 1 1 auto;
+}
+.app-columns .main-section .app-right {
+  flex: 0 0 calc(350px + 1rem);
+  padding-left: 1rem;
+  position: relative;
+}
+.app-columns .click-copy:hover {
+  cursor: pointer;
+  color: black;
+}
+
+#preview-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+#preview-images figure {
+  flex: 0 0 auto;
+  padding: 0.5rem;
+  text-align: center;
+}
+#preview-images figure img {
+  height: auto;
+}
+#preview-images figure.preview-image {
+  position: relative;
+}
+#preview-images figure.preview-image .taglist-select {
+  display: none;
+  position: absolute;
+  z-index: 30;
+  top: calc(calc(1.5rem + 2px)/2);
+  right: calc(calc(1.5rem + 2px)/2);
+}
+#preview-images figure.preview-image .taglist-select:checked {
+  display: block;
+}
+#preview-images figure.preview-image:hover .taglist-select {
+  display: block;
+}
+#preview-images figure .preview-image-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+#preview-images figure.default-80 {
+  max-width: calc(80px + calc(1.5rem + 2px));
+  flex-basis: calc(80px + calc(1.5rem + 2px));
+}
+#preview-images figure.default-80 .preview-image-selector {
+  min-height: calc(80px + 0.5rem + 2px);
+}
+#preview-images figure.default-125 {
+  max-width: calc(125px + calc(1.5rem + 2px));
+  flex-basis: calc(125px + calc(1.5rem + 2px));
+}
+#preview-images figure.default-125 .preview-image-selector {
+  min-height: calc(125px + 2px);
+}
+#preview-images figure.default-250 {
+  max-width: calc(250px + calc(1.5rem + 2px));
+  flex-basis: calc(250px + calc(1.5rem + 2px));
+}
+#preview-images figure.default-250 .preview-image-selector {
+  min-height: calc(250px + 2px);
+}
+#preview-images figure.default-400 {
+  max-width: calc(400px + calc(1.5rem + 2px));
+  flex-basis: calc(400px + calc(1.5rem + 2px));
+}
+#preview-images figure.default-400 .preview-image-selector {
+  min-height: calc(400px + 2px);
+}
+#preview-images figure figcaption {
+  word-break: break-all;
+  margin-top: 0.5rem;
+}
+#preview-images figure figcaption .tag-badges,
+#preview-images figure figcaption .size-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+#preview-images figure figcaption .tag-badges a.badge,
+#preview-images figure figcaption .size-badges a.badge {
+  text-decoration: none;
+}
+#preview-images figure figcaption .tag-badges .badge,
+#preview-images figure figcaption .size-badges .badge {
+  margin-right: 3px;
+  margin-bottom: 1px;
+}
+
+.image-sizes .size-list {
+  display: flex;
+  justify-content: space-between;
+}
+
+ul.pagination {
+  margin-bottom: 0;
+}
+
+.item-description {
+  word-break: break-word;
+}
+
+.form-check-label {
+  cursor: pointer;
+}
+
+.selected-for-tag,
+.selected-image {
+  position: sticky;
+  top: 0;
+}
+
+.is--image--item-form--preview {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge .btn-close {
+  color: white;
+}
+
+/*# sourceMappingURL=styles.css.map */

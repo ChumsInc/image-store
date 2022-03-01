@@ -1,0 +1,7 @@
+# Project exclude paths
+/dist/
+/node_modules/
+/.idea
+/public/.sass-cache
+/public/js
+/package-lock.json

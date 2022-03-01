@@ -1,0 +1,26 @@
+aside.drawer {
+  padding: 0.25rem;
+  flex: 0 0 calc(56px + 0.5rem);
+  transition: flex-basis ease-in-out 450ms;
+  //max-height: calc(100vh - 56px);
+  overflow: auto;
+  background-color: #f8f8f8;
+
+  .navbar-toggler:focus {
+    outline-width: 0;
+  }
+
+  &.drawer--open {
+    flex-basis: 240px;
+    max-width: 40vw;
+    .drawer-content {
+      width: 100%;
+    }
+  }
+
+  &.drawer--in-transition {
+    text-overflow: clip;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
