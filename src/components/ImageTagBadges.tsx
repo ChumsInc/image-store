@@ -5,18 +5,15 @@ const tagTypes = {
     inactive: 'danger',
 }
 
-/**
- *
- * @param {String[]} tags
- * @param {bool} inactive
- * @returns {*}
- * @constructor
- */
-const ImageTagBadges = ({tags, inactive}) => {
+export interface ImageTagBadgesProps {
+    tags: string[],
+    inactive: boolean,
+}
+const ImageTagBadges:React.FC<ImageTagBadgesProps> = ({tags, inactive}) => {
     const hasInactive = inactive || tags.filter(tag => tag.toLowerCase() === 'inactive').length > 0;
     return (
         <div className="tag-badges">
-            {!!hasInactive && <Badge type={tagTypes.inactive}>Inactive</Badge>}
+            {hasInactive && <Badge type={tagTypes.inactive}>Inactive</Badge>}
             {tags
                 .filter(tag => tag.toLowerCase() !== 'inactive')
                 .sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1)

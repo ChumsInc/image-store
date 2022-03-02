@@ -1,16 +1,13 @@
 import React from 'react';
 import {imagePath} from "../utils";
 import Badge from "./Badge";
+import {ImageSizeList} from "../types";
 
-/**
- *
- * @param {String} filename
- * @param {Object} sizes
- * @param color_space
- * @returns {*}
- * @constructor
- */
-const ImageSizeBadges = ({filename = '', sizes = {}}) => {
+export interface ImageSizeBadgedProps {
+    filename: string,
+    sizes: ImageSizeList,
+}
+const ImageSizeBadges:React.FC<ImageSizeBadgedProps> = ({filename = '', sizes = {}}) => {
     return (
         <div className="size-badges">
             {Object.keys(sizes)
