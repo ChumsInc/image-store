@@ -57,6 +57,12 @@
 #preview-images figure.preview-image {
   position: relative;
 }
+#preview-images figure.preview-image.selected img {
+  border-width: 3px;
+}
+#preview-images figure.preview-image.preferred img {
+  border-color: var(--bs-primary);
+}
 #preview-images figure.preview-image .taglist-select {
   display: none;
   position: absolute;

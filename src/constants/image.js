@@ -22,6 +22,7 @@ export const PATH_DELETE_IMAGE = '/api/images/products/delete/:filename';
 export const PATH_FETCH_IMAGE = '/api/images/products/query/:filename';
 export const PATH_FETCH_IMAGES = '/api/images/products/list/all';
 export const PATH_SET_ITEM_CODE = '/api/images/products/set-item/:filename/:item_code?';
+export const PATH_SET_PREFERRED_ITEM = '/api/images/products/set-preferred-item/:filename/:itemCode';
 export const PATH_SET_MULTIPLE_ITEM_CODES = '/api/images/products/set-item-code/:itemCode';
 export const PATH_SET_ALT_ITEM_CODE = '/api/images/products/alt-item/:filename/:itemCode?';
 export const PATH_SET_MULTIPLE_ALT_ITEM_CODES = '/api/images/products/alt-item/:itemCode';

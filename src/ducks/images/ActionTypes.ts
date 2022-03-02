@@ -17,3 +17,7 @@ export interface ImageThunkAction extends ThunkAction<any, RootState, unknown, I
 export const imagesPostTagRequested = 'images/postTagRequested';
 export const imagesPostTagSucceeded = 'images/postTagSucceeded';
 export const imagesPostTagFailed = 'images/postTagFailed';
+
+export const imagesPostPreferredImageRequested = 'images/postPreferredImageRequested';
+export const imagesPostPreferredImageSucceeded = 'images/postPreferredImageSucceeded';
+export const imagesPostPreferredImageFailed = 'images/postPreferredImageFailed';

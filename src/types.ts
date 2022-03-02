@@ -82,4 +82,5 @@ export interface ImageRecord {
     ItemCollection?: string|null,
     BaseSKU?:string,
     item_codes?: string[],
+    preferred_image?: boolean,
 }

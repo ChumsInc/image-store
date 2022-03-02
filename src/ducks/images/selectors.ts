@@ -6,3 +6,4 @@ export const selectSelectedImageSizes = (state:RootState):ImageSizeList => state
 export const selectSelectedImageTags = (state:RootState):string[] => state.images.selected?.tags || [];
 export const selectImagesLoading = (state:RootState):boolean => state.images.loading || false;
 export const selectImagesLoaded = (state:RootState):boolean => state.images.loaded || false;
+export const selectIsPreferredImage = (state:RootState):boolean => state.images.selected?.preferred_image || false;

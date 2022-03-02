@@ -9,6 +9,7 @@ import AutoSizeImage from "./AutoSizeImage";
 import ItemCodeForm from "./ItemCodeForm";
 import classNames from 'classnames';
 import ImageTagList from "../ducks/images/ImageTagList";
+import PreferredImageButton from "../ducks/images/PreferredImageButton";
 
 class SelectedImage extends Component {
     static propTypes = {
@@ -131,6 +132,7 @@ class SelectedImage extends Component {
                               item_code={item_code} ItemCodeDesc={ItemCodeDesc} ProductType={ProductType}
                               InactiveItem={InactiveItem}
                               readOnly={!canEdit}/>
+                <PreferredImageButton />
                 {item_codes.map(item => (
                     <ItemCodeForm key={item.id} onSave={this.onSaveItemCode} readOnly={!canEdit} {...item}/>
                 ))}

@@ -40,6 +40,14 @@
     }
     &.preview-image {
       position: relative;
+      &.selected img {
+        border-width: 3px;
+      }
+      &.preferred {
+        img {
+          border-color: var(--bs-primary);
+        }
+      }
       .taglist-select {
         display:none;
         position: absolute;

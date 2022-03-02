@@ -7,6 +7,7 @@ import ImageSizeBadges from "./ImageSizeBadges";
 import classNames from 'classnames';
 import AutoSizeImage from "./AutoSizeImage";
 import ImageTagBadges from "./ImageTagBadges";
+import Badge from "./Badge";
 
 
 const CheckBox = ({filename, checked, onChange}) => <input type="checkbox"  className="taglist-select"
@@ -25,7 +26,9 @@ class ImagePreview extends Component {
             tags: PropTypes.arrayOf(PropTypes.string),
             notes: PropTypes.string,
             item_code: PropTypes.string,
+            preferred_image: PropTypes.bool,
         }),
+        selected: PropTypes.bool,
         hasSelectedForAction: PropTypes.bool,
         canEdit: PropTypes.bool,
         selectImage: PropTypes.func.isRequired,
@@ -42,6 +45,7 @@ class ImagePreview extends Component {
             img_format: {},
             notes: '',
             item_code: '',
+            preferred_image: false,
         },
         hasSelectedForAction: false,
         canEdit: false,
@@ -58,15 +62,15 @@ class ImagePreview extends Component {
     }
 
     render() {
-        const {image, defaultImagePath, hasSelectedForAction, canEdit} = this.props;
-        const {filename, pathnames = [], sizes, tags, InactiveItem} = image;
+        const {image, defaultImagePath, hasSelectedForAction, canEdit, selected} = this.props;
+        const {filename, pathnames = [], sizes, tags, InactiveItem, preferred_image} = image;
         const path = pathnames.includes(defaultImagePath) ? defaultImagePath : pathnames.sort()[0];
         const now = new Date().valueOf().toString(36);
         const checked = hasSelectedForAction;
 
         const src = imagePath({path, filename});
         return (
-            <figure className={classNames('default-' + defaultImagePath, 'preview-image', {'checked': hasSelectedForAction})}>
+            <figure className={classNames('default-' + defaultImagePath, 'preview-image', {'checked': hasSelectedForAction, preferred: preferred_image, selected})}>
                 {!!canEdit && (
                     <CheckBox filename={filename} checked={checked} onChange={this.onSelectForTag}/>
                 )}
@@ -76,8 +80,9 @@ class ImagePreview extends Component {
                 </div>
                 <figcaption className="figure-caption">
                     <ImageSizeBadges filename={filename} pathnames={pathnames} sizes={sizes} />
+                    {preferred_image && <div class="my-1"><Badge type="primary">Preferred Image</Badge></div>}
                     <ImageTagBadges inactive={InactiveItem === 'Y'} tags={tags}/>
-                    <div>{filename}</div>
+                    <div className="filename">{filename}</div>
                 </figcaption>
             </figure>
         )
@@ -87,9 +92,10 @@ class ImagePreview extends Component {
 
 const mapStateToProps = ({settings, images, user}, ownProps) => {
     const {canEdit} = user;
+    const selected = images.selected?.filename === ownProps.image?.filename && !!images.selected.filename;
     const hasSelectedForAction = !!images.selectedForAction.list.filter(filename => filename === ownProps.image.filename).length;
     const {defaultImagePath} = settings;
-    return {defaultImagePath,hasSelectedForAction, canEdit};
+    return {defaultImagePath, hasSelectedForAction, canEdit, selected};
 };
 
 const mapDispatchToProps = {

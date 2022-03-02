@@ -16,7 +16,7 @@ import {
     UPDATE_SELECTED_IMAGE
 } from "../constants/image";
 import {imageSort} from "../utils";
-import {imagesPostTagSucceeded} from "../ducks/images/ActionTypes";
+import {imagesPostPreferredImageSucceeded, imagesPostTagSucceeded} from "../ducks/images/ActionTypes";
 
 function applyMultipleImageChanges(state, images) {
     const filenames = images.map(img => img.filename);
@@ -38,6 +38,7 @@ const list = (state = [], action) => {
         return state;
     case FETCH_POST_IMAGE_SINGLE_TAG:
     case imagesPostTagSucceeded:
+    case imagesPostPreferredImageSucceeded:
         if (payload?.image) {
             const image = payload.image;
             return [
@@ -88,6 +89,7 @@ const filtered = (state = [], action) => {
         return filtered;
     case FETCH_POST_IMAGE_SINGLE_TAG:
     case imagesPostTagSucceeded:
+    case imagesPostPreferredImageSucceeded:
         if (payload?.image) {
             const image = payload.image;
             return [
@@ -176,6 +178,7 @@ const selected = (state = {}, action) => {
         }
         return state;
     case imagesPostTagSucceeded:
+    case imagesPostPreferredImageSucceeded:
         if (payload?.image) {
             return payload.image;
         }
