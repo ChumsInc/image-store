@@ -5,9 +5,10 @@ import Badge from "../../components/Badge";
 import {tagImageAction, untagImageAction} from "./actions";
 import {ImageRecord} from "../../types";
 import {selectCanEdit} from "../../selectors";
+import {useAppDispatch} from "../../app/hooks";
 
 const ImageTagList:React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const selectedImage:ImageRecord = useSelector(selectSelectedImage);
     const selectedTags:string[] = useSelector(selectSelectedImageTags);
     const canEdit:boolean = useSelector(selectCanEdit);

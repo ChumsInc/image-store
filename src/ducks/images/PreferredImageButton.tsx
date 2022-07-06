@@ -4,9 +4,10 @@ import {selectIsPreferredImage, selectSelectedImage} from "./selectors";
 import {ImageRecord} from "../../types";
 import classNames from "classnames";
 import {setPreferredImageAction} from "./actions";
+import {useAppDispatch} from "../../app/hooks";
 
 const PreferredImageButton:React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const image:ImageRecord = useSelector(selectSelectedImage);
     const isPreferredImage:boolean = useSelector(selectIsPreferredImage);
 

@@ -80,7 +80,7 @@ class ImagePreview extends Component {
                 </div>
                 <figcaption className="figure-caption">
                     <ImageSizeBadges filename={filename} pathnames={pathnames} sizes={sizes} />
-                    {preferred_image && <div class="my-1"><Badge type="primary">Preferred Image</Badge></div>}
+                    {preferred_image && <div className="my-1"><Badge type="primary">Preferred Image</Badge></div>}
                     <ImageTagBadges inactive={InactiveItem === 'Y'} tags={tags}/>
                     <div className="filename">{filename}</div>
                 </figcaption>

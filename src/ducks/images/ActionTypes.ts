@@ -1,7 +1,7 @@
-import {ActionInterface, ActionPayload} from "chums-ducks";
+import {ActionInterface, ActionPayload} from "chums-connected-components";
 import {ImageRecord} from "../../types";
 import {ThunkAction} from "redux-thunk";
-import {RootState} from "../index";
+import {RootState} from "../../app/configureStore";
 
 export interface ImageActionPayload extends ActionPayload {
     image?:ImageRecord,
