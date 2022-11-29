@@ -1,16 +1,16 @@
 import React, {ChangeEvent} from 'react';
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectBaseSKUs, selectCategories, selectFilter, selectProductLines} from "./selectors";
-import {sortBaseSKUs, sortCategories, sortProductLines} from "./utils";
-import {setBaseSKU, setProductCategory, setProductLine} from "./actions";
+import {selectBaseSKUs, selectFilter} from "./selectors";
+import {sortBaseSKUs} from "./utils";
+import {setBaseSKU} from "./actions";
 
 const ProductBaseSKUFilter = () => {
     const dispatch = useAppDispatch();
     const list = useSelector(selectBaseSKUs);
     const {baseSKU} = useSelector(selectFilter);
 
-    const changeHandler = (ev:ChangeEvent<HTMLSelectElement>) => {
+    const changeHandler = (ev: ChangeEvent<HTMLSelectElement>) => {
         dispatch(setBaseSKU(ev.target.value));
     }
 

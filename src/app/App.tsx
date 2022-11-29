@@ -27,8 +27,6 @@ const App = () => {
                 <div className="main-section">
                     <div className="app-left">
                         <ImageList/>
-                        {/*<ImageFilterForm />*/}
-                        {/*<ImageFilter/>*/}
                     </div>
                     <div className="app-right">
                         {showSelectedImageActions && <SelectedImages/>}

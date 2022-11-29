@@ -33,7 +33,7 @@ const ImageTagList: React.FC = () => {
         dispatch(tagImage({filename: current.filename, tag}));
     }
 
-    if (!current) {
+    if (!current || (!canEdit && current.tags.length === 0)) {
         return null;
     }
     return (

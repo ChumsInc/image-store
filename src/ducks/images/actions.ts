@@ -1,31 +1,20 @@
-import {PATH_SET_PREFERRED_ITEM, PATH_SET_TAG} from "../../constants/image";
-import {FETCH_FAILURE} from "../../constants/fetch";
-import {fetchDELETE, fetchPOST} from "../../fetch";
-import {
-    imagesPostPreferredImageFailed,
-    imagesPostPreferredImageRequested,
-    imagesPostPreferredImageSucceeded,
-    imagesPostTagFailed,
-    imagesPostTagRequested,
-    imagesPostTagSucceeded,
-    ImageThunkAction
-} from "./ActionTypes";
-import {selectCurrentImage} from "./selectors";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductAltItem, ProductImage} from "chums-types/product-image";
 import {
-    deleteAltItemCode, deleteImage,
+    deleteAltItemCode,
+    deleteImage,
     deleteImageTag,
     fetchImage,
     fetchImages,
     postAltItemCode,
-    postItemCode, postPreferredImage, postTagImage,
+    postPreferredImage,
+    postTagImage,
     putImageUpdate
 } from "../../api/image";
 import {ProductFilter} from "../filters";
 import {ProductAltItemKey} from "../../types";
 
-export const setCurrentImage = createAsyncThunk<ProductImage|null, string>(
+export const setCurrentImage = createAsyncThunk<ProductImage | null, string>(
     'images/setCurrent',
     async (arg, thunkApi) => {
         return await fetchImage(arg);
@@ -33,11 +22,11 @@ export const setCurrentImage = createAsyncThunk<ProductImage|null, string>(
 )
 export const loadImages = createAsyncThunk<ProductImage[], ProductFilter>(
     'images/load',
-        async (arg, thunkApi) => {
-            return await fetchImages(arg);
-        }
+    async (arg, thunkApi) => {
+        return await fetchImages(arg);
+    }
 )
-export const tagImage = createAsyncThunk<ProductImage|null, {tag:string, filename:string, action?: 'tag'|'untag'}>(
+export const tagImage = createAsyncThunk<ProductImage | null, { tag: string, filename: string, action?: 'tag' | 'untag' }>(
     'images/tagImage',
     async (arg, thunkApi) => {
         if (arg.action === 'untag') {
@@ -47,7 +36,7 @@ export const tagImage = createAsyncThunk<ProductImage|null, {tag:string, filenam
     }
 )
 
-export const saveImage = createAsyncThunk<ProductImage|null, Partial<ProductImage>>(
+export const saveImage = createAsyncThunk<ProductImage | null, Partial<ProductImage>>(
     'images/saveImage',
     async (arg) => {
         if (arg.item_code && arg.filename && arg.preferred_image) {

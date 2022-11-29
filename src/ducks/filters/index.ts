@@ -9,6 +9,9 @@ import {
     setProductCollection,
     setProductLine, setSearch, toggleFilterBar
 } from "./actions";
+import {urlSearchParamsToFilter} from "./utils";
+
+export const invalidHashValue = '#N/A';
 
 export interface ProductFilter {
     baseSKU: string | null;
@@ -16,10 +19,12 @@ export interface ProductFilter {
     collection: string | null;
     productLine: string | null;
     preferredImage: boolean;
-    assigned: boolean;
-    active: boolean;
+    assigned?: boolean;
+    active?: boolean;
     search: string;
 }
+
+export type ProductFilterKey = keyof ProductFilter;
 
 interface FiltersState {
     baseSKUs: BaseSKU[];
@@ -32,6 +37,19 @@ interface FiltersState {
     filter: ProductFilter;
 }
 
+const urlFilter:ProductFilter = urlSearchParamsToFilter(window.location.search);
+
+export const initialFilter:ProductFilter = {
+    baseSKU: urlFilter.baseSKU ?? null,
+    category: urlFilter.category ?? null,
+    collection: urlFilter.collection ?? null,
+    productLine: urlFilter.productLine ?? null,
+    preferredImage: urlFilter.preferredImage ?? false,
+    assigned: true,
+    active: true,
+    search: urlFilter.search ?? '',
+}
+
 export const initialFiltersState: FiltersState = {
     baseSKUs: [],
     categories: [],
@@ -40,16 +58,7 @@ export const initialFiltersState: FiltersState = {
     loading: false,
     loaded: false,
     showFilterBar: true,
-    filter: {
-        baseSKU: null,
-        category: null,
-        collection: null,
-        productLine: null,
-        preferredImage: false,
-        assigned: true,
-        active: true,
-        search: '',
-    }
+    filter: {...initialFilter},
 }
 
 
@@ -89,17 +98,23 @@ const filtersReducer = createReducer(initialFiltersState, (builder) => {
             state.collections = collections || [];
             state.productLines = productLines || [];
 
-            const [baseSKU] = baseSKUs.filter(sku => sku.Category4 === state.filter.baseSKU);
-            state.filter.baseSKU = baseSKU?.Category4 ?? null;
+            if (state.filter.baseSKU !== invalidHashValue) {
+                const [baseSKU] = baseSKUs.filter(sku => sku.Category4 === state.filter.baseSKU);
+                state.filter.baseSKU = baseSKU?.Category4 ?? null;
+            }
+            if (state.filter.category !== invalidHashValue) {
+                const [category] = categories.filter(cat => cat.Category2 === state.filter.category);
+                state.filter.category = category?.Category2 ?? null;
+            }
+            if (state.filter.collection !== invalidHashValue) {
+                const [collection] = collections.filter(col => col.Category3 === state.filter.collection);
+                state.filter.collection = collection?.Category3 ?? null;
+            }
+            if (state.filter.productLine !== invalidHashValue) {
+                const [productLine] = productLines.filter(pl => pl.ProductLine === state.filter.productLine);
+                state.filter.productLine = productLine?.ProductLine ?? null;
+            }
 
-            const [category] = categories.filter(cat => cat.Category2 === state.filter.category);
-            state.filter.category = category?.Category2 ?? null;
-
-            const [collection] = collections.filter(col => col.Category3 === state.filter.collection);
-            state.filter.collection = collection?.Category3 ?? null;
-
-            const [productLine] = productLines.filter(pl => pl.ProductLine === state.filter.productLine);
-            state.filter.productLine = productLine?.ProductLine ?? null;
             state.loaded = true;
             state.loading = false;
         })

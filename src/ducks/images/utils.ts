@@ -65,3 +65,4 @@ export const parseSingleImages = (img:ProductImage|null):SingleImage[] => {
     });
     return Object.values(list).sort(imageSizeSort);
 }
+

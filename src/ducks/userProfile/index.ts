@@ -62,6 +62,9 @@ const userProfileReducer = createReducer(initialUserProfileState, (builder) => {
             if (canEditReducer(state.roles)) {
                 state.canEdit = action.payload ?? !state.canEdit;
             }
+            if (canDeleteReducer(state.roles)) {
+                state.canDelete = action.payload ?? !state.canDelete;
+            }
         })
 });
 

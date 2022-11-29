@@ -5,6 +5,7 @@ import ImageControlBar from "./ImageControlBar";
 import {LoadingProgressBar} from "chums-components";
 import {selectImagesPerPage, selectPage} from "../settings";
 import ImagePreview from "./ImagePreview";
+import InvalidURLAlert from "./InvalidURLAlert";
 
 const ImageList = () => {
     const images = useSelector(selectFilteredImages)
@@ -21,6 +22,7 @@ const ImageList = () => {
             <div className="mt-1" style={{minHeight: '1rem'}}>
                 {loading && (<LoadingProgressBar striped animated style={{height: '3px'}}/>)}
             </div>
+            <InvalidURLAlert />
             {!loading && !images.length && (
                 <h3>Sorry, no images found.</h3>
             )}

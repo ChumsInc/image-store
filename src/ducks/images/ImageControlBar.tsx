@@ -7,12 +7,17 @@ import {selectFilter} from "../filters/selectors";
 import ImagesPerPage from "../settings/ImagesPerPage";
 import ImagesSize from "../settings/ImagesSize";
 import ImagePaginator from "../settings/ImagePaginator";
+import {useSearchParams} from "react-router-dom";
+import {ProductFilter} from "../filters";
+import {filterToURLSearchParams} from "../filters/utils";
 
 const ImageControlBar = () => {
     const dispatch = useAppDispatch();
     const filters = useSelector(selectFilter);
+    let [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
+        setSearchParams(filterToURLSearchParams(filters), {replace: true})
         dispatch(loadImages(filters));
     }, [filters])
 
@@ -20,7 +25,8 @@ const ImageControlBar = () => {
         <div className="row g-3">
             <div className="col-auto">
                 <button type="button" className="btn btn-sm btn-primary"
-                        onClick={() => dispatch(loadImages(filters))}>Reload
+                        onClick={() => dispatch(loadImages(filters))}>
+                    Reload
                 </button>
             </div>
             <div className="col-auto">

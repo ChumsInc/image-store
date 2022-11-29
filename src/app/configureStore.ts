@@ -6,20 +6,6 @@ import {default as filtersReducer, initialFiltersState} from '../ducks/filters'
 import {default as userProfileReducer, initialUserProfileState} from '../ducks/userProfile';
 import {default as settingsReducer, initialSettingsState} from "../ducks/settings";
 
-const params = new URLSearchParams(window.location.search);
-if (params.has('pl')) {
-    initialFiltersState.filter.productLine = params.get('pl') ?? '';
-}
-if (params.has('cat')) {
-    initialFiltersState.filter.category = params.get('cat') ?? '';
-}
-if (params.has('sku')) {
-    initialFiltersState.filter.baseSKU = params.get('sku') ?? '';
-}
-if (params.has('q')) {
-    initialFiltersState.filter.search = params.get('q') ?? '';
-}
-
 const preloadedState = {
     filters: initialFiltersState,
     images: initialImagesState,
