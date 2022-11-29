@@ -41,19 +41,19 @@
     &.preview-image {
       position: relative;
       &.selected img {
-        border-width: 3px;
+        //border-width: 3px;
       }
       &.preferred {
         img {
-          border-color: var(--bs-primary);
+          //border-color: var(--bs-primary);
         }
       }
       .taglist-select {
         display:none;
         position: absolute;
         z-index: 30;
-        top: calc(#{$previewImagePadding / 2});
-        right: calc(#{$previewImagePadding / 2});
+        top: calc(#{$previewImagePadding / 1.5});
+        right: calc(#{$previewImagePadding / 1.5});
         &:checked {
           display: block;
         }

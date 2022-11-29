@@ -21,4 +21,4 @@ export const PREF_FILTER_ITEM_COLLECTION = 'com.chums.intranet.image-store.filte
 export const PREF_FILTER_ITEM_BASE_SKU = 'com.chums.intranet.image-store.filterBaseSKU';
 export const PREF_IMAGE_SIZE = 'com.chums.intranet.image-store.imageSize';
 export const PREF_IMAGES_PER_PAGE = 'com.chums.intranet.image-store.imagesPerPage';
-export const PREF_SHOW_FILTERS = 'com.chums.intranet.image-store.showFilters';
+export const PREF_SHOW_FILTERS = 'com.chums.intranet.image-store.showFilterBar';

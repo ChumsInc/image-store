@@ -9,7 +9,7 @@ export interface FetchUserResponse {
     profile: UserProfile | null, roles: UserRole[]
 }
 
-export async function fetchUserAPI(): Promise<FetchUserResponse> {
+export async function fetchUser(): Promise<FetchUserResponse> {
     try {
         const url = '/api/user/profile';
         const res = await fetch(url, {credentials: 'same-origin'});

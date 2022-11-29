@@ -1,20 +1,23 @@
 import React, {useEffect} from 'react';
-import {fetchFilters} from "./index";
+import {loadFilters} from "./actions";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {useSelector} from "react-redux";
+import {selectFilter, selectFiltersLoaded, selectFiltersLoading} from "./selectors";
 
 const ProductFilters = () => {
     const dispatch = useAppDispatch();
-    const filters = useAppSelector((state) => {
-        return state['productFilters']
-    })
+    const loading = useSelector(selectFiltersLoading);
+    const loaded = useSelector(selectFiltersLoaded);
+    const filters = useAppSelector(selectFilter);
+
     useEffect(() => {
-        dispatch(fetchFilters());
+        if (!loading && !loaded) {
+            dispatch(loadFilters());
+        }
     }, [])
 
     return (
         <div>
-            <div className="text-muted">Loading: {filters.loading}</div>
             {JSON.stringify(Object.keys(filters), undefined, 2)}
         </div>
     )

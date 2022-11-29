@@ -1,46 +1,37 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {alertsReducer, pageSetsReducer} from 'chums-connected-components';
-import Settings, {default as settingsReducer} from '../reducers/settings'
-import {default as imagesReducer} from '../reducers/images'
-import {default as filtersReducer} from '../reducers/filters'
-import {default as userReducer} from '../reducers/user'
+import {alertsReducer} from 'chums-connected-components';
+import {default as imagesReducer, initialImagesState} from '../ducks/images'
 import {combineReducers} from "redux";
-import {productFiltersReducer} from '../ducks/filters'
-import {default as userProfileReducer} from '../ducks/userProfile';
-
-const settings = {
-    productLine: '',
-    itemCategory: '',
-    itemBaseSKU: '',
-    filter: '',
-};
+import {default as filtersReducer, initialFiltersState} from '../ducks/filters'
+import {default as userProfileReducer, initialUserProfileState} from '../ducks/userProfile';
+import {default as settingsReducer, initialSettingsState} from "../ducks/settings";
 
 const params = new URLSearchParams(window.location.search);
 if (params.has('pl')) {
-    settings.productLine = params.get('pl') ?? '';
+    initialFiltersState.filter.productLine = params.get('pl') ?? '';
 }
 if (params.has('cat')) {
-    settings.itemCategory = params.get('cat') ?? '';
+    initialFiltersState.filter.category = params.get('cat') ?? '';
 }
 if (params.has('sku')) {
-    settings.itemBaseSKU = params.get('sku') ?? '';
+    initialFiltersState.filter.baseSKU = params.get('sku') ?? '';
 }
 if (params.has('q')) {
-    settings.filter = params.get('q') ?? '';
+    initialFiltersState.filter.search = params.get('q') ?? '';
 }
 
 const preloadedState = {
-    settings,
+    filters: initialFiltersState,
+    images: initialImagesState,
+    settings: initialSettingsState,
+    userProfile: initialUserProfileState,
 };
 
 const rootReducer = combineReducers({
     alerts: alertsReducer,
-   'productFilters': productFiltersReducer,
-    pageSets: pageSetsReducer,
-    settings: settingsReducer,
-    images: imagesReducer,
     filters: filtersReducer,
-    user: userReducer,
+    images: imagesReducer,
+    settings: settingsReducer,
     userProfile: userProfileReducer,
 });
 

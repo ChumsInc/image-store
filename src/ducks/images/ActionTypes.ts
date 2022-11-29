@@ -1,13 +1,13 @@
 import {ActionInterface, ActionPayload} from "chums-connected-components";
-import {ImageRecord} from "../../types";
+import {EditableImage} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {RootState} from "../../app/configureStore";
 
 export interface ImageActionPayload extends ActionPayload {
-    image?:ImageRecord,
+    image?:EditableImage,
 }
 export interface ImageAction extends ActionInterface {
-    image?:ImageRecord,
+    image?:EditableImage,
     payload?: ImageActionPayload,
     status?: string,
 }

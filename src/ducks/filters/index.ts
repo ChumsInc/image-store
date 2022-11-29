@@ -1,108 +1,88 @@
 import {BaseSKU, ProductCategory, ProductCollection, ProductLine} from "chums-types";
-import {AsyncThunk, createAction, createAsyncThunk, createReducer} from "@reduxjs/toolkit";
-import {fetchFiltersAPI} from "../../api/filters";
-import {RootState} from "../../app/configureStore";
-
-interface LoadFiltersResult {
-    baseSKUs: BaseSKU[],
-    categories: ProductCategory[],
-    collections: ProductCollection[],
-    productLines: ProductLine[],
-}
+import {createReducer} from "@reduxjs/toolkit";
+import {
+    loadFilters,
+    toggleActive, toggleAssigned,
+    setBaseSKU,
+    toggleFeaturedImage,
+    setProductCategory,
+    setProductCollection,
+    setProductLine, setSearch, toggleFilterBar
+} from "./actions";
 
 export interface ProductFilter {
-    baseSKU: string | null,
-    category: string | null,
-    collection: string | null,
-    productLine: string | null
-    preferredImage: boolean,
-    active: boolean,
+    baseSKU: string | null;
+    category: string | null;
+    collection: string | null;
+    productLine: string | null;
+    preferredImage: boolean;
+    assigned: boolean;
+    active: boolean;
+    search: string;
 }
 
 interface FiltersState {
-    baseSKUs: BaseSKU[],
-    categories: ProductCategory[],
-    collections: ProductCollection[],
-    productLines: ProductLine[],
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed',
-    filter: ProductFilter
+    baseSKUs: BaseSKU[];
+    categories: ProductCategory[];
+    collections: ProductCollection[];
+    productLines: ProductLine[];
+    loading: boolean;
+    loaded: boolean;
+    showFilterBar: boolean;
+    filter: ProductFilter;
 }
 
-const initialState: FiltersState = {
+export const initialFiltersState: FiltersState = {
     baseSKUs: [],
     categories: [],
     collections: [],
     productLines: [],
-    loading: 'idle',
+    loading: false,
+    loaded: false,
+    showFilterBar: true,
     filter: {
         baseSKU: null,
         category: null,
         collection: null,
         productLine: null,
         preferredImage: false,
+        assigned: true,
         active: true,
+        search: '',
     }
 }
 
-export const typePrefix = `productFilters`;
-export const fetchFiltersPrefix = `${typePrefix}/fetchFilters`;
 
-export const setBaseSKU = createAction<BaseSKU | undefined>(`${typePrefix}/set-filter/setBaseSKU`);
-export const setProductCategory = createAction<ProductCategory | undefined>(`${typePrefix}/set-filter/setProductCategory`);
-export const setProductCollection = createAction<ProductCollection | undefined>(`${typePrefix}/set-filter/setProductCollection`);
-export const setProductLine = createAction<ProductLine | undefined>(`${typePrefix}/set-filter/setProductLine`);
-export const setFeaturedImage = createAction<boolean | undefined>(`${typePrefix}/set-filter/setFeaturedImage`);
-export const setActive = createAction<boolean | undefined>(`${typePrefix}/set-filter/setActive`);
-
-type FetchFiltersThunkAction = AsyncThunk<LoadFiltersResult, void, any>;
-
-export const fetchFilters: FetchFiltersThunkAction = createAsyncThunk<LoadFiltersResult>(
-    fetchFiltersPrefix,
-    async (data, {rejectWithValue}) => {
-        try {
-            const {baseSKUs, categories, collections, productLines} = await fetchFiltersAPI();
-            return {baseSKUs, categories, collections, productLines};
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                return rejectWithValue({error: err, context: 'productFilters/fetchFilters'})
-            }
-            return {baseSKUs: [], categories: [], collections: [], productLines: []};
-        }
-    },
-    {
-        condition: (arg, {getState, extra}) => {
-            const state = getState() as RootState;
-            return state.productFilters.loading !== 'pending';
-        },
-
-    }
-);
-
-function isFetchFiltersAction(action: any): action is ReturnType<FetchFiltersThunkAction> {
-    return action?.type?.startsWith(fetchFiltersPrefix);
-}
-
-export const productFiltersReducer = createReducer(initialState, (builder) => {
+const filtersReducer = createReducer(initialFiltersState, (builder) => {
     builder
+        .addCase(toggleFilterBar, (state, action) => {
+            state.showFilterBar = action.payload ?? !state.showFilterBar;
+        })
         .addCase(setBaseSKU, (state, action) => {
-            state.filter.baseSKU = action.payload?.Category4 || null;
+            state.filter.baseSKU = action.payload;
         })
         .addCase(setProductCategory, (state, action) => {
-            state.filter.category = action.payload?.Category2 || null;
+            state.filter.category = action.payload;
         })
         .addCase(setProductCollection, (state, action) => {
-            state.filter.collection = action.payload?.Category3 || null;
+            state.filter.collection = action.payload;
         })
         .addCase(setProductLine, (state, action) => {
-            state.filter.productLine = action.payload?.ProductLine || null;
+            state.filter.productLine = action.payload;
         })
-        .addCase(setFeaturedImage, (state, action) => {
+        .addCase(toggleFeaturedImage, (state, action) => {
             state.filter.preferredImage = action.payload ?? !state.filter.preferredImage;
         })
-        .addCase(setActive, (state, action) => {
+        .addCase(toggleActive, (state, action) => {
             state.filter.active = action.payload ?? !state.filter.active;
         })
-        .addCase(fetchFilters.fulfilled, (state, action) => {
+        .addCase(toggleAssigned, (state, action) => {
+            state.filter.assigned = action.payload ?? !state.filter.assigned;
+        })
+        .addCase(loadFilters.pending, (state) => {
+            state.loading = true;
+        })
+        .addCase(loadFilters.fulfilled, (state, action) => {
             const {baseSKUs, categories, collections, productLines} = action.payload;
             state.baseSKUs = baseSKUs || [];
             state.categories = categories || [];
@@ -120,11 +100,15 @@ export const productFiltersReducer = createReducer(initialState, (builder) => {
 
             const [productLine] = productLines.filter(pl => pl.ProductLine === state.filter.productLine);
             state.filter.productLine = productLine?.ProductLine ?? null;
+            state.loaded = true;
+            state.loading = false;
         })
-        .addMatcher(
-            isFetchFiltersAction,
-            (state, action) => {
-                state.loading = action.meta.requestStatus;
-            }
-        )
+        .addCase(loadFilters.rejected, (state, action) => {
+            state.loading = false;
+        })
+        .addCase(setSearch, (state, action) => {
+            state.filter.search = action.payload;
+        });
 })
+
+export default filtersReducer;

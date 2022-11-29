@@ -19,7 +19,7 @@ export const IMAGE_ALL_SIZES = ['80', '125', '250', '400', '800', '2048', 'origi
 export const IMAGES_PER_PAGE_OPTIONS = [5, 10, 25, 50, 100, 250];
 
 export const PATH_DELETE_IMAGE = '/api/images/products/delete/:filename';
-export const PATH_FETCH_IMAGE = '/api/images/products/query/:filename';
+export const PATH_FETCH_IMAGE = '/api/images/products/list/:filename';
 export const PATH_FETCH_IMAGES = '/api/images/products/list/all';
 export const PATH_SET_ITEM_CODE = '/api/images/products/set-item/:filename/:item_code?';
 export const PATH_SET_PREFERRED_ITEM = '/api/images/products/set-preferred-item/:filename/:itemCode';

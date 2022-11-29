@@ -4,10 +4,14 @@
 }
 .app-columns aside.drawer {
   padding: 0.25rem;
-  flex: 0 0 calc(56px + 0.5rem);
+  flex: 0 0 calc(75px + 0.5rem);
   transition: flex-basis ease-in-out 450ms;
   overflow: auto;
   background-color: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .app-columns aside.drawer .navbar-toggler:focus {
   outline-width: 0;
@@ -57,18 +61,12 @@
 #preview-images figure.preview-image {
   position: relative;
 }
-#preview-images figure.preview-image.selected img {
-  border-width: 3px;
-}
-#preview-images figure.preview-image.preferred img {
-  border-color: var(--bs-primary);
-}
 #preview-images figure.preview-image .taglist-select {
   display: none;
   position: absolute;
   z-index: 30;
-  top: calc(calc(1.5rem + 2px)/2);
-  right: calc(calc(1.5rem + 2px)/2);
+  top: calc(calc(1.5rem + 2px)/1.5);
+  right: calc(calc(1.5rem + 2px)/1.5);
 }
 #preview-images figure.preview-image .taglist-select:checked {
   display: block;
@@ -94,21 +92,21 @@
   flex-basis: calc(125px + calc(1.5rem + 2px));
 }
 #preview-images figure.default-125 .preview-image-selector {
-  min-height: calc(125px + 2px);
+  min-height: 127px;
 }
 #preview-images figure.default-250 {
   max-width: calc(250px + calc(1.5rem + 2px));
   flex-basis: calc(250px + calc(1.5rem + 2px));
 }
 #preview-images figure.default-250 .preview-image-selector {
-  min-height: calc(250px + 2px);
+  min-height: 252px;
 }
 #preview-images figure.default-400 {
   max-width: calc(400px + calc(1.5rem + 2px));
   flex-basis: calc(400px + calc(1.5rem + 2px));
 }
 #preview-images figure.default-400 .preview-image-selector {
-  min-height: calc(400px + 2px);
+  min-height: 402px;
 }
 #preview-images figure figcaption {
   word-break: break-all;

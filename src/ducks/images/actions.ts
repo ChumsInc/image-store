@@ -10,74 +10,66 @@ import {
     imagesPostTagSucceeded,
     ImageThunkAction
 } from "./ActionTypes";
-import {selectSelectedImage} from "./selectors";
+import {selectCurrentImage} from "./selectors";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import {ProductAltItem, ProductImage} from "chums-types/product-image";
+import {
+    deleteAltItemCode, deleteImage,
+    deleteImageTag,
+    fetchImage,
+    fetchImages,
+    postAltItemCode,
+    postItemCode, postPreferredImage, postTagImage,
+    putImageUpdate
+} from "../../api/image";
+import {ProductFilter} from "../filters";
+import {ProductAltItemKey} from "../../types";
 
-export const untagImageAction = (tag: string, filename: string): ImageThunkAction =>
-    async (dispatch, getState) => {
-        try {
-            if (!tag || !filename) {
-                return;
-            }
-            dispatch({type: imagesPostTagRequested});
-            const url = PATH_SET_TAG
-                .replace(':filename', encodeURIComponent(filename))
-                .replace(':tag', encodeURIComponent(tag));
-            const {image} = await fetchDELETE(url);
-            dispatch({type: imagesPostTagSucceeded, payload: {image}});
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                console.log("untagImageAction()", err.message);
-                dispatch({type: imagesPostTagFailed, payload: {error: err, context: imagesPostTagRequested}});
-                return;
-            }
-            console.log("untagImageAction()", err);
-            dispatch({type: imagesPostTagFailed, status: FETCH_FAILURE, err});
-        }
+export const setCurrentImage = createAsyncThunk<ProductImage|null, string>(
+    'images/setCurrent',
+    async (arg, thunkApi) => {
+        return await fetchImage(arg);
     }
+)
+export const loadImages = createAsyncThunk<ProductImage[], ProductFilter>(
+    'images/load',
+        async (arg, thunkApi) => {
+            return await fetchImages(arg);
+        }
+)
+export const tagImage = createAsyncThunk<ProductImage|null, {tag:string, filename:string, action?: 'tag'|'untag'}>(
+    'images/tagImage',
+    async (arg, thunkApi) => {
+        if (arg.action === 'untag') {
+            return await deleteImageTag(arg.filename, arg.tag);
+        }
+        return await postTagImage(arg.filename, arg.tag);
+    }
+)
 
-export const tagImageAction = (tag: string, filename: string): ImageThunkAction =>
-    async (dispatch, getState) => {
-        try {
-            if (!tag || !filename) {
-                return;
-            }
-            dispatch({type: imagesPostTagRequested});
-            const url = PATH_SET_TAG
-                .replace(':filename', encodeURIComponent(filename))
-                .replace(':tag', encodeURIComponent(tag));
-            const {image} = await fetchPOST(url);
-            dispatch({type: imagesPostTagSucceeded, payload: {image}});
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                console.log("tagImageAction()", error.message);
-                return dispatch({type: imagesPostTagFailed, payload: {error, context: imagesPostTagRequested}})
-            }
-            console.error("tagImageAction()", error);
+export const saveImage = createAsyncThunk<ProductImage|null, Partial<ProductImage>>(
+    'images/saveImage',
+    async (arg) => {
+        if (arg.item_code && arg.filename && arg.preferred_image) {
+            return await postPreferredImage(arg.filename, arg.item_code);
         }
+        return await putImageUpdate(arg);
     }
+)
 
-export const setPreferredImageAction = (): ImageThunkAction =>
-    async (dispatch, getState) => {
-        try {
-            const state = getState();
-            const _image = selectSelectedImage(state);
-            if (!_image || !_image.filename || !_image.item_code) {
-                return;
-            }
-            dispatch({type: imagesPostPreferredImageRequested});
-            const url = PATH_SET_PREFERRED_ITEM.replace(':filename', encodeURIComponent(_image.filename))
-                .replace(':itemCode', _image.item_code);
-            const {image} = await fetchPOST(url);
-            dispatch({type: imagesPostPreferredImageSucceeded, payload: {image}});
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                console.log("setPrefferedImageAction()", error.message);
-                dispatch({
-                    type: imagesPostPreferredImageFailed,
-                    payload: {error, context: imagesPostPreferredImageRequested}
-                });
-                return;
-            }
-            console.error("setPrefferedImageAction()", error);
+export const saveAltItemCode = createAsyncThunk<ProductAltItem[], ProductAltItemKey>(
+    'images/saveAltItemCode',
+    async (arg, thunkAPI) => {
+        if (!arg.item_code) {
+            return deleteAltItemCode(arg.filename, arg.id);
         }
+        return postAltItemCode(arg.filename, arg.item_code);
     }
+)
+
+export const removeImage = createAsyncThunk<ProductImage[], string>(
+    'images/removeImage',
+    async (arg) => {
+        return await deleteImage(arg);
+    }
+)

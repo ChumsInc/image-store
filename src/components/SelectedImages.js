@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import AutoSizeImage from "./AutoSizeImage";
+import AutoSizeImage from "../ducks/images/AutoSizeImage";
 import PropTypes from 'prop-types';
 import {tagImages, clearSelectedForAction} from '../actions/images'
 import classNames from 'classnames';

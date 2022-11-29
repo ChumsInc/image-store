@@ -1,3 +1,14 @@
+import {ProductCategory, ProductCollection} from "chums-types";
+import {ProductImage} from "chums-types/product-image";
+
+export interface ErrorAlert {
+    id: number;
+    context: string;
+    message: string;
+    count: number;
+}
+
+
 export interface Warehouse {
     WarehouseCode: string,
     WarehouseDesc: string,
@@ -63,24 +74,32 @@ export interface ImageFormatList {
     [key:string]: string,
 }
 
-export interface ImageRecord {
+export interface EditableImage extends ProductImage {
+    changed?: boolean;
+    saving?: boolean;
+    loading?: boolean;
+}
+
+
+
+export interface LoadFiltersResult {
+    baseSKUs: BaseSKU[];
+    categories: ProductCategory[];
+    collections: ProductCollection[];
+    productLines: ProductLine[],
+}
+
+
+export interface ProductAltItemKey {
+    id: number,
     filename: string,
-    pathnames: string[],
-    sizes: ImageSizeList,
-    color_space?: ColorSpaceList,
-    img_format?: ImageFormatList,
-    tags: string[],
-    notes: string,
-    item_code?: string,
-    timestamp:string,
-    ItemCodeDesc?: string,
-    InactiveItem?:string,
-    ProductType?: string,
-    ProductLine?: string,
-    Category1?:string|null,
-    Category?:string|null,
-    ItemCollection?: string|null,
-    BaseSKU?:string,
-    item_codes?: string[],
-    preferred_image?: boolean,
+    item_code: string,
+}
+
+export interface SingleImage {
+    filename: string;
+    path: string;
+    size?: ImageSize,
+    colorSpace?: string;
+    imageFormat?: string;
 }

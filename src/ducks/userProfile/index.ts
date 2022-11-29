@@ -1,73 +1,68 @@
-import {AsyncThunk, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createReducer} from "@reduxjs/toolkit";
 import {UserProfile, UserRole} from "chums-types/user";
-import {FetchUserResponse, fetchUserAPI} from "../../api/user";
+import {loadUser, toggleEditMode} from "./actions";
 import {RootState} from "../../app/configureStore";
 
 interface UserProfileState {
-    profile: UserProfile|null,
+    profile: UserProfile | null,
+    roles: UserRole[],
     canEdit: boolean,
     canDelete: boolean,
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed',
+    loading: boolean;
+    loaded: boolean;
 }
 
-export const initialState:UserProfileState = {
+export const initialUserProfileState: UserProfileState = {
     profile: null,
+    roles: [],
     canEdit: false,
     canDelete: false,
-    loading: 'idle',
+    loading: false,
+    loaded: false,
 }
 
 
 const rolesAllowDelete = ['admin', 'web_admin', 'root'];
 const rolesAllowEdit = [...rolesAllowDelete, 'production', 'web', 'cs'];
 
-type FetchUserThunk = AsyncThunk<FetchUserResponse, void, any>;
+export const selectCanDelete = (state:RootState) => state.userProfile.canDelete || false;
+export const selectCanEdit = (state:RootState) => state.userProfile.canEdit || false;
+export const selectIsUser = (state:RootState) => !!state.userProfile.profile?.id;
+export const selectUserIsLoading = (state:RootState) => state.userProfile.loading;
+export const selectUserIsLoaded = (state:RootState) => state.userProfile.loaded;
 
-export const fetchUserAction:FetchUserThunk = createAsyncThunk<FetchUserResponse>(
-    'userProfile/fetchUser',
-    async (data, {rejectWithValue}) => {
-        try {
-            const {profile, roles} = await fetchUserAPI();
-            return {profile, roles}
-        } catch(err:unknown) {
-            if (err instanceof Error) {
-                console.warn("fetchUserAction()", err.message);
-                rejectWithValue({error: err, context: 'userProfile/fetchUser'});
-            }
-            return {profile: null, roles: []}
-        }
-    },
-    {
-        condition: (arg, {getState}) => {
-            const state = getState() as RootState;
-            return state.userProfile.loading !== 'pending';
-        }
-    }
-)
-
-function isFetchUserAction(action:any): action is ReturnType<FetchUserThunk> {
-    return action?.type?.startsWith('userProfile/fetchUser') && !!action?.meta?.requestStatus;
+const canEditReducer = (roles:UserRole[]):boolean => {
+    return roles.map(role => role.role).filter(role => rolesAllowEdit.includes(role)).length > 0;
 }
 
-export const userProfileSlice = createSlice({
-    name: 'userProfile',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchUserAction.fulfilled, (state, action) => {
-            state.profile = action.payload.profile || null;
-            state.canEdit = action.payload.roles.filter(role => rolesAllowEdit.includes(role.role)).length > 0;
-            state.canDelete = action.payload.roles.filter(role => rolesAllowDelete.includes(role.role)).length > 0;
-        })
-            .addMatcher(
-                isFetchUserAction,
-                (state, action) => {
-                    state.loading = action.meta.requestStatus;
-            })
-    }
-})
+const canDeleteReducer = (roles:UserRole[]):boolean => {
+    return roles.map(role => role.role).filter(role => rolesAllowDelete.includes(role)).length > 0;
+}
 
-export const {name} = userProfileSlice;
-console.log(userProfileSlice.actions);
-export default userProfileSlice.reducer;
+const userProfileReducer = createReducer(initialUserProfileState, (builder) => {
+    builder
+        .addCase(loadUser.pending, (state, action) => {
+            state.loading = true;
+        })
+        .addCase(loadUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.loaded = true;
+            state.profile = action.payload.profile ?? null;
+            state.roles = action.payload.roles;
+            state.canEdit = canEditReducer(action.payload.roles);
+            state.canDelete = canDeleteReducer(action.payload.roles);
+        })
+        .addCase(loadUser.rejected, (state, action) => {
+            state.loading = false;
+            state.canEdit = false;
+            state.canDelete = false;
+            state.profile = null;
+        })
+        .addCase(toggleEditMode, (state, action)=> {
+            if (canEditReducer(state.roles)) {
+                state.canEdit = action.payload ?? !state.canEdit;
+            }
+        })
+});
+
+export default userProfileReducer;

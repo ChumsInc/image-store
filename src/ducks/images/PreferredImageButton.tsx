@@ -1,29 +1,31 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {selectIsPreferredImage, selectSelectedImage} from "./selectors";
-import {ImageRecord} from "../../types";
-import classNames from "classnames";
-import {setPreferredImageAction} from "./actions";
+import {useSelector} from "react-redux";
+import {selectCurrentImage, selectIsPreferredImage} from "./selectors";
+import {saveImage} from "./actions";
 import {useAppDispatch} from "../../app/hooks";
+import {selectCanEdit} from "../userProfile";
 
-const PreferredImageButton:React.FC = () => {
+const PreferredImageButton: React.FC = () => {
     const dispatch = useAppDispatch();
-    const image:ImageRecord = useSelector(selectSelectedImage);
-    const isPreferredImage:boolean = useSelector(selectIsPreferredImage);
+    const current = useSelector(selectCurrentImage);
+    const isPreferredImage = useSelector(selectIsPreferredImage);
+    const canEdit = useSelector(selectCanEdit);
 
     const clickHandler = () => {
-        dispatch(setPreferredImageAction())
+        if (current && canEdit) {
+            const {filename, item_code} = current;
+            dispatch(saveImage({filename, item_code, preferred_image: true}))
+        }
     }
-    const className = {
-        'btn-secondary': isPreferredImage,
-        'btn-outline-secondary': !isPreferredImage,
-    };
+
+    if (!canEdit) {
+        return null;
+    }
     return (
-        <div>
-            <button type="button" className={classNames('btn btn-sm', className)} onClick={clickHandler}>
-                {isPreferredImage ? 'Preferred Image' : 'Set Preferred Image'}
-            </button>
-        </div>
+        <button type="button" className="btn btn-sm btn-outline-secondary text-warning"
+                onClick={clickHandler} title="Set preferred image">
+            <span className={isPreferredImage ? "bi-star-fill" : 'bi-star'}/>
+        </button>
     )
 }
 

@@ -1,20 +1,13 @@
-import {BaseSKU, ProductCategory, ProductCollection, CountryOfOrigin, PrimaryVendor, ProductLine, ProductStatus, ProductWarehouse} from "chums-types";
 import {fetchJSON} from "chums-components";
+import {LoadFiltersResult} from "../types";
 
 
-interface LoadFiltersResponse {
-    baseSKUs: BaseSKU[],
-    categories: ProductCategory[],
-    collections: ProductCollection[],
-    productLines: ProductLine[],
-    
-}
-export async function fetchFiltersAPI() {
+export async function fetchFilters(): Promise<LoadFiltersResult> {
     try {
-        const url = '/api/search/item/filters/chums';
-        const {baseSKUs, categories, collections, productLines} = await fetchJSON<LoadFiltersResponse>(url);
+        const url = '/api/images/filters/chums';
+        const {baseSKUs, categories, collections, productLines} = await fetchJSON<LoadFiltersResult>(url);
         return {baseSKUs, categories, collections, productLines};
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.warn("fetchFilters()", err.message);
             return Promise.reject(err);
