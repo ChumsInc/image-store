@@ -1,26 +1,24 @@
-import React, {FormEvent} from 'react';
+import React from 'react';
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectCurrentImage} from "./selectors";
 import AutoSizeImage from "./AutoSizeImage";
 import {ErrorBoundary, LoadingProgressBar} from "chums-components";
 import ImageFilename from "./ImageFilename";
-import {selectCanEdit} from "../userProfile";
 import SelectedItemForm from "./SelectedItemForm";
-import PreferredImageButton from "./PreferredImageButton";
 import AdditionalSKUForm from "./AdditionalSKUForm";
 import {defaultAltItem} from "./utils";
 import ImageTagList from "./ImageTagList";
 import ImageSizeList from "./ImageSizeList";
 import DeleteImagesButton from "./DeleteImagesButton";
+import {setCurrentImage} from "./actions";
 
 const SelectedImage = () => {
     const dispatch = useAppDispatch();
     const current = useSelector(selectCurrentImage);
-    const canEdit = useSelector(selectCanEdit);
 
-    const primaryItemSubmitHandler = (ev: FormEvent) => {
-        ev.preventDefault();
+    const clearImagesHandler = () => {
+        dispatch(setCurrentImage(null));
     }
 
     if (!current) {
@@ -30,6 +28,9 @@ const SelectedImage = () => {
         <div className="selected-image">
             <ErrorBoundary>
                 <figure>
+                    <div className="d-flex justify-content-end">
+                        <button type="button" className="btn-close" onClick={clearImagesHandler}/>
+                    </div>
                     <AutoSizeImage image={current} path="400"/>
                     <div style={{minHeight: '0.5rem'}}>
                         {(current.loading || current.saving) && <LoadingProgressBar striped animated height="3px"/>}
@@ -42,9 +43,9 @@ const SelectedImage = () => {
                 <SelectedItemForm/>
                 {current?.item_codes?.map(item => <AdditionalSKUForm key={item.id} item={item}/>)}
                 <AdditionalSKUForm item={{...defaultAltItem, filename: current.filename}}/>
-                <ImageTagList />
-                <ImageSizeList />
-                <DeleteImagesButton />
+                <ImageTagList/>
+                <ImageSizeList/>
+                <DeleteImagesButton/>
             </ErrorBoundary>
         </div>
     )

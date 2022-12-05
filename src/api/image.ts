@@ -44,8 +44,11 @@ export async function fetchImages(filter:ProductFilter):Promise<ProductImage[]> 
     }
 }
 
-export async function fetchImage(filename:string):Promise<ProductImage> {
+export async function fetchImage(filename:string|null):Promise<ProductImage|null> {
     try {
+        if (!filename) {
+            return null;
+        }
         const url = PATH_FETCH_IMAGE.replace(':filename', encodeURIComponent(filename));
         const {image} = await fetchJSON<{image: ProductImage}>(url);
         return image;
@@ -96,13 +99,13 @@ export async function postItemCode(filename:string, itemCode: string):Promise<Pr
     }
 }
 
-export async function postAltItemCode(filename:string, itemCode:string):Promise<ProductAltItem[]> {
+export async function postAltItemCode(filename:string, itemCode:string):Promise<ProductImage|null> {
     try {
         const url = PATH_SET_ALT_ITEM_CODE
             .replace(':filename', encodeURIComponent(filename))
             .replace(':itemCode', encodeURIComponent(itemCode));
-        const {altItems} = await fetchJSON<{altItems: ProductAltItem[]}>(url, {method: 'post'})
-        return altItems;
+        const {image} = await fetchJSON<{image: ProductImage|null}>(url, {method: 'post'})
+        return image || null;
     } catch(err:unknown) {
         if (err instanceof Error) {
             console.warn("postAltItemCodeAPI()", err.message);
@@ -113,13 +116,13 @@ export async function postAltItemCode(filename:string, itemCode:string):Promise<
     }
 }
 
-export async function deleteAltItemCode(filename:string, id: number):Promise<ProductAltItem[]> {
+export async function deleteAltItemCode(filename:string, itemCode: string):Promise<ProductImage|null> {
     try {
         const url = PATH_SET_ALT_ITEM_CODE
             .replace(':filename', encodeURIComponent(filename))
-            .replace(':itemCode', encodeURIComponent(id));
-        const {altItems} = await fetchJSON<{altItems: ProductAltItem[]}>(url, {method: 'delete'})
-        return altItems;
+            .replace(':itemCode', encodeURIComponent(itemCode));
+        const {image} = await fetchJSON<{image: ProductImage|null}>(url, {method: 'delete'})
+        return image;
     } catch(err:unknown) {
         if (err instanceof Error) {
             console.debug("deleteAltItemCode()", err.message);

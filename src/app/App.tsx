@@ -8,6 +8,7 @@ import {useAppDispatch} from "./hooks";
 import FilterBar from "../ducks/filters/FilterBar";
 import ImageList from "../ducks/images/ImageList";
 import SelectedImage from "../ducks/images/SelectedImage";
+import MultipleSelectedImages from "../ducks/images/MultipleSelectedImages";
 
 
 const App = () => {
@@ -29,7 +30,7 @@ const App = () => {
                         <ImageList/>
                     </div>
                     <div className="app-right">
-                        {showSelectedImageActions && <SelectedImages/>}
+                        {showSelectedImageActions && <MultipleSelectedImages/>}
                         {!showSelectedImageActions && <SelectedImage/>}
                     </div>
                 </div>

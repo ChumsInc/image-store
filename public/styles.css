@@ -166,4 +166,8 @@ ul.pagination {
   font-size: small;
 }
 
+.image-filename {
+  word-break: break-all;
+}
+
 /*# sourceMappingURL=styles.css.map */

@@ -15,6 +15,7 @@ import InactiveImageFilter from "./InactiveImageFilter";
 import PreferredImageFilter from "./PreferredImageFilter";
 import UnassignedImageFilter from "./UnassignedImageFilter";
 import ToggleEditMode from "../userProfile/ToggleEditMode";
+import ShowItemCodeToggle from "../settings/ShowItemCodeToggle";
 
 
 const FilterBar = () => {
@@ -89,6 +90,7 @@ const FilterBar = () => {
                 <UnassignedImageFilter/>
                 <InactiveImageFilter/>
                 <ToggleEditMode />
+                <ShowItemCodeToggle />
             </div>
         </aside>
     )

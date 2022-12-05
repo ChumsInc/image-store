@@ -21,13 +21,16 @@ const AdditionalSKUForm = ({item}: { item: ProductAltItem}) => {
             return;
         }
         dispatch(saveAltItemCode({...item, item_code: value}));
+        setValue('');
     }
+
     const deleteHandler = () => {
         if (!canEdit) {
             return;
         }
         if (item.id) {
             dispatch(saveAltItemCode({...item, item_code: ''}));
+            setValue('');
         }
     }
 

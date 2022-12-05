@@ -2,6 +2,7 @@ import {EditableImage, ImageSizeList} from "../../types";
 import {RootState} from "../../app/configureStore";
 import {createSelector} from "@reduxjs/toolkit";
 import {selectAssigned, selectFilter, selectSearch} from "../filters/selectors";
+import {isSavingReducer} from "./utils";
 
 export const selectImageList = (state:RootState) => state.images.list;
 export const selectCurrentImage = (state:RootState):EditableImage|null => state.images.current;
@@ -10,18 +11,10 @@ export const selectSelectedImageTags = (state:RootState):string[] => state.image
 export const selectImagesLoading = (state:RootState):boolean => state.images.loading || false;
 export const selectImagesLoaded = (state:RootState):boolean => state.images.loaded || false;
 export const selectIsPreferredImage = (state:RootState):boolean => state.images.current?.preferred_image || false;
-export const selectSelectedForAction = (state:RootState) => state.images.selectedForAction.list;
+export const selectSelectedForAction = (state:RootState) => state.images.selected.list;
+export const selectMultipleSaving = (state:RootState) => state.images.selected.saving;
 
-export const selectShowSelectedImageActions = createSelector(
-    [selectCurrentImage, selectSelectedForAction],
-    (selected, selectedForAction) => {
-    return selectedForAction.length > 1
-        ? true
-        : !(selectedForAction.length === 0
-            || !selected
-            || (selectedForAction.length === 1 && selectedForAction.includes(selected.filename))
-        );
-})
+export const selectShowSelectedImageActions = (state:RootState) => state.images.selected.list.length > 0;
 
 export const selectFilteredImages = createSelector(
     [selectImageList, selectSearch, selectAssigned],
@@ -39,3 +32,4 @@ export const selectFilteredImages = createSelector(
             .filter(img => assigned || !(img.ItemCode || img.item_codes?.length) )
     }
 );
+

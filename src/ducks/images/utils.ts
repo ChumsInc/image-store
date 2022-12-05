@@ -66,3 +66,4 @@ export const parseSingleImages = (img:ProductImage|null):SingleImage[] => {
     return Object.values(list).sort(imageSizeSort);
 }
 
+export const isSavingReducer = (pv:boolean, cv:EditableImage) => pv || cv.saving || false;

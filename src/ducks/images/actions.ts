@@ -1,4 +1,4 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
+import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductAltItem, ProductImage} from "chums-types/product-image";
 import {
     deleteAltItemCode,
@@ -12,9 +12,9 @@ import {
     putImageUpdate
 } from "../../api/image";
 import {ProductFilter} from "../filters";
-import {ProductAltItemKey} from "../../types";
+import {EditableImage, ProductAltItemKey} from "../../types";
 
-export const setCurrentImage = createAsyncThunk<ProductImage | null, string>(
+export const setCurrentImage = createAsyncThunk<ProductImage | null, string|null>(
     'images/setCurrent',
     async (arg, thunkApi) => {
         return await fetchImage(arg);
@@ -46,11 +46,11 @@ export const saveImage = createAsyncThunk<ProductImage | null, Partial<ProductIm
     }
 )
 
-export const saveAltItemCode = createAsyncThunk<ProductAltItem[], ProductAltItemKey>(
+export const saveAltItemCode = createAsyncThunk<ProductImage|null, ProductAltItemKey>(
     'images/saveAltItemCode',
     async (arg, thunkAPI) => {
         if (!arg.item_code) {
-            return deleteAltItemCode(arg.filename, arg.id);
+            return deleteAltItemCode(arg.filename, arg.item_code);
         }
         return postAltItemCode(arg.filename, arg.item_code);
     }
@@ -62,3 +62,6 @@ export const removeImage = createAsyncThunk<ProductImage[], string>(
         return await deleteImage(arg);
     }
 )
+
+export const selectAdditionalImage = createAction<EditableImage>('images/selected/selectImage');
+export const clearAdditionalImages = createAction('images/selected/clear');
