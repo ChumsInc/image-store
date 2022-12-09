@@ -5,6 +5,7 @@ import {selectMultipleSaving, selectSelectedForAction} from "./selectors";
 import {selectCanEdit} from "../userProfile";
 import {tagImage} from "./actions";
 import {LoadingProgressBar} from "chums-components";
+import ImageTagBadges from "../../components/ImageTagBadges";
 
 
 const TagMultipleImagesForm = () => {
@@ -12,8 +13,10 @@ const TagMultipleImagesForm = () => {
     const images = useSelector(selectSelectedForAction);
     const canEdit: boolean = useSelector(selectCanEdit);
     const [tag, setTag] = useState('');
+    const [tags, setTags] = useState<string[]>([]);
     const saving = useSelector(selectMultipleSaving);
     const [savePending, setSavePending] = useState(false);
+
 
     useEffect(() => {
         if (saving && !savePending) {
@@ -26,6 +29,19 @@ const TagMultipleImagesForm = () => {
             setSavePending(false);
         }
     }, [saving]);
+
+    useEffect(() => {
+        let _tags:string[] = [];
+        const tags = images.reduce((tags, image) => {
+            image.tags.forEach(tag => {
+                if (!tags.includes(tag)) {
+                    tags.push(tag);
+                }
+            });
+            return tags;
+        }, _tags);
+        setTags(tags);
+    }, [images])
 
     const onChangeTag = (ev: ChangeEvent<HTMLInputElement>) => setTag(ev.target.value);
 
@@ -44,7 +60,6 @@ const TagMultipleImagesForm = () => {
     if (!canEdit) {
         return null;
     }
-
     return (
         <div className="mt-3">
             <label className="form-label">Tag Images</label>
@@ -57,6 +72,7 @@ const TagMultipleImagesForm = () => {
                         <span className="bi-plus"/>
                     </button>
                 </div>
+                <ImageTagBadges inactive={false} tags={tags}/>
             </form>
             {(savePending || saving) && (<LoadingProgressBar striped animated style={{height: '3px'}}/>)}
         </div>

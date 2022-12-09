@@ -2,7 +2,7 @@ import {EditableImage} from "../../types";
 import {createReducer} from "@reduxjs/toolkit";
 import {
     clearAdditionalImages,
-    loadImages,
+    loadImages, removeAltItemCode,
     removeImage,
     saveAltItemCode,
     saveImage,
@@ -125,6 +125,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, action.payload).sort(imageSort(state.sort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
+            state.list = listReducer(state.list, action.meta.arg.filename, action.payload);
         })
         .addCase(saveAltItemCode.rejected, (state, action) => {
             if (state.current && state.current.filename === action.meta.arg.filename) {
@@ -137,6 +138,22 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                     saving: false
                 }).sort(imageSort(state.sort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
+            }
+        })
+        .addCase(removeAltItemCode.pending, (state) => {
+            if (state.current) {
+                state.current.saving = true;
+            }
+        })
+        .addCase(removeAltItemCode.fulfilled, (state, action) => {
+            if (state.current && state.current.filename === action.meta.arg.filename) {
+                state.current = action.payload;
+            }
+            state.list = listReducer(state.list, action.meta.arg.filename, action.payload);
+        })
+        .addCase(removeAltItemCode.rejected, (state) => {
+            if (state.current) {
+                state.current.saving = false;
             }
         })
         .addCase(tagImage.pending, (state, action) => {

@@ -1,10 +1,9 @@
 import {ProductCategory, ProductCollection} from "chums-types";
 import {ProductImage} from "chums-types/product-image";
+import {BasicAlert} from "chums-components";
 
-export interface ErrorAlert {
+export interface ErrorAlert extends BasicAlert {
     id: number;
-    context: string;
-    message: string;
     count: number;
 }
 

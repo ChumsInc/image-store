@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectSelectedForAction} from "./selectors";
 import AutoSizeImage from "./AutoSizeImage";
@@ -16,7 +16,17 @@ const MultipleSelectedImages = () => {
     const [tag, setTag] = useState('');
     const [itemCode, setItemCode] = useState('');
     const [value, setValue] = useState('');
+    const [itemCodes, setItemCodes] = useState<string[]>([]);
 
+    useEffect(() => {
+        const itemCodes = images.reduce((list, image) => {
+            if (!!image.item_code && !list.includes(image.item_code)) {
+                list.push(image.item_code);
+            }
+            return list;
+        }, [] as string[]);
+        setItemCodes(itemCodes.sort());
+    }, [images])
 
     const onChangeTag = (ev: ChangeEvent<HTMLInputElement>) => setTag(ev.target.value);
 
@@ -77,7 +87,7 @@ const MultipleSelectedImages = () => {
             {canEdit && (
                 <div className="mt-3">
                     <label className="form-label">Primary Item Code</label>
-                    <form className="input-group input-group-sm mb-3" onSubmit={primaryItemSubmitHandler}>
+                    <form className="input-group input-group-sm" onSubmit={primaryItemSubmitHandler}>
                         <div className="input-group-text">
                             <span className="bi-key-fill"/>
                         </div>
@@ -85,6 +95,7 @@ const MultipleSelectedImages = () => {
                                value={itemCode} onChange={(ev) => setItemCode(ev.target.value)}/>
                         <button type="submit" className="btn btn-sm btn-primary">Save</button>
                     </form>
+                    <small className="text-muted">{itemCodes.join(', ')}</small>
                 </div>
             )}
             <AdditionalSKUMultipleImagesForm />

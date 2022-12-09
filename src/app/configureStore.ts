@@ -1,12 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {alertsReducer} from 'chums-connected-components';
 import {default as imagesReducer, initialImagesState} from '../ducks/images'
 import {combineReducers} from "redux";
 import {default as filtersReducer, initialFiltersState} from '../ducks/filters'
 import {default as userProfileReducer, initialUserProfileState} from '../ducks/userProfile';
 import {default as settingsReducer, initialSettingsState} from "../ducks/settings";
+import alertsReducer, {initialAlertsState} from "../ducks/alerts";
 
 const preloadedState = {
+    alerts: initialAlertsState,
     filters: initialFiltersState,
     images: initialImagesState,
     settings: initialSettingsState,

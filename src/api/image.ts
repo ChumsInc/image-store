@@ -118,6 +118,9 @@ export async function postAltItemCode(filename:string, itemCode:string):Promise<
 
 export async function deleteAltItemCode(filename:string, itemCode: string):Promise<ProductImage|null> {
     try {
+        if (!filename || !itemCode) {
+            return Promise.reject(new Error('deleteAltItemCode(): missing filename or item code'));
+        }
         const url = PATH_SET_ALT_ITEM_CODE
             .replace(':filename', encodeURIComponent(filename))
             .replace(':itemCode', encodeURIComponent(itemCode));

@@ -15,6 +15,7 @@ export const toggleActive = createAction<boolean | undefined>(`${typePrefix}/set
 export const toggleAssigned = createAction<boolean | undefined>(`${typePrefix}/set-filter/toggleAssigned`);
 export const toggleFilterBar = createAction<boolean|undefined>(`${typePrefix}/toggleFilterBar`);
 export const setSearch = createAction<string>(`${typePrefix}/set-filter/search`);
+//@TODO: set page to 1 on updating search.
 
 export const loadFilters = createAsyncThunk<LoadFiltersResult>(
     fetchFiltersPrefix,

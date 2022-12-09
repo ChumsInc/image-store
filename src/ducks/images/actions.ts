@@ -49,10 +49,14 @@ export const saveImage = createAsyncThunk<ProductImage | null, Partial<ProductIm
 export const saveAltItemCode = createAsyncThunk<ProductImage|null, ProductAltItemKey>(
     'images/saveAltItemCode',
     async (arg, thunkAPI) => {
-        if (!arg.item_code) {
-            return deleteAltItemCode(arg.filename, arg.item_code);
-        }
         return postAltItemCode(arg.filename, arg.item_code);
+    }
+);
+
+export const removeAltItemCode = createAsyncThunk<ProductImage|null, ProductAltItemKey>(
+    'images/removeAltItemCode',
+    async (arg) => {
+        return deleteAltItemCode(arg.filename, arg.item_code);
     }
 )
 

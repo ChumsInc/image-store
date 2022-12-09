@@ -1,6 +1,7 @@
 import {ErrorAlert} from "../../types";
 import {createAction, createReducer, isRejected} from "@reduxjs/toolkit";
 import {RootState} from "../../app/configureStore";
+import {RejectedAction} from "@reduxjs/toolkit/dist/query/core/buildThunks";
 
 export interface AlertsState {
     nextId: number;
@@ -16,6 +17,11 @@ export const dismissAlert = createAction<number>('alerts/dismiss');
 export const addAlert = createAction<ErrorAlert>('alerts/addAlert');
 
 export const selectAlerts = (state:RootState) => state.alerts.list;
+
+function isErrorAction(action: RejectedAction<any, any>): action is RejectedAction<any, any> {
+    return action?.meta?.requestStatus === 'rejected';
+}
+
 
 const alertsReducer = createReducer(initialAlertsState, (builder) => {
     builder
@@ -34,6 +40,18 @@ const alertsReducer = createReducer(initialAlertsState, (builder) => {
                 state.list.push({...action.payload, id: state.nextId});
                 state.nextId += 1;
             }
+        })
+        .addMatcher(isErrorAction, (state, action) => {
+            const context = action.type.replace('/rejected', '');
+            let [contextAlert] = state.list.filter(alert => alert.context === context);
+            if (!contextAlert) {
+                contextAlert = {id: state.nextId, count: 1, message: action.error.message ?? '', context, color: 'danger'}
+                state.nextId += 1;
+            }
+            state.list = [
+                ...state.list.filter(alert => alert.context !== context),
+                contextAlert,
+            ];
         })
         .addDefaultCase((state, action) => {
             if (isRejected(action) && action.error) {

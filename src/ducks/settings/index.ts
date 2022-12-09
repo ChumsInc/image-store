@@ -2,6 +2,7 @@ import {getPreference, localStorageKeys} from "../../api/preferences";
 import {createAction, createReducer} from "@reduxjs/toolkit";
 import {RootState} from "../../app/configureStore";
 import {ImageSizePath} from "chums-types/product-image";
+import {setSearch} from "../filters/actions";
 
 export interface SettingsState {
     imagesPerPage: number;
@@ -14,7 +15,7 @@ export const initialSettingsState:SettingsState = {
     imagesPerPage: getPreference(localStorageKeys.imagesPerPage, 10),
     page: 0,
     imagePath: '250',
-    showItemCode: false,
+    showItemCode: true,
 }
 
 export const setImagesPerPage = createAction<number>('settings/imagesPerPage');
@@ -29,6 +30,9 @@ export const selectShowItemCode = (state:RootState) => state.settings.showItemCo
 
 const settingsReducer = createReducer(initialSettingsState, (builder) => {
     builder
+        .addCase(setSearch, (state) => {
+            state.page = 0;
+        })
         .addCase(setImagesPerPage, (state, action) => {
             state.imagesPerPage = action.payload;
             state.page = 0;

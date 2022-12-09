@@ -14,7 +14,7 @@ const AlertList = () => {
     return (
         <div>
             {list.map(alert => (
-                <Alert key={alert.id} title={alert.title} color={alert.color} canDismiss onDismiss={() => dismissHandler(alert.id)}>
+                <Alert key={alert.id} color={alert.color} canDismiss onDismiss={() => dismissHandler(alert.id)}>
                     {alert.message}
                 </Alert>
             ))}

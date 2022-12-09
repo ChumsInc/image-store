@@ -15,6 +15,7 @@ const AdditionalSKUMultipleImagesForm = () => {
     const [value, setValue] = useState('');
     const saving = useSelector(selectMultipleSaving);
     const [savePending, setSavePending] = useState(false);
+    const [itemCodes, setItemCodes] = useState<string[]>([]);
 
     useEffect(() => {
         if (saving && !savePending) {
@@ -27,6 +28,21 @@ const AdditionalSKUMultipleImagesForm = () => {
             setSavePending(false);
         }
     }, [saving]);
+
+    useEffect(() => {
+        const _itemCodes:string[] = [];
+        const itemCodes = images.reduce((list, image) => {
+            if (image.item_codes) {
+                image.item_codes.forEach(item => {
+                    if (!list.includes(item.item_code)) {
+                        list.push(item.item_code);
+                    }
+                })
+            }
+            return list;
+        }, [] as string[]);
+        setItemCodes(itemCodes);
+    }, [images])
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => setValue(ev.target.value);
 
@@ -57,6 +73,7 @@ const AdditionalSKUMultipleImagesForm = () => {
                     <span className="bi-plus"/>
                 </button>
             </form>
+            <small className="text-muted">{itemCodes.join(', ')}</small>
             {(savePending || saving) && (<LoadingProgressBar striped animated style={{height: '3px'}}/>)}
         </div>
     )

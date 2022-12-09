@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useAppDispatch} from "../../app/hooks";
-import {saveAltItemCode} from "./actions";
+import {removeAltItemCode, saveAltItemCode} from "./actions";
 import {ProductAltItemKey} from "../../types";
 import {ProductAltItem} from "chums-types/product-image";
 import {useSelector} from "react-redux";
@@ -29,7 +29,7 @@ const AdditionalSKUForm = ({item}: { item: ProductAltItem}) => {
             return;
         }
         if (item.id) {
-            dispatch(saveAltItemCode({...item, item_code: ''}));
+            dispatch(removeAltItemCode(item));
             setValue('');
         }
     }
