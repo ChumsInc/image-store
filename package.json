@@ -1,6 +1,6 @@
 {
   "name": "image-store",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Product Image Repository",
   "main": "index.js",
   "scripts": {
