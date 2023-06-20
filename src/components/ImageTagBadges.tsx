@@ -1,5 +1,5 @@
 import React from 'react';
-import Badge from "./Badge";
+import LinkBadge from "./LinkBadge";
 
 const tagTypes = {
     inactive: 'danger',
@@ -13,12 +13,12 @@ const ImageTagBadges:React.FC<ImageTagBadgesProps> = ({tags, inactive}) => {
     const hasInactive = inactive || tags.filter(tag => tag.toLowerCase() === 'inactive').length > 0;
     return (
         <div className="tag-badges">
-            {hasInactive && <Badge type={tagTypes.inactive}>Inactive</Badge>}
+            {hasInactive && <LinkBadge color="danger">Inactive</LinkBadge>}
             {tags
                 .filter(tag => tag.toLowerCase() !== 'inactive')
                 .sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1)
                 .map(tag => {
-                    return (<Badge type="secondary" key={tag}>{tag}</Badge>)
+                    return (<LinkBadge color="secondary" key={tag}>{tag}</LinkBadge>)
                 })}
         </div>
     );

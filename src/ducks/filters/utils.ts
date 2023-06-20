@@ -1,4 +1,4 @@
-import {BaseSKU, ProductCategory, ProductCollection, ProductLine} from "chums-types";
+import {BaseSKUSearch, ProductCategory, ProductCollection, ProductLine} from "chums-types";
 import {invalidHashValue, ProductFilter, ProductFilterKey} from "./index";
 import base64 from 'base-64';
 
@@ -14,7 +14,7 @@ export const sortCategories = (a: ProductCategory, b: ProductCategory) => {
     return a.Category2.toLowerCase() > b.Category2.toLowerCase() ? 1 : -1;
 }
 
-export const sortBaseSKUs = (a: BaseSKU, b: BaseSKU) => {
+export const sortBaseSKUs = (a: BaseSKUSearch, b: BaseSKUSearch) => {
     return a.Category4.toLowerCase() > b.Category4.toLowerCase() ? 1 : -1;
 }
 
@@ -25,10 +25,10 @@ export const sortCollections = (a: ProductCollection, b: ProductCollection) => {
 export const filterToURLSearchParams = (filter: ProductFilter): URLSearchParams => {
     function searchValue(value: string | null | boolean): string {
         switch (typeof value) {
-        case 'boolean':
-            return value ? '1' : '0';
-        default:
-            return value ?? '';
+            case 'boolean':
+                return value ? '1' : '0';
+            default:
+                return value ?? '';
         }
 
     }
@@ -52,14 +52,14 @@ export const filterToURLSearchParams = (filter: ProductFilter): URLSearchParams 
 export const urlSearchParamsToFilter = (search: URLSearchParams | string): ProductFilter => {
     function fromSearchValue(key: ProductFilterKey, value: string | null): string | boolean | null {
         switch (key) {
-        case 'search':
-            return value;
-        case 'preferredImage':
-        case 'active':
-        case 'assigned':
-            return value === '1';
-        default:
-            return value || null;
+            case 'search':
+                return value;
+            case 'preferredImage':
+            case 'activeProducts':
+            case 'assigned':
+                return value === '1';
+            default:
+                return value || null;
         }
     }
 
@@ -69,7 +69,7 @@ export const urlSearchParamsToFilter = (search: URLSearchParams | string): Produ
         try {
             const hashedParams = base64.decode(filterHash);
             params = new URLSearchParams(hashedParams);
-        } catch(err:unknown) {
+        } catch (err: unknown) {
             params.set('baseSKU', invalidHashValue);
             // params.set('category', invalidHashValue);
             // params.set('collection', invalidHashValue);
@@ -86,7 +86,7 @@ export const urlSearchParamsToFilter = (search: URLSearchParams | string): Produ
         productLine: null,
         preferredImage: false,
         assigned: true,
-        active: true,
+        activeProducts: true,
         search: '',
     };
     getKeys<ProductFilter>(filter).forEach(key => {

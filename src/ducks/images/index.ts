@@ -7,7 +7,7 @@ import {
     saveAltItemCode,
     saveImage,
     selectAdditionalImage,
-    setCurrentImage,
+    setCurrentImage, setImageActive,
     tagImage
 } from "./actions";
 import {imageSort, isSavingReducer} from "./utils";
@@ -207,6 +207,50 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
             if (state.current && state.current.filename === action.meta.arg) {
                 state.current.saving = false;
             }
+        })
+        .addCase(setImageActive.pending, (state, action) => {
+            if (!action.meta.arg.filename) {
+                return;
+            }
+            if (state.current && state.current.filename === action.meta.arg.filename) {
+                state.current.saving = true;
+            }
+            if (state.selected.list.map(img => img.filename).includes(action.meta.arg.filename)) {
+                const [image] = state.selected.list.filter(img => img.filename === action.meta.arg.filename);
+                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, {
+                    ...image,
+                    saving: true
+                }).sort(imageSort(state.sort));
+            }
+        })
+        .addCase(setImageActive.rejected, (state, action) => {
+            if (!action.meta.arg.filename) {
+                return;
+            }
+            if (state.current && state.current.filename === action.meta.arg.filename) {
+                state.current.saving = false;
+            }
+            if (state.selected.list.map(img => img.filename).includes(action.meta.arg.filename)) {
+                const [image] = state.selected.list.filter(img => img.filename === action.meta.arg.filename);
+                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, {
+                    ...image,
+                    saving: false
+                }).sort(imageSort(state.sort));
+                state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
+            }
+        })
+        .addCase(setImageActive.fulfilled, (state, action) => {
+            if (!action.meta.arg.filename) {
+                return;
+            }
+            if (state.current && state.current.filename === action.meta.arg.filename) {
+                state.current = action.payload;
+            }
+            if (state.selected.list.map(img => img.filename).includes(action.meta.arg.filename)) {
+                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, action.payload).sort(imageSort(state.sort));
+                state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
+            }
+            state.list = listReducer(state.list, action.meta.arg.filename, action.payload).sort(imageSort(state.sort));
         })
 });
 

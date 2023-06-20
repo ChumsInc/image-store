@@ -9,12 +9,13 @@ const AlertList = () => {
     const list = useSelector(selectAlerts);
 
     const dismissHandler = (id: number) => {
-
+        dispatch(dismissAlert(id));
     }
     return (
         <div>
             {list.map(alert => (
-                <Alert key={alert.id} color={alert.color} canDismiss onDismiss={() => dismissHandler(alert.id)}>
+                <Alert key={alert.id} color={alert.color} canDismiss onDismiss={() => dismissHandler(alert.id)}
+                       context={alert.context} count={alert.count}>
                     {alert.message}
                 </Alert>
             ))}

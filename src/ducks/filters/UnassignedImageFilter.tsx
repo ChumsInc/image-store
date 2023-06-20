@@ -3,7 +3,7 @@ import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectFilter} from "./selectors";
 import {FormCheck} from "chums-components";
-import {toggleActive, toggleAssigned} from "./actions";
+import {toggleActiveProducts, toggleAssigned} from "./actions";
 
 const UnassignedImageFilter = () => {
     const dispatch = useAppDispatch();

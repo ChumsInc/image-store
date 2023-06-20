@@ -1,4 +1,4 @@
-import {ImageSizePath} from "chums-types/product-image";
+import {ImageSizePath} from "chums-types";
 
 export const DEFAULT_IMAGE_PATH:ImageSizePath = '250';
 export const IMAGE_PATHS:ImageSizePath[] = ['80', '125', '250', '400'];

@@ -1,7 +1,8 @@
-import {IMAGE_ALL_SIZES} from './constants/image';
+export const IMAGE_ALL_SIZES = ['80', '125', '250', '400', '800', '2048', 'originals'];
 
 export const now = () => new Date().valueOf();
-export const noop = () => {};
+export const noop = () => {
+};
 
 export const imagePath = ({path, filename}) => `https://intranet.chums.com/images/products/${path}/${filename}`;
 export const imagePreferredPath = ({preferredPath = '400', sizes = {}}) => {

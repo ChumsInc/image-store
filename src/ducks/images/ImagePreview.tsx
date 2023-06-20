@@ -1,5 +1,5 @@
 import React, {ChangeEvent, MouseEvent} from 'react';
-import {ProductImage} from "chums-types/product-image";
+import {ProductImage} from "chums-types";
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectImagePath, selectShowItemCode} from "../settings";
@@ -63,7 +63,7 @@ const ImagePreview = ({image}:ImagePreviewProps) => {
                 {!preferredImages && image.preferred_image && (
                     <div className="my-1"><Badge color="primary">Preferred Image</Badge></div>
                 )}
-                <ImageTagBadges inactive={image.InactiveItem === 'Y'} tags={image.tags}/>
+                <ImageTagBadges inactive={image.InactiveItem === 'Y' || !image.active} tags={image.tags}/>
             </figcaption>
         </figure>
     )

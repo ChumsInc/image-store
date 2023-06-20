@@ -3,14 +3,14 @@ import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectFilter} from "./selectors";
 import {FormCheck} from "chums-components";
-import {toggleActiveImages} from "./actions";
+import {toggleActiveProducts} from "./actions";
 
 const InactiveProductFilter = () => {
     const dispatch = useAppDispatch();
-    const {activeImages} = useSelector(selectFilter);
+    const {activeProducts} = useSelector(selectFilter);
     return (
-        <FormCheck type={"checkbox"} label={"Show Inactive Images"} checked={!activeImages}
-                   onChange={() => dispatch(toggleActiveImages(!activeImages))}/>
+        <FormCheck type={"checkbox"} label={"Show Inactive Items"} checked={!activeProducts}
+                   onChange={() => dispatch(toggleActiveProducts(!activeProducts))}/>
     )
 }
 

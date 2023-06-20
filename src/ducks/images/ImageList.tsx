@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {selectFilteredImages, selectImageList, selectImagesLoading} from "./selectors";
+import {selectFilteredImages, selectImagesLoading} from "./selectors";
 import ImageControlBar from "./ImageControlBar";
 import {LoadingProgressBar} from "chums-components";
 import {selectImagesPerPage, selectPage} from "../settings";
@@ -22,7 +22,7 @@ const ImageList = () => {
             <div className="mt-1" style={{minHeight: '1rem'}}>
                 {loading && (<LoadingProgressBar striped animated style={{height: '3px'}}/>)}
             </div>
-            <InvalidURLAlert />
+            <InvalidURLAlert/>
             {!loading && !images.length && (
                 <h3>Sorry, no images found.</h3>
             )}

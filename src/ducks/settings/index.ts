@@ -1,7 +1,7 @@
 import {getPreference, localStorageKeys} from "../../api/preferences";
 import {createAction, createReducer} from "@reduxjs/toolkit";
 import {RootState} from "../../app/configureStore";
-import {ImageSizePath} from "chums-types/product-image";
+import {ImageSizePath} from "chums-types";
 import {setSearch} from "../filters/actions";
 
 export interface SettingsState {

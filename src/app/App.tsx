@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react';
 import {useSelector} from "react-redux";
 import {selectShowSelectedImageActions} from "../ducks/images/selectors";
-import SelectedImages from "../components/SelectedImages";
-
-import {AlertList} from "chums-connected-components";
 import {useAppDispatch} from "./hooks";
 import FilterBar from "../ducks/filters/FilterBar";
 import ImageList from "../ducks/images/ImageList";
 import SelectedImage from "../ducks/images/SelectedImage";
 import MultipleSelectedImages from "../ducks/images/MultipleSelectedImages";
+import AlertList from "../ducks/alerts/AlertList";
 
 
 const App = () => {

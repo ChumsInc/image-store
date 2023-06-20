@@ -1,7 +1,7 @@
 import {SortProps} from "chums-components";
 import {EditableImage, ProductAltItemKey, SingleImage} from "../../types";
 
-import {ImageSize, ImageSizeList, ImageSizePath, ProductAltItem, ProductImage} from "chums-types/product-image";
+import {ImageSize, ImageSizeList, ImageSizePath, ProductAltItem, ProductImage} from "chums-types";
 import {IMAGE_ALL_SIZES} from "./constants";
 
 export const imageSort = (sort: SortProps<EditableImage>) => (a: EditableImage, b: EditableImage) => {

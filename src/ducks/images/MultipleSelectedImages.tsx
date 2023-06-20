@@ -8,6 +8,7 @@ import {useAppDispatch} from "../../app/hooks";
 import {defaultAltItem} from "./utils";
 import TagMultipleImagesForm from "./TagMultipleImagesForm";
 import AdditionalSKUMultipleImagesForm from "./AdditionalSKUMultipleImagesForm";
+import MultipleImageActiveToggle from "./MultipleImageActiveToggle";
 
 const MultipleSelectedImages = () => {
     const dispatch = useAppDispatch();
@@ -99,6 +100,7 @@ const MultipleSelectedImages = () => {
                 </div>
             )}
             <AdditionalSKUMultipleImagesForm />
+            <MultipleImageActiveToggle />
             <TagMultipleImagesForm />
             <pre>
                 <code>

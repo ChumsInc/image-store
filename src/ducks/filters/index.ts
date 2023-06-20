@@ -1,13 +1,13 @@
-import {BaseSKU, ProductCategory, ProductCollection, ProductLine} from "chums-types";
+import {BaseSKU, BaseSKUSearch, ProductCategory, ProductCollection, ProductLine} from "chums-types";
 import {createReducer} from "@reduxjs/toolkit";
 import {
     loadFilters,
-    toggleActive, toggleAssigned,
+    toggleActiveProducts, toggleAssigned,
     setBaseSKU,
     toggleFeaturedImage,
     setProductCategory,
     setProductCollection,
-    setProductLine, setSearch, toggleFilterBar
+    setProductLine, setSearch, toggleFilterBar, toggleActiveImages
 } from "./actions";
 import {urlSearchParamsToFilter} from "./utils";
 
@@ -20,14 +20,15 @@ export interface ProductFilter {
     productLine: string | null;
     preferredImage: boolean;
     assigned?: boolean;
-    active?: boolean;
+    activeProducts?: boolean;
+    activeImages?: boolean;
     search: string;
 }
 
 export type ProductFilterKey = keyof ProductFilter;
 
 interface FiltersState {
-    baseSKUs: BaseSKU[];
+    baseSKUs: BaseSKUSearch[];
     categories: ProductCategory[];
     collections: ProductCollection[];
     productLines: ProductLine[];
@@ -46,7 +47,8 @@ export const initialFilter:ProductFilter = {
     productLine: urlFilter.productLine ?? null,
     preferredImage: urlFilter.preferredImage ?? false,
     assigned: true,
-    active: true,
+    activeProducts: true,
+    activeImages: true,
     search: urlFilter.search ?? '',
 }
 
@@ -82,8 +84,11 @@ const filtersReducer = createReducer(initialFiltersState, (builder) => {
         .addCase(toggleFeaturedImage, (state, action) => {
             state.filter.preferredImage = action.payload ?? !state.filter.preferredImage;
         })
-        .addCase(toggleActive, (state, action) => {
-            state.filter.active = action.payload ?? !state.filter.active;
+        .addCase(toggleActiveProducts, (state, action) => {
+            state.filter.activeProducts = action.payload ?? !state.filter.activeProducts;
+        })
+        .addCase(toggleActiveImages, (state, action) => {
+            state.filter.activeImages = action.payload ?? !state.filter.activeImages;
         })
         .addCase(toggleAssigned, (state, action) => {
             state.filter.assigned = action.payload ?? !state.filter.assigned;

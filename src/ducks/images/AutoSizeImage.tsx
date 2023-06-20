@@ -1,6 +1,6 @@
 import React from 'react';
 import {imagePath, imagePreferredPath} from "./utils";
-import {ImageSizePath, ProductImage} from "chums-types/product-image";
+import {ImageSizePath, ProductImage} from "chums-types";
 
 
 export interface AutoSizeImageProps {

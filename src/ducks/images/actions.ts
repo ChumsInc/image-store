@@ -1,5 +1,5 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {ProductAltItem, ProductImage} from "chums-types/product-image";
+import {ProductAltItem, ProductImage} from "chums-types";
 import {
     deleteAltItemCode,
     deleteImage,
@@ -8,7 +8,7 @@ import {
     fetchImages,
     postAltItemCode,
     postPreferredImage,
-    postTagImage,
+    postTagImage, putImageActive,
     putImageUpdate
 } from "../../api/image";
 import {ProductFilter} from "../filters";
@@ -69,3 +69,10 @@ export const removeImage = createAsyncThunk<ProductImage[], string>(
 
 export const selectAdditionalImage = createAction<EditableImage>('images/selected/selectImage');
 export const clearAdditionalImages = createAction('images/selected/clear');
+
+export const setImageActive = createAsyncThunk<ProductImage|null, Partial<ProductImage>>(
+    'images/saveActive',
+    async (arg) => {
+        return await putImageActive(arg.filename, arg.active)
+    }
+)

@@ -11,11 +11,12 @@ import {loadUser} from "../userProfile/actions";
 import ProductCategoryFilter from "./ProductCatetgoryFilter";
 import ProductBaseSKUFilter from "./ProductBaseSKUFilter";
 import ProductCollectionFilter from "./ProductCollectionFilter";
-import InactiveImageFilter from "./InactiveImageFilter";
+import InactiveProductFilter from "./InactiveProductFilter";
 import PreferredImageFilter from "./PreferredImageFilter";
 import UnassignedImageFilter from "./UnassignedImageFilter";
 import ToggleEditMode from "../userProfile/ToggleEditMode";
 import ShowItemCodeToggle from "../settings/ShowItemCodeToggle";
+import InactiveImageFilter from "./InactiveImageFilter";
 
 
 const FilterBar = () => {
@@ -63,7 +64,7 @@ const FilterBar = () => {
         dispatch(toggleFilterBar());
     }
 
-    const asideClassName = classNames("drawer navbar", {
+    const asideClassName = classNames("drawer navbar bg-body-tertiary", {
         'drawer--open': showFilterBar,
         'drawer--in-transition': inTransition
     });
@@ -72,12 +73,12 @@ const FilterBar = () => {
     }
     return (
         <aside className={asideClassName}>
-            <div className="navbar-light">
+            <div className="">
                 <button className="navbar-toggler" onClick={toggleFilterBarHandler}>
                     <span className="navbar-toggler-icon"/>
                 </button>
             </div>
-            <div className="form bg-light" style={{visibility: showFilterBar ? 'visible' : 'hidden'}}>
+            <div className="form" style={{visibility: showFilterBar ? 'visible' : 'hidden'}}>
                 <hr/>
                 <h4>Filters</h4>
                 <ProductLineFilter/>
@@ -88,6 +89,7 @@ const FilterBar = () => {
                 <h4>Options</h4>
                 <PreferredImageFilter/>
                 <UnassignedImageFilter/>
+                <InactiveProductFilter/>
                 <InactiveImageFilter/>
                 <ToggleEditMode />
                 <ShowItemCodeToggle />

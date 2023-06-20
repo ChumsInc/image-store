@@ -1,5 +1,4 @@
-import {ProductCategory, ProductCollection} from "chums-types";
-import {ProductImage} from "chums-types/product-image";
+import {ProductCategory, ProductCollection, ProductImage} from "chums-types";
 import {BasicAlert} from "chums-components";
 
 export interface ErrorAlert extends BasicAlert {
@@ -13,12 +12,13 @@ export interface Warehouse {
     WarehouseDesc: string,
     WarehouseStatus: string
 }
+
 export interface ProductLine {
     ProductLine: string,
     ProductLineDesc: string,
     ProductType: string,
-    Valuation: '1'|'2'|'3'|'4'|'5'|'6',
-    ExplodedKitItems: 'P'|'N'|'A',
+    Valuation: '1' | '2' | '3' | '4' | '5' | '6',
+    ExplodedKitItems: 'P' | 'N' | 'A',
     active: boolean,
 }
 
@@ -44,8 +44,8 @@ export interface BaseSKU {
     sku: string,
     description: string,
     upc: string,
-    active:boolean,
-    notes:string|null,
+    active: boolean,
+    notes: string | null,
     tags: unknown,
 }
 
@@ -63,14 +63,17 @@ export interface ImageSize {
     height: number,
     size: number,
 }
+
 export interface ImageSizeList {
-    [key:string]: ImageSize,
+    [key: string]: ImageSize,
 }
+
 export interface ColorSpaceList {
-    [key:string]: string,
+    [key: string]: string,
 }
+
 export interface ImageFormatList {
-    [key:string]: string,
+    [key: string]: string,
 }
 
 export interface EditableImage extends ProductImage {
@@ -78,7 +81,6 @@ export interface EditableImage extends ProductImage {
     saving?: boolean;
     loading?: boolean;
 }
-
 
 
 export interface LoadFiltersResult {

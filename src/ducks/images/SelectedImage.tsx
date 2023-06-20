@@ -12,6 +12,7 @@ import ImageTagList from "./ImageTagList";
 import ImageSizeList from "./ImageSizeList";
 import DeleteImagesButton from "./DeleteImagesButton";
 import {setCurrentImage} from "./actions";
+import ImageActiveToggle from "./ImageActiveToggle";
 
 const SelectedImage = () => {
     const dispatch = useAppDispatch();
@@ -43,6 +44,7 @@ const SelectedImage = () => {
                 <SelectedItemForm/>
                 {current?.item_codes?.map(item => <AdditionalSKUForm key={item.id} item={item}/>)}
                 <AdditionalSKUForm item={{...defaultAltItem, filename: current.filename}}/>
+                <ImageActiveToggle />
                 <ImageTagList/>
                 <ImageSizeList/>
                 <DeleteImagesButton/>

@@ -1,16 +1,16 @@
-import {
-    PATH_DELETE_IMAGE, PATH_FETCH_IMAGE,
-    PATH_FETCH_IMAGES,
-    PATH_SET_ALT_ITEM_CODE,
-    PATH_SET_PREFERRED_ITEM,
-    PATH_SET_TAG
-} from "../constants/image";
-import {ProductImage, ProductAltItem} from 'chums-types/product-image'
+import {ProductImage} from 'chums-types'
 import {fetchJSON} from "chums-components";
-import {fetchPOST} from "../fetch";
 import {ProductFilter} from "../ducks/filters";
 
-export async function fetchImages(filter:ProductFilter):Promise<ProductImage[]> {
+export const PATH_SET_PREFERRED_ITEM = '/api/images/products/set-preferred-item/:filename/:itemCode';
+export const PATH_SET_ALT_ITEM_CODE = '/api/images/products/alt-item/:filename/:itemCode';
+export const PATH_DELETE_IMAGE = '/api/images/products/delete/:filename';
+export const PATH_FETCH_IMAGE = '/api/images/products/list/:filename';
+export const PATH_FETCH_IMAGES = '/api/images/products/list/all';
+
+export const PATH_SET_TAG = '/api/images/products/tag/:filename/:tag';
+
+export async function fetchImages(filter: ProductFilter): Promise<ProductImage[]> {
     try {
         const params = new URLSearchParams();
         if (filter.baseSKU) {
@@ -25,16 +25,19 @@ export async function fetchImages(filter:ProductFilter):Promise<ProductImage[]> 
         if (filter.productLine) {
             params.set('productLine', filter.productLine);
         }
-        if (filter.active) {
-            params.set('active', filter.active ? '1' : '0');
+        if (filter.activeProducts) {
+            params.set('active', filter.activeProducts ? '1' : '0');
+        }
+        if (filter.activeImages) {
+            params.set('activeImages', filter.activeImages ? '1' : '0');
         }
         if (filter.preferredImage) {
             params.set('preferred', filter.preferredImage ? '1' : '0');
         }
         const url = `${PATH_FETCH_IMAGES}?${params.toString()}`;
-        const {images} = await fetchJSON<{images: ProductImage[]}>(url);
+        const {images} = await fetchJSON<{ images: ProductImage[] }>(url);
         return images;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.warn("fetchImages()", err.message);
             return Promise.reject(err);
@@ -44,15 +47,15 @@ export async function fetchImages(filter:ProductFilter):Promise<ProductImage[]> 
     }
 }
 
-export async function fetchImage(filename:string|null):Promise<ProductImage|null> {
+export async function fetchImage(filename: string | null): Promise<ProductImage | null> {
     try {
         if (!filename) {
             return null;
         }
         const url = PATH_FETCH_IMAGE.replace(':filename', encodeURIComponent(filename));
-        const {image} = await fetchJSON<{image: ProductImage}>(url);
+        const {image} = await fetchJSON<{ image: ProductImage }>(url);
         return image;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.warn("fetchImage()", err.message);
             return Promise.reject(err);
@@ -62,7 +65,7 @@ export async function fetchImage(filename:string|null):Promise<ProductImage|null
     }
 }
 
-export async function putImageUpdate(productImage:Partial<ProductImage>):Promise<ProductImage|null> {
+export async function putImageUpdate(productImage: Partial<ProductImage>): Promise<ProductImage | null> {
     try {
         if (!productImage || !productImage.filename) {
             return Promise.reject(new Error('putImageUpdate(): Filename is required'))
@@ -70,9 +73,9 @@ export async function putImageUpdate(productImage:Partial<ProductImage>):Promise
         const url = '/api/images/products/:filename'
             .replace(':filename', encodeURIComponent(productImage.filename));
         const body = JSON.stringify(productImage);
-        const {image} = await fetchJSON<{image:ProductImage|null}>(url, {method: 'put', body});
+        const {image} = await fetchJSON<{ image: ProductImage | null }>(url, {method: 'put', body});
         return image ?? null;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.debug("putImageUpdate()", err.message);
             return Promise.reject(err);
@@ -82,14 +85,14 @@ export async function putImageUpdate(productImage:Partial<ProductImage>):Promise
     }
 }
 
-export async function postItemCode(filename:string, itemCode: string):Promise<ProductImage|null> {
+export async function postItemCode(filename: string, itemCode: string): Promise<ProductImage | null> {
     try {
         const url = '/api/images/products/set-preferred-item/:filename/:itemCode'
             .replace(':filename', encodeURIComponent(filename))
             .replace(':itemCode', encodeURIComponent(itemCode));
-        const {image} = await fetchJSON<{image:ProductImage|null}>(url, {method: 'POST'});
+        const {image} = await fetchJSON<{ image: ProductImage | null }>(url, {method: 'POST'});
         return image ?? null;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.debug("postItemCode()", err.message);
             return Promise.reject(err);
@@ -99,14 +102,14 @@ export async function postItemCode(filename:string, itemCode: string):Promise<Pr
     }
 }
 
-export async function postAltItemCode(filename:string, itemCode:string):Promise<ProductImage|null> {
+export async function postAltItemCode(filename: string, itemCode: string): Promise<ProductImage | null> {
     try {
         const url = PATH_SET_ALT_ITEM_CODE
             .replace(':filename', encodeURIComponent(filename))
             .replace(':itemCode', encodeURIComponent(itemCode));
-        const {image} = await fetchJSON<{image: ProductImage|null}>(url, {method: 'post'})
+        const {image} = await fetchJSON<{ image: ProductImage | null }>(url, {method: 'post'})
         return image || null;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.warn("postAltItemCodeAPI()", err.message);
             return Promise.reject(err);
@@ -116,7 +119,7 @@ export async function postAltItemCode(filename:string, itemCode:string):Promise<
     }
 }
 
-export async function deleteAltItemCode(filename:string, itemCode: string):Promise<ProductImage|null> {
+export async function deleteAltItemCode(filename: string, itemCode: string): Promise<ProductImage | null> {
     try {
         if (!filename || !itemCode) {
             return Promise.reject(new Error('deleteAltItemCode(): missing filename or item code'));
@@ -124,9 +127,9 @@ export async function deleteAltItemCode(filename:string, itemCode: string):Promi
         const url = PATH_SET_ALT_ITEM_CODE
             .replace(':filename', encodeURIComponent(filename))
             .replace(':itemCode', encodeURIComponent(itemCode));
-        const {image} = await fetchJSON<{image: ProductImage|null}>(url, {method: 'delete'})
+        const {image} = await fetchJSON<{ image: ProductImage | null }>(url, {method: 'delete'})
         return image;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.debug("deleteAltItemCode()", err.message);
             return Promise.reject(err);
@@ -136,29 +139,32 @@ export async function deleteAltItemCode(filename:string, itemCode: string):Promi
     }
 }
 
-export async function putImageActiveAPI(filename:string, active:boolean):Promise<ProductImage|null> {
+export async function putImageActive(filename?: string, active?: boolean): Promise<ProductImage | null> {
     try {
+        if (!filename) {
+            return Promise.reject(new Error('Invalid filename: missing filename'));
+        }
         const url = '/api/images/products/:filename/:active'
             .replace(':filename', encodeURIComponent(filename))
             .replace(':active', encodeURIComponent(active ? 1 : 0));
-        const {image} = await fetchJSON<{image?:ProductImage}>(url, {method: 'put'});
+        const {image} = await fetchJSON<{ image?: ProductImage }>(url, {method: 'put'});
         return image || null;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
-            console.warn("putImageActiveAPI()", err.message);
+            console.warn("putImageActive()", err.message);
             return Promise.reject(err);
         }
-        console.warn("putImageActiveAPI()", err);
-        return Promise.reject(new Error('Error in putImageActiveAPI()'));
+        console.warn("putImageActive()", err);
+        return Promise.reject(new Error('Error in putImageActive()'));
     }
 }
 
-export async function deleteImage(filename: string):Promise<ProductImage[]> {
+export async function deleteImage(filename: string): Promise<ProductImage[]> {
     try {
         const url = PATH_DELETE_IMAGE.replace(':filename', encodeURIComponent(filename));
-        const {result} = await fetchJSON<{result: ProductImage[]}>(url, {method: 'delete'});
+        const {result} = await fetchJSON<{ result: ProductImage[] }>(url, {method: 'delete'});
         return result;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.warn("deleteImageAPI()", err.message);
             return Promise.reject(err);
@@ -185,14 +191,14 @@ export async function deleteImageTag(filename: string, tag: string): Promise<Pro
     }
 }
 
-export async function postTagImage(filename: string, tag:string):Promise<ProductImage> {
+export async function postTagImage(filename: string, tag: string): Promise<ProductImage> {
     try {
         const url = PATH_SET_TAG
             .replace(':filename', encodeURIComponent(filename))
             .replace(':tag', encodeURIComponent(tag));
         const {image} = await fetchJSON<{ image: ProductImage }>(url, {method: 'post'});
         return image
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.warn("postTagImage()", err.message);
             return Promise.reject(err);
@@ -202,13 +208,13 @@ export async function postTagImage(filename: string, tag:string):Promise<Product
     }
 }
 
-export async function postPreferredImage(filename: string, itemCode: string):Promise<ProductImage> {
+export async function postPreferredImage(filename: string, itemCode: string): Promise<ProductImage> {
     try {
         const url = PATH_SET_PREFERRED_ITEM.replace(':filename', encodeURIComponent(filename))
             .replace(':itemCode', itemCode);
-        const {image} = await fetchJSON<{image:ProductImage}>(url, {method: 'POST'});
+        const {image} = await fetchJSON<{ image: ProductImage }>(url, {method: 'POST'});
         return image;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             console.warn("setPreferredImage()", err.message);
             return Promise.reject(err);

@@ -1,5 +1,5 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {UserProfile, UserRole} from "chums-types/user";
+import {UserProfile, UserRole} from "chums-types";
 import {loadUser, toggleEditMode} from "./actions";
 import {RootState} from "../../app/configureStore";
 

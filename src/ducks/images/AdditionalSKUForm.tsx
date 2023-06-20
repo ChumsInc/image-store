@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useAppDispatch} from "../../app/hooks";
 import {removeAltItemCode, saveAltItemCode} from "./actions";
 import {ProductAltItemKey} from "../../types";
-import {ProductAltItem} from "chums-types/product-image";
+import {ProductAltItem} from "chums-types";
 import {useSelector} from "react-redux";
 import {selectCanEdit} from "../userProfile";
 
