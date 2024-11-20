@@ -4,6 +4,11 @@ import {EditableImage, ProductAltItemKey, SingleImage} from "../../types";
 import {ImageSize, ImageSizeList, ImageSizePath, ProductAltItem, ProductImage} from "chums-types";
 import {IMAGE_ALL_SIZES} from "./constants";
 
+export const defaultImageSort:SortProps<EditableImage> = {
+    field: 'filename',
+    ascending: true,
+}
+
 export const imageSort = (sort: SortProps<EditableImage>) => (a: EditableImage, b: EditableImage) => {
     const sortMod = sort.ascending ? 1 : -1;
     switch (sort.field) {

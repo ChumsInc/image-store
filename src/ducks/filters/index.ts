@@ -9,7 +9,7 @@ import {
     setProductCollection,
     setProductLine, setSearch, toggleFilterBar, toggleActiveImages
 } from "./actions";
-import {urlSearchParamsToFilter} from "./utils";
+import {sortBaseSKUs, sortCategories, sortCollections, sortProductLines, urlSearchParamsToFilter} from "./utils";
 
 export const invalidHashValue = '#N/A';
 
@@ -98,10 +98,10 @@ const filtersReducer = createReducer(initialFiltersState, (builder) => {
         })
         .addCase(loadFilters.fulfilled, (state, action) => {
             const {baseSKUs, categories, collections, productLines} = action.payload;
-            state.baseSKUs = baseSKUs || [];
-            state.categories = categories || [];
-            state.collections = collections || [];
-            state.productLines = productLines || [];
+            state.baseSKUs = baseSKUs.sort(sortBaseSKUs);
+            state.categories = categories.sort(sortCategories);
+            state.collections = collections.sort(sortCollections);
+            state.productLines = productLines.sort(sortProductLines);
 
             if (state.filter.baseSKU !== invalidHashValue) {
                 const [baseSKU] = baseSKUs.filter(sku => sku.Category4 === state.filter.baseSKU);

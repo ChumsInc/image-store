@@ -3,6 +3,7 @@ import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectImagesPerPage, setImagesPerPage} from "./index";
 import {RowsPerPage} from "chums-components";
+import {localStorageKeys, setPreference} from "../../api/preferences";
 
 const ImagesPerPage = () => {
     const dispatch = useAppDispatch();
@@ -11,6 +12,7 @@ const ImagesPerPage = () => {
     const selectId = useId();
 
     const changeHandler = (value:number) => {
+        setPreference(localStorageKeys.imagesPerPage, value);
         dispatch(setImagesPerPage(value));
     }
 

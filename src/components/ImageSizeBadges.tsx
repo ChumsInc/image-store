@@ -15,8 +15,12 @@ const ImageSizeBadges: React.FC<ImageSizeBadgedProps> = ({filename = '', sizes =
             {Object.keys(sizes)
                 .map(key => ({...sizes[key as ImageSizePath], key}))
                 .sort((a, b) => (a.width ?? 0) - (b.width ?? 0))
-                .map(size => <LinkBadge color="info" href={imagePath({path: size.key, filename})}
-                                        key={size.key}>{size.key}</LinkBadge>)}
+                .map(size => (
+                    <LinkBadge key={size.key} bg="info"
+                               href={imagePath({path: size.key, filename})}>
+                        {size.key}
+                    </LinkBadge>
+                ))}
         </div>
     );
 }

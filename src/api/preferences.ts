@@ -1,15 +1,16 @@
 const reLocal = /^local/;
 
 
-const sessionStoragePrefix:string = 'session/barcode-admin';
-const localStoragePrefix:string = 'local/barcode-admin';
+const sessionStoragePrefix:string = 'session/image-store';
+const localStoragePrefix:string = 'local/image-store';
 
 
 export const sessionStorageKeys = {
 };
 
 export const localStorageKeys = {
-    imagesPerPage: `${localStoragePrefix}/rowsPerPage`,
+    imagesPerPage: `${localStoragePrefix}/imagesPerPage`,
+    imageSize: `${localStoragePrefix}/imageSize`,
 }
 function getStorage(key:string):Storage {
     return reLocal.test(key) ? window.localStorage : window.sessionStorage;

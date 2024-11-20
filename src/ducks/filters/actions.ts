@@ -1,27 +1,31 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {BaseSKU, ProductCategory, ProductCollection, ProductLine} from "chums-types";
 import {fetchFilters} from "../../api/filters";
 import {LoadFiltersResult} from "../../types";
+import {RootState} from "../../app/configureStore";
+import {selectFiltersLoading} from "./selectors";
 
-export const typePrefix = `productFilters`;
-export const fetchFiltersPrefix = `${typePrefix}/fetchFilters`;
 
-export const setBaseSKU = createAction<string>(`${typePrefix}/set-filter/setBaseSKU`);
-export const setProductCategory = createAction<string>(`${typePrefix}/set-filter/setProductCategory`);
-export const setProductCollection = createAction<string>(`${typePrefix}/set-filter/setProductCollection`);
-export const setProductLine = createAction<string|null>(`${typePrefix}/set-filter/setProductLine`);
-export const toggleFeaturedImage = createAction<boolean | undefined>(`${typePrefix}/set-filter/toggleFeaturedImage`);
-export const toggleActiveProducts = createAction<boolean | undefined>(`${typePrefix}/set-filter/toggleActiveProducts`);
-export const toggleActiveImages = createAction<boolean | undefined>(`${typePrefix}/set-filter/toggleActiveImages`);
-export const toggleAssigned = createAction<boolean | undefined>(`${typePrefix}/set-filter/toggleAssigned`);
-export const toggleFilterBar = createAction<boolean|undefined>(`${typePrefix}/toggleFilterBar`);
-export const setSearch = createAction<string>(`${typePrefix}/set-filter/search`);
+export const setBaseSKU = createAction<string>(`filters/set-filter/setBaseSKU`);
+export const setProductCategory = createAction<string>(`filters/set-filter/setProductCategory`);
+export const setProductCollection = createAction<string>(`filters/set-filter/setProductCollection`);
+export const setProductLine = createAction<string | null>(`filters/set-filter/setProductLine`);
+export const toggleFeaturedImage = createAction<boolean | undefined>(`filters/set-filter/toggleFeaturedImage`);
+export const toggleActiveProducts = createAction<boolean | undefined>(`filters/set-filter/toggleActiveProducts`);
+export const toggleActiveImages = createAction<boolean | undefined>(`filters/set-filter/toggleActiveImages`);
+export const toggleAssigned = createAction<boolean | undefined>(`filters/set-filter/toggleAssigned`);
+export const toggleFilterBar = createAction<boolean | undefined>(`filters/toggleFilterBar`);
+export const setSearch = createAction<string>(`filters/set-filter/search`);
 //@TODO: set page to 1 on updating search.
 
-export const loadFilters = createAsyncThunk<LoadFiltersResult>(
-    fetchFiltersPrefix,
-    async (arg, thunkAPI) => {
-        const {baseSKUs = [], categories = [], collections = [], productLines = []} = await fetchFilters();
-        return {baseSKUs, categories, collections, productLines};
+export const loadFilters = createAsyncThunk<LoadFiltersResult, void, {state:RootState}>(
+    'filters/load',
+    async () => {
+        return await fetchFilters();
     },
+    {
+        condition: (arg, {getState}) => {
+            const state = getState();
+            return !selectFiltersLoading(state);
+        }
+    }
 );

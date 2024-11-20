@@ -6,10 +6,12 @@ import {isSavingReducer} from "./utils";
 
 export const selectImageList = (state:RootState) => state.images.list;
 export const selectCurrentImage = (state:RootState):EditableImage|null => state.images.current;
+export const selectCurrentLoading = (state:RootState) => state.images.current?.loading ?? false;
+export const selectCurrentSaving = (state:RootState) => state.images.current?.saving ?? false;
 export const selectSelectedImageSizes = (state:RootState):ImageSizeList => state.images.current?.sizes ?? {};
 export const selectSelectedImageTags = (state:RootState):string[] => state.images.current?.tags || [];
-export const selectImagesLoading = (state:RootState):boolean => state.images.loading || false;
-export const selectImagesLoaded = (state:RootState):boolean => state.images.loaded || false;
+export const selectImagesLoading = (state:RootState):boolean => state.images.loading;
+export const selectImagesLoaded = (state:RootState):boolean => state.images.loaded;
 export const selectIsPreferredImage = (state:RootState):boolean => state.images.current?.preferred_image || false;
 export const selectSelectedForAction = (state:RootState) => state.images.selected.list;
 export const selectMultipleSaving = (state:RootState) => state.images.selected.saving;

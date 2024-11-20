@@ -71,9 +71,6 @@ export const urlSearchParamsToFilter = (search: URLSearchParams | string): Produ
             params = new URLSearchParams(hashedParams);
         } catch (err: unknown) {
             params.set('baseSKU', invalidHashValue);
-            // params.set('category', invalidHashValue);
-            // params.set('collection', invalidHashValue);
-            // params.set('productLine', invalidHashValue);
             if (err instanceof Error) {
                 console.warn("urlSearchParamsToFilter()", err.message);
             }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Badge, BadgeProps} from "chums-components";
+import {Badge, BadgeProps} from "react-bootstrap";
 
 
 export interface LinkBadgeProps extends BadgeProps {
@@ -7,16 +7,13 @@ export interface LinkBadgeProps extends BadgeProps {
 }
 
 const LinkBadge = ({href, ...badgeProps}: LinkBadgeProps) => {
-
-    if (!href) {
+    if (href) {
         return (
-            <Badge {...badgeProps} />
+            <Badge as="a" href={href} {...badgeProps} />
         )
     }
     return (
-        <a href={href}>
-            <Badge {...badgeProps} />
-        </a>
+        <Badge as="span" {...badgeProps} />
     )
 }
 

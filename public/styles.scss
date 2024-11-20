@@ -22,7 +22,7 @@
   .click-copy {
     &:hover {
       cursor: pointer;
-      color: black;
+      color: var(--bs-body-color);
     }
   }
 }

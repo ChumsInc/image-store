@@ -2,12 +2,13 @@ import React, {useEffect} from 'react';
 import {useSelector} from "react-redux";
 import {selectShowSelectedImageActions} from "../ducks/images/selectors";
 import {useAppDispatch} from "./hooks";
-import FilterBar from "../ducks/filters/FilterBar";
-import ImageList from "../ducks/images/ImageList";
-import SelectedImage from "../ducks/images/SelectedImage";
-import MultipleSelectedImages from "../ducks/images/MultipleSelectedImages";
-import AlertList from "../ducks/alerts/AlertList";
+import FilterBar from "../ducks/filters/components/FilterBar";
+import ImageList from "../ducks/images/components/list/ImageList";
+import SelectedImage from "../ducks/images/components/current-image/SelectedImage";
+import MultipleSelectedImages from "../ducks/images/components/mutiple-images/MultipleSelectedImages";
+import AlertList from "../ducks/alerts/components/AlertList";
 
+//@TODO: Migrate public/styles into app styles
 
 const App = () => {
     const dispatch = useAppDispatch();

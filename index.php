@@ -1,5 +1,7 @@
 <?php
 
+use chums\ui\CSSOptions;
+use chums\ui\WebUI2;
 
 /**
  * @package Chums
@@ -8,16 +10,14 @@
  * @copyright Copyright &copy; 2013, steve
  */
 
-require_once ("autoload.inc.php");
-require_once 'access.inc.php';
+require_once("autoload.inc.php");
 
-$bodyPath = "apps/image-store";
-$title = "Image Repository";
-$description = "";
-
-$ui = new WebUI($bodyPath, $title, $description, false, 5);
-$ui->version = "2020.01.02";
-$ui->bodyClassName = 'container-fluid';
-$ui->AddCSS("public/styles.css");
-$ui->addManifest('public/js/manifest.json');
-$ui->Send();
+$ui = new WebUI2([
+    'requireLogin' => false,
+    'bodyClassName' => 'container-fluid',
+    'title' => 'Image Repository',
+    'contentFile' => 'body.inc.php',
+]);
+$ui->addCSS('public/styles.css', CSSOptions::parse(['useTimestampVersion' => true]))
+    ->addManifestJSON('public/js/manifest.json')
+    ->render();

@@ -3,6 +3,7 @@ import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectImagePath, setImagePath} from "./index";
 import {ImageSizePath} from "chums-types";
+import {localStorageKeys, setPreference} from "../../api/preferences";
 
 
 export const IMAGE_PATHS = ['80', '125', '250', '400'];
@@ -14,6 +15,7 @@ const ImagesSize = () => {
     const selectId = useId();
 
     const changeHandler = (ev: ChangeEvent<HTMLSelectElement>) => {
+        setPreference(localStorageKeys.imageSize, '250');
         dispatch(setImagePath(ev.target.value as ImageSizePath));
     }
 

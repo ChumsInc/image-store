@@ -1,29 +1,20 @@
 import {EditableImage} from "../../types";
 import {createReducer} from "@reduxjs/toolkit";
 import {
+    addAdditionalImage,
     clearAdditionalImages,
-    loadImages, removeAltItemCode,
+    loadImages,
+    removeAltItemCode,
     removeImage,
     saveAltItemCode,
     saveImage,
-    selectAdditionalImage,
-    setCurrentImage, setImageActive,
+    setCurrentImage,
+    setImageActive,
     tagImage
 } from "./actions";
-import {imageSort, isSavingReducer} from "./utils";
-import {SortProps} from "chums-components";
+import {defaultImageSort, imageSort, isSavingReducer} from "./utils";
+import {ImagesState} from "./types";
 
-export interface ImagesState {
-    list: EditableImage[],
-    loading: boolean;
-    loaded: boolean;
-    current: EditableImage | null;
-    sort: SortProps<EditableImage>;
-    selected: {
-        list: EditableImage[];
-        saving: boolean;
-    };
-}
 
 export const initialImagesState: ImagesState = {
     list: [],
@@ -47,6 +38,7 @@ const listReducer = (list: EditableImage[], filename?: string, image?: EditableI
     return newList;
 }
 
+
 const imagesReducer = createReducer(initialImagesState, (builder) => {
     builder
         .addCase(loadImages.pending, (state, action) => {
@@ -55,7 +47,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
         .addCase(loadImages.fulfilled, (state, action) => {
             state.loading = false;
             state.loaded = true;
-            state.list = action.payload.sort(imageSort(state.sort));
+            state.list = action.payload.sort(imageSort(defaultImageSort));
         })
         .addCase(loadImages.rejected, (state) => {
             state.loading = false;
@@ -70,14 +62,15 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
         .addCase(setCurrentImage.fulfilled, (state, action) => {
             state.current = action.payload;
             state.list = listReducer(state.list, action.payload?.filename, action.payload)
-                .sort(imageSort(state.sort));
+                .sort(imageSort(defaultImageSort));
         })
-        .addCase(selectAdditionalImage, (state, action) => {
+        .addCase(addAdditionalImage, (state, action) => {
             if (state.selected.list.map(img => img.filename).includes(action.payload.filename)) {
                 state.selected.list = state.selected.list.filter(img => img.filename !== action.payload.filename);
             } else {
                 state.selected.list.push(action.payload);
             }
+            state.selected.list.sort(imageSort(defaultImageSort))
         })
         .addCase(clearAdditionalImages, (state) => {
             state.selected.list = [];
@@ -111,7 +104,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, {
                     ...image,
                     saving: true
-                }).sort(imageSort(state.sort));
+                }).sort(imageSort(defaultImageSort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
 
@@ -122,7 +115,8 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
             }
             if (state.selected.list.map(img => img.filename).includes(action.meta.arg.filename)) {
                 const [image] = state.selected.list.filter(img => img.filename === action.meta.arg.filename);
-                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, action.payload).sort(imageSort(state.sort));
+                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, action.payload)
+                    .sort(imageSort(defaultImageSort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
             state.list = listReducer(state.list, action.meta.arg.filename, action.payload);
@@ -136,7 +130,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, {
                     ...image,
                     saving: false
-                }).sort(imageSort(state.sort));
+                }).sort(imageSort(defaultImageSort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
         })
@@ -149,7 +143,8 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
             if (state.current && state.current.filename === action.meta.arg.filename) {
                 state.current = action.payload;
             }
-            state.list = listReducer(state.list, action.meta.arg.filename, action.payload);
+            state.list = listReducer(state.list, action.meta.arg.filename, action.payload)
+                .sort(imageSort(defaultImageSort));
         })
         .addCase(removeAltItemCode.rejected, (state) => {
             if (state.current) {
@@ -165,7 +160,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, {
                     ...image,
                     saving: true
-                }).sort(imageSort(state.sort));
+                }).sort(imageSort(defaultImageSort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
         })
@@ -174,10 +169,11 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.current = action.payload;
             }
             if (state.selected.list.map(img => img.filename).includes(action.meta.arg.filename)) {
-                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, action.payload).sort(imageSort(state.sort));
+                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, action.payload)
+                    .sort(imageSort(defaultImageSort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
-            state.list = listReducer(state.list, action.meta.arg.filename, action.payload).sort(imageSort(state.sort));
+            state.list = listReducer(state.list, action.meta.arg.filename, action.payload).sort(imageSort(defaultImageSort));
         })
         .addCase(tagImage.rejected, (state, action) => {
             if (state.current && state.current.filename === action.meta.arg.filename) {
@@ -188,7 +184,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, {
                     ...image,
                     saving: false
-                }).sort(imageSort(state.sort));
+                }).sort(imageSort(defaultImageSort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
         })
@@ -220,7 +216,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, {
                     ...image,
                     saving: true
-                }).sort(imageSort(state.sort));
+                }).sort(imageSort(defaultImageSort));
             }
         })
         .addCase(setImageActive.rejected, (state, action) => {
@@ -235,7 +231,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, {
                     ...image,
                     saving: false
-                }).sort(imageSort(state.sort));
+                }).sort(imageSort(defaultImageSort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
         })
@@ -247,10 +243,11 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.current = action.payload;
             }
             if (state.selected.list.map(img => img.filename).includes(action.meta.arg.filename)) {
-                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, action.payload).sort(imageSort(state.sort));
+                state.selected.list = listReducer(state.selected.list, action.meta.arg.filename, action.payload)
+                    .sort(imageSort(defaultImageSort));
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
-            state.list = listReducer(state.list, action.meta.arg.filename, action.payload).sort(imageSort(state.sort));
+            state.list = listReducer(state.list, action.meta.arg.filename, action.payload).sort(imageSort(defaultImageSort));
         })
 });
 

@@ -17,8 +17,8 @@ export async function fetchUser(): Promise<FetchUserResponse> {
             return {profile: null, roles: []};
         }
 
-        const {user, roles} = await res.json() as ProfileResponse;
-        return {profile: user || null, roles: roles || []}
+        const json = await res.json() as ProfileResponse;
+        return {profile: json?.user ?? null, roles: json?.roles ?? []}
     } catch (err: unknown) {
         if (err instanceof Error) {
             return Promise.reject(err);
