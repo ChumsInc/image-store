@@ -1,21 +1,22 @@
 import React, {ChangeEvent, useId} from 'react';
-import {useAppDispatch} from "../../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectFilter} from "../selectors";
 import FormCheck from 'react-bootstrap/FormCheck'
-import {toggleActiveProducts, toggleAssigned} from "../actions";
+import {selectShowUnassigned} from "../../images/selectors";
+import {useAppDispatch} from "../../../app/hooks";
+import {toggleFilterUnassigned} from "../../images/actions";
 
 const UnassignedImageFilter = () => {
     const dispatch = useAppDispatch();
-    const {assigned} = useSelector(selectFilter);
+    const showUnassigned = useSelector(selectShowUnassigned);
     const id = useId();
 
-    const changeHandler = (ev:ChangeEvent<HTMLInputElement>) => {
-        dispatch(toggleAssigned(ev.target.checked))
+    const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
+        dispatch(toggleFilterUnassigned(ev.target.checked))
     }
+
     return (
-        <FormCheck type={"checkbox"} label={"Show Unassigned Images"} id={id}
-                   checked={!assigned} onChange={changeHandler} />
+        <FormCheck type={"checkbox"} label={"Only Unassigned Images"} id={id}
+                   checked={showUnassigned} onChange={changeHandler}/>
     )
 }
 

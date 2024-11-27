@@ -2,12 +2,13 @@ import {BaseSKU, BaseSKUSearch, ProductCategory, ProductCollection, ProductLine}
 import {createReducer} from "@reduxjs/toolkit";
 import {
     loadFilters,
-    toggleActiveProducts, toggleAssigned,
+    toggleInactiveProducts,
     setBaseSKU,
     toggleFeaturedImage,
     setProductCategory,
     setProductCollection,
-    setProductLine, setSearch, toggleFilterBar, toggleActiveImages
+    setProductLine,
+    toggleFilterBar, toggleInactiveImages, setFiltersFromSearchParams
 } from "./actions";
 import {sortBaseSKUs, sortCategories, sortCollections, sortProductLines, urlSearchParamsToFilter} from "./utils";
 
@@ -19,11 +20,10 @@ export interface ProductFilter {
     collection: string | null;
     productLine: string | null;
     preferredImage: boolean;
-    assigned?: boolean;
-    activeProducts?: boolean;
-    activeImages?: boolean;
-    search: string;
+    inactiveProducts?: boolean;
+    inactiveImages?: boolean;
 }
+
 
 export type ProductFilterKey = keyof ProductFilter;
 
@@ -38,21 +38,7 @@ interface FiltersState {
     filter: ProductFilter;
 }
 
-const urlFilter:ProductFilter = urlSearchParamsToFilter(window.location.search);
-
-export const initialFilter:ProductFilter = {
-    baseSKU: urlFilter.baseSKU ?? null,
-    category: urlFilter.category ?? null,
-    collection: urlFilter.collection ?? null,
-    productLine: urlFilter.productLine ?? null,
-    preferredImage: urlFilter.preferredImage ?? false,
-    assigned: true,
-    activeProducts: true,
-    activeImages: true,
-    search: urlFilter.search ?? '',
-}
-
-export const initialFiltersState: FiltersState = {
+export const initialFiltersState = ():FiltersState => ({
     baseSKUs: [],
     categories: [],
     collections: [],
@@ -60,8 +46,8 @@ export const initialFiltersState: FiltersState = {
     loading: false,
     loaded: false,
     showFilterBar: true,
-    filter: {...initialFilter},
-}
+    filter: urlSearchParamsToFilter()
+})
 
 
 const filtersReducer = createReducer(initialFiltersState, (builder) => {
@@ -84,14 +70,11 @@ const filtersReducer = createReducer(initialFiltersState, (builder) => {
         .addCase(toggleFeaturedImage, (state, action) => {
             state.filter.preferredImage = action.payload ?? !state.filter.preferredImage;
         })
-        .addCase(toggleActiveProducts, (state, action) => {
-            state.filter.activeProducts = action.payload ?? !state.filter.activeProducts;
+        .addCase(toggleInactiveProducts, (state, action) => {
+            state.filter.inactiveProducts = action.payload ?? !state.filter.inactiveProducts;
         })
-        .addCase(toggleActiveImages, (state, action) => {
-            state.filter.activeImages = action.payload ?? !state.filter.activeImages;
-        })
-        .addCase(toggleAssigned, (state, action) => {
-            state.filter.assigned = action.payload ?? !state.filter.assigned;
+        .addCase(toggleInactiveImages, (state, action) => {
+            state.filter.inactiveImages = action.payload ?? !state.filter.inactiveImages;
         })
         .addCase(loadFilters.pending, (state) => {
             state.loading = true;
@@ -126,9 +109,9 @@ const filtersReducer = createReducer(initialFiltersState, (builder) => {
         .addCase(loadFilters.rejected, (state, action) => {
             state.loading = false;
         })
-        .addCase(setSearch, (state, action) => {
-            state.filter.search = action.payload;
-        });
+        .addCase(setFiltersFromSearchParams, (state, action) => {
+            state.filter = action.payload;
+        })
 })
 
 export default filtersReducer;

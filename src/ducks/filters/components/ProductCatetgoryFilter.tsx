@@ -1,21 +1,27 @@
 import React, {ChangeEvent} from 'react';
-import {useAppDispatch} from "../../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectCategories, selectFilter, selectProductLines} from "../selectors";
-import {sortCategories, sortProductLines} from "../utils";
-import {setProductCategory, setProductLine} from "../actions";
+import {selectCategories, selectFilter} from "../selectors";
+import {sortCategories} from "../utils";
+import {useSearchParams} from "react-router";
 
 const ProductCategoryFilter = () => {
-    const dispatch = useAppDispatch();
+    const [searchParams, setSearchParams] = useSearchParams()
     const categories = useSelector(selectCategories);
     const {category} = useSelector(selectFilter);
 
-    const changeHandler = (ev:ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setProductCategory(ev.target.value));
+    const changeHandler = (ev: ChangeEvent<HTMLSelectElement>) => {
+        setSearchParams((prev) => {
+            if (ev.target.value) {
+                prev.set('cat', ev.target.value);
+            } else {
+                prev.delete('cat');
+            }
+            return prev;
+        })
     }
 
     return (
-        <div>
+        <div className="mb-3">
             <label className="form-label">Product Category</label>
             <select className="form-select form-select-sm" value={category ?? ''} onChange={changeHandler}>
                 <option value="">All</option>

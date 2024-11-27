@@ -8,6 +8,4 @@ export const selectFiltersLoading = (state:RootState) => state.filters.loading;
 export const selectFiltersLoaded = (state:RootState) => state.filters.loaded;
 export const selectFilter = (state:RootState) => state.filters.filter;
 export const selectShowFilterBar = (state:RootState) => state.filters.showFilterBar;
-export const selectSearch = (state:RootState) => state.filters.filter.search;
-export const selectAssigned = (state:RootState) => state.filters.filter.assigned;
 export const selectFilterPreferredImages = (state:RootState) => state.filters.filter.preferredImage;

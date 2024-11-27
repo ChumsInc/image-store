@@ -6,7 +6,7 @@ import {selectFiltersLoaded, selectFiltersLoading, selectShowFilterBar} from "..
 import {loadFilters, toggleFilterBar} from "../actions";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ProductLineFilter from "./ProductLineFilter";
-import {selectCanEdit, selectIsUser, selectUserIsLoaded, selectUserIsLoading} from "../../userProfile";
+import {selectIsUser, selectUserIsLoaded, selectUserIsLoading} from "../../userProfile";
 import {loadUser} from "../../userProfile/actions";
 import ProductCategoryFilter from "./ProductCatetgoryFilter";
 import ProductBaseSKUFilter from "./ProductBaseSKUFilter";
@@ -17,7 +17,7 @@ import UnassignedImageFilter from "./UnassignedImageFilter";
 import ToggleEditMode from "../../userProfile/ToggleEditMode";
 import ShowItemCodeToggle from "../../settings/ShowItemCodeToggle";
 import InactiveImageFilter from "./InactiveImageFilter";
-import {Button, NavbarToggle} from "react-bootstrap";
+import {NavbarToggle} from "react-bootstrap";
 
 
 const FilterBar = () => {
@@ -27,7 +27,6 @@ const FilterBar = () => {
     const [inTransition, setInTransition] = useState(false);
     const [timer, setTimer] = useState(0);
     const isUser = useSelector(selectIsUser);
-    const canEdit = useSelector(selectCanEdit);
     const userLoading = useSelector(selectUserIsLoading);
     const userLoaded = useSelector(selectUserIsLoaded);
     const filtersLoading = useSelector(selectFiltersLoading);
@@ -69,12 +68,14 @@ const FilterBar = () => {
         'drawer--open': showFilterBar,
         'drawer--in-transition': inTransition
     });
+
     if (!isUser) {
         return null;
     }
+
     return (
         <aside className={asideClassName}>
-            <NavbarToggle onClick={toggleFilterBarHandler} />
+            <NavbarToggle onClick={toggleFilterBarHandler}/>
             <div className="form" style={{visibility: showFilterBar ? 'visible' : 'hidden'}}>
                 <hr/>
                 <h4>Filters</h4>
@@ -82,14 +83,14 @@ const FilterBar = () => {
                 <ProductCategoryFilter/>
                 <ProductBaseSKUFilter/>
                 <ProductCollectionFilter/>
-                <hr/>
-                <h4>Options</h4>
                 <PreferredImageFilter/>
-                <UnassignedImageFilter/>
                 <InactiveProductFilter/>
                 <InactiveImageFilter/>
-                <ToggleEditMode />
-                <ShowItemCodeToggle />
+                <hr/>
+                <h4>Options</h4>
+                <UnassignedImageFilter/>
+                <ToggleEditMode/>
+                <ShowItemCodeToggle/>
             </div>
         </aside>
     )

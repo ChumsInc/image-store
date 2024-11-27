@@ -9,12 +9,17 @@ import {
     saveAltItemCode,
     saveImage,
     setCurrentImage,
-    setImageActive,
-    tagImage
+    setImageActive, setSearch,
+    tagImage, toggleFilterUnassigned
 } from "./actions";
 import {defaultImageSort, imageSort, isSavingReducer} from "./utils";
 import {ImagesState} from "./types";
 
+
+export interface ImageListFilter {
+    showUnassigned: boolean;
+    search: string;
+}
 
 export const initialImagesState: ImagesState = {
     list: [],
@@ -25,6 +30,10 @@ export const initialImagesState: ImagesState = {
     selected: {
         list: [],
         saving: false,
+    },
+    filter: {
+        showUnassigned: false,
+        search: "",
     }
 }
 
@@ -248,6 +257,12 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.selected.saving = state.selected.list.reduce(isSavingReducer, false);
             }
             state.list = listReducer(state.list, action.meta.arg.filename, action.payload).sort(imageSort(defaultImageSort));
+        })
+        .addCase(setSearch, (state, action) => {
+            state.filter.search = action.payload;
+        })
+        .addCase(toggleFilterUnassigned, (state, action) => {
+            state.filter.showUnassigned = action.payload ?? !state.filter.showUnassigned;
         })
 });
 

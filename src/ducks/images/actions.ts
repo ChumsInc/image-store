@@ -130,3 +130,6 @@ export const setImageActive = createAsyncThunk<ProductImage|null, Partial<Produc
         }
     }
 )
+
+export const setSearch = createAction<string>(`images/filters/search`);
+export const toggleFilterUnassigned = createAction<boolean | undefined>(`images/filter/toggleFilterUnassigned`);

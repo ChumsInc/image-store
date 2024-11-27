@@ -2,7 +2,6 @@ import {BaseSKUSearch, ProductCategory, ProductCollection, ProductLine} from "ch
 import {invalidHashValue, ProductFilter, ProductFilterKey} from "./index";
 import base64 from 'base-64';
 
-const getKeys = <T extends {}>(o: T): Array<keyof T> => <Array<keyof T>>Object.keys(o)
 
 export const sortProductLines = (a: ProductLine, b: ProductLine) => {
     return a.ProductLineDesc.toLowerCase() === b.ProductLineDesc.toLowerCase()
@@ -22,76 +21,17 @@ export const sortCollections = (a: ProductCollection, b: ProductCollection) => {
     return a.Category3.toLowerCase() > b.Category3.toLowerCase() ? 1 : -1;
 }
 
-export const filterToURLSearchParams = (filter: ProductFilter): URLSearchParams => {
-    function searchValue(value: string | null | boolean): string {
-        switch (typeof value) {
-            case 'boolean':
-                return value ? '1' : '0';
-            default:
-                return value ?? '';
-        }
-
+export const urlSearchParamsToFilter = (params?: URLSearchParams): ProductFilter => {
+    if (!params) {
+        params = new URLSearchParams(window.location.search);
     }
-
-    const search = new URLSearchParams();
-    getKeys<ProductFilter>(filter).map(key => {
-        if (['active', 'assigned'].includes(key)) {
-            return;
-        }
-        let val = filter[key as unknown as ProductFilterKey];
-        if (val) {
-            search.set(key, searchValue(val));
-        }
-    });
-    const hashed = new URLSearchParams();
-    hashed.set('filter', base64.encode(search.toString()));
-    return hashed;
-}
-
-
-export const urlSearchParamsToFilter = (search: URLSearchParams | string): ProductFilter => {
-    function fromSearchValue(key: ProductFilterKey, value: string | null): string | boolean | null {
-        switch (key) {
-            case 'search':
-                return value;
-            case 'preferredImage':
-            case 'activeProducts':
-            case 'assigned':
-                return value === '1';
-            default:
-                return value || null;
-        }
+    return {
+        baseSKU: params.get('baseSKU'),
+        category: params.get('cat'),
+        collection: params.get('collection'),
+        productLine: params.get('pl'),
+        preferredImage: params.get('preferredImage') === '1',
+        inactiveProducts: params.get('inactiveProducts') === '1',
+        inactiveImages: params.get('inactiveImages') === '1',
     }
-
-    let params = new URLSearchParams(search);
-    const filterHash = params.get('filter');
-    if (filterHash) {
-        try {
-            const hashedParams = base64.decode(filterHash);
-            params = new URLSearchParams(hashedParams);
-        } catch (err: unknown) {
-            params.set('baseSKU', invalidHashValue);
-            if (err instanceof Error) {
-                console.warn("urlSearchParamsToFilter()", err.message);
-            }
-        }
-    }
-    const filter: ProductFilter = {
-        baseSKU: null,
-        category: null,
-        collection: null,
-        productLine: null,
-        preferredImage: false,
-        assigned: true,
-        activeProducts: true,
-        search: '',
-    };
-    getKeys<ProductFilter>(filter).forEach(key => {
-        if (key) {
-            const val = params.get(key) ?? null;
-            // @ts-ignore
-            filter[key] = fromSearchValue(key, val);
-        }
-    });
-    return filter;
 }

@@ -25,15 +25,16 @@ export async function fetchImages(filter: ProductFilter): Promise<ProductImage[]
         if (filter.productLine) {
             params.set('productLine', filter.productLine);
         }
-        if (filter.activeProducts) {
-            params.set('active', filter.activeProducts ? '1' : '0');
+        if (!filter.inactiveProducts) {
+            params.set('active', '1');
         }
-        if (filter.activeImages) {
-            params.set('activeImages', filter.activeImages ? '1' : '0');
+        if (!filter.inactiveImages) {
+            params.set('activeImages', '1');
         }
         if (filter.preferredImage) {
-            params.set('preferred', filter.preferredImage ? '1' : '0');
+            params.set('preferred', '1');
         }
+        console.log(params.toString());
         const url = `${PATH_FETCH_IMAGES}?${params.toString()}`;
         const res = await fetchJSON<{ images: ProductImage[] }>(url);
         return res?.images ?? [];

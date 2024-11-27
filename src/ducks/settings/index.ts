@@ -2,7 +2,7 @@ import {getPreference, localStorageKeys} from "../../api/preferences";
 import {createAction, createReducer} from "@reduxjs/toolkit";
 import {RootState} from "../../app/configureStore";
 import {ImageSizePath} from "chums-types";
-import {setSearch} from "../filters/actions";
+import {setSearch, toggleFilterUnassigned} from "../images/actions";
 
 export interface SettingsState {
     imagesPerPage: number;
@@ -31,6 +31,9 @@ export const selectShowItemCode = (state: RootState) => state.settings.showItemC
 const settingsReducer = createReducer(initialSettingsState, (builder) => {
     builder
         .addCase(setSearch, (state) => {
+            state.page = 0;
+        })
+        .addCase(toggleFilterUnassigned, (state) => {
             state.page = 0;
         })
         .addCase(setImagesPerPage, (state, action) => {

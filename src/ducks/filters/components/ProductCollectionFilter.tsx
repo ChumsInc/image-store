@@ -1,21 +1,27 @@
 import React, {ChangeEvent} from 'react';
-import {useAppDispatch} from "../../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectBaseSKUs, selectCategories, selectCollections, selectFilter, selectProductLines} from "../selectors";
-import {sortBaseSKUs, sortCategories, sortCollections, sortProductLines} from "../utils";
-import {setBaseSKU, setProductCategory, setProductCollection, setProductLine} from "../actions";
+import {selectCollections, selectFilter} from "../selectors";
+import {sortCollections} from "../utils";
+import {useSearchParams} from "react-router";
 
 const ProductCollectionFilter = () => {
-    const dispatch = useAppDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
     const list = useSelector(selectCollections);
     const {collection} = useSelector(selectFilter);
 
-    const changeHandler = (ev:ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setProductCollection(ev.target.value));
+    const changeHandler = (ev: ChangeEvent<HTMLSelectElement>) => {
+        setSearchParams((prev) => {
+            if (ev.target.value) {
+                prev.set('collection', ev.target.value);
+            } else {
+                prev.delete('collection')
+            }
+            return prev;
+        })
     }
 
     return (
-        <div>
+        <div className="mb-3">
             <label className="form-label">Collection</label>
             <select className="form-select form-select-sm" value={collection ?? ''} onChange={changeHandler}>
                 <option value="">All</option>

@@ -8,7 +8,7 @@ import alertsReducer, {initialAlertsState} from "../ducks/alerts";
 
 const preloadedState = {
     alerts: initialAlertsState,
-    filters: initialFiltersState,
+    filters: initialFiltersState(),
     images: initialImagesState,
     settings: initialSettingsState,
     userProfile: initialUserProfileState,

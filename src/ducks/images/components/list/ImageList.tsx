@@ -13,9 +13,6 @@ const ImageList = () => {
     const page = useSelector(selectPage);
     const imagesPerPage = useSelector(selectImagesPerPage);
 
-    const first = page * imagesPerPage;
-    const last = first + imagesPerPage;
-
     return (
         <div>
             <ImageControlBar/>
@@ -28,7 +25,7 @@ const ImageList = () => {
             )}
             <div id="preview-images">
                 {images
-                    .slice(first, last)
+                    .slice(page * imagesPerPage, page * imagesPerPage + imagesPerPage)
                     .map((img, index) => <ImagePreview key={index} image={img}/>)}
             </div>
 

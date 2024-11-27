@@ -3,6 +3,8 @@ import {fetchFilters} from "../../api/filters";
 import {LoadFiltersResult} from "../../types";
 import {RootState} from "../../app/configureStore";
 import {selectFiltersLoading} from "./selectors";
+import {ProductFilter} from "./index";
+import {urlSearchParamsToFilter} from "./utils";
 
 
 export const setBaseSKU = createAction<string>(`filters/set-filter/setBaseSKU`);
@@ -10,14 +12,19 @@ export const setProductCategory = createAction<string>(`filters/set-filter/setPr
 export const setProductCollection = createAction<string>(`filters/set-filter/setProductCollection`);
 export const setProductLine = createAction<string | null>(`filters/set-filter/setProductLine`);
 export const toggleFeaturedImage = createAction<boolean | undefined>(`filters/set-filter/toggleFeaturedImage`);
-export const toggleActiveProducts = createAction<boolean | undefined>(`filters/set-filter/toggleActiveProducts`);
-export const toggleActiveImages = createAction<boolean | undefined>(`filters/set-filter/toggleActiveImages`);
-export const toggleAssigned = createAction<boolean | undefined>(`filters/set-filter/toggleAssigned`);
+export const toggleInactiveProducts = createAction<boolean | undefined>(`filters/set-filter/toggleInactiveProducts`);
+export const toggleInactiveImages = createAction<boolean | undefined>(`filters/set-filter/toggleInactiveImages`);
 export const toggleFilterBar = createAction<boolean | undefined>(`filters/toggleFilterBar`);
-export const setSearch = createAction<string>(`filters/set-filter/search`);
+
+
+export const setFiltersFromSearchParams = createAction('filters/set-filter', (params: URLSearchParams) => {
+    return {
+        payload: urlSearchParamsToFilter(params)
+    }
+})
 //@TODO: set page to 1 on updating search.
 
-export const loadFilters = createAsyncThunk<LoadFiltersResult, void, {state:RootState}>(
+export const loadFilters = createAsyncThunk<LoadFiltersResult, void, { state: RootState }>(
     'filters/load',
     async () => {
         return await fetchFilters();

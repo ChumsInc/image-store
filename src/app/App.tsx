@@ -7,16 +7,21 @@ import ImageList from "../ducks/images/components/list/ImageList";
 import SelectedImage from "../ducks/images/components/current-image/SelectedImage";
 import MultipleSelectedImages from "../ducks/images/components/mutiple-images/MultipleSelectedImages";
 import AlertList from "../ducks/alerts/components/AlertList";
+import {useSearchParams} from "react-router";
+import {setFiltersFromSearchParams} from "../ducks/filters/actions";
 
 //@TODO: Migrate public/styles into app styles
 
 const App = () => {
     const dispatch = useAppDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
     const showSelectedImageActions = useSelector(selectShowSelectedImageActions);
 
     useEffect(() => {
-        // dispatch(fetchImages())
-    }, []);
+        console.log(searchParams.toString());
+        dispatch(setFiltersFromSearchParams(searchParams));
+    }, [searchParams]);
+
 
     return (
         <div>
