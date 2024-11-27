@@ -7,7 +7,7 @@ import {selectFilter} from "../../../filters/selectors";
 import ImagesPerPage from "../../../settings/ImagesPerPage";
 import ImagesSize from "../../../settings/ImagesSize";
 import ImagePaginator from "../../../settings/ImagePaginator";
-import {useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router";
 import {ProductFilter} from "../../../filters";
 import {filterToURLSearchParams} from "../../../filters/utils";
 import {Button, Col, Row} from "react-bootstrap";

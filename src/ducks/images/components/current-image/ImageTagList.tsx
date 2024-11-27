@@ -51,7 +51,7 @@ const ImageTagList: React.FC = () => {
                 </InputGroup>
             )}
             {canEdit && (
-                <div className="d-flex justify-content-start gap-1">
+                <div className="d-flex justify-content-start gap-1 flex-wrap">
                     {current.tags.map(tag => (
                         <ButtonGroup key={tag} size="sm">
                             <Button type="button" variant="secondary" size="sm" disabled>{tag}</Button>
