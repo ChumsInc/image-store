@@ -35,6 +35,7 @@ const currentImageSlice = createSlice({
             .addCase(loadImages.fulfilled, (state, action) => {
                 const [current] = action.payload.filter(img => img.filename === state.current?.filename);
                 state.current = current ?? null;
+                state.filename = current?.filename ?? null;
             })
             .addCase(loadImage.pending, (state, action) => {
                 if (state.filename !== action.meta.arg) {
