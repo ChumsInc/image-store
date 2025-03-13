@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../selectors";
+import {selectCurrentImage} from "../../currentImageSlice";
 import {Badge, Button, ButtonGroup, FormControl, InputGroup} from "react-bootstrap";
 import {tagImage} from "../../actions";
 import {useAppDispatch} from "../../../../app/hooks";

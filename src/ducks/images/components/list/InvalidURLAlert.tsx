@@ -1,9 +1,9 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {selectFilter} from "../../../filters/selectors";
-import {invalidHashValue} from "../../../filters";
+import {selectFilter} from "@/ducks/filters/filtersSlice";
+import {invalidHashValue} from "@/ducks/filters";
 import {Alert} from "react-bootstrap";
-import {useAppDispatch} from "../../../../app/hooks";
+import {useAppDispatch} from "@/app/hooks";
 
 const InvalidURLAlert = () => {
     const dispatch = useAppDispatch();

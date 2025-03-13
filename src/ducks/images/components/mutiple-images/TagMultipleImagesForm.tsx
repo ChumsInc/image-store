@@ -1,10 +1,9 @@
 import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
 import {useAppDispatch} from "../../../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectMultipleSaving, selectSelectedForAction} from "../../selectors";
+import {selectMultipleSaving, selectSelectedForAction} from "../../selectedImagesSlice";
 import {selectCanEdit} from "../../../userProfile";
 import {tagImage} from "../../actions";
-import {LoadingProgressBar} from "chums-components";
 import ImageTagBadges from "../../../../components/ImageTagBadges";
 import {Button, FormControl, InputGroup, ProgressBar} from "react-bootstrap";
 
@@ -33,7 +32,7 @@ const TagMultipleImagesForm = () => {
     }, [saving]);
 
     useEffect(() => {
-        let _tags:string[] = [];
+        let _tags: string[] = [];
         const tags = images.reduce((tags, image) => {
             image.tags.forEach(tag => {
                 if (!tags.includes(tag)) {
@@ -71,7 +70,7 @@ const TagMultipleImagesForm = () => {
                         <span className="bi-tag" aria-hidden/>
                     </InputGroup.Text>
                     <FormControl type="text" size="sm" value={tag} disabled={saving || savePending}
-                           onChange={onChangeTag}/>
+                                 onChange={onChangeTag}/>
                     <Button type="submit" variant="secondary" disabled={saving || savePending} aria-label="Save">
                         <span className="bi-plus" aria-hidden/>
                     </Button>

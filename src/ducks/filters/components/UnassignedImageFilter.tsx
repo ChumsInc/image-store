@@ -1,17 +1,16 @@
 import React, {ChangeEvent, useId} from 'react';
 import {useSelector} from "react-redux";
 import FormCheck from 'react-bootstrap/FormCheck'
-import {selectShowUnassigned} from "../../images/selectors";
-import {useAppDispatch} from "../../../app/hooks";
-import {toggleFilterUnassigned} from "../../images/actions";
+import {useAppDispatch} from "@/app/hooks";
+import {selectShowOnlyUnassigned, toggleShowOnlyUnassigned} from "@/ducks/filters/filtersSlice";
 
 const UnassignedImageFilter = () => {
     const dispatch = useAppDispatch();
-    const showUnassigned = useSelector(selectShowUnassigned);
+    const showUnassigned = useSelector(selectShowOnlyUnassigned);
     const id = useId();
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-        dispatch(toggleFilterUnassigned(ev.target.checked))
+        dispatch(toggleShowOnlyUnassigned(ev.target.checked))
     }
 
     return (

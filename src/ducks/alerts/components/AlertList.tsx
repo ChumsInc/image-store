@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import {dismissAlert, selectAlerts} from "../index";
-import {useAppDispatch} from "../../../app/hooks";
+import {useAppDispatch} from "@/app/hooks";
 import ContextAlert from "./ContextAlert";
 
 
@@ -15,7 +15,7 @@ const AlertList = () => {
     return (
         <div>
             {list.map(alert => (
-                <ContextAlert key={alert.id} color={alert.color} onClose={() => dismissHandler(alert.id)}
+                <ContextAlert key={alert.id} variant={alert.variant} onClose={() => dismissHandler(alert.id)}
                        context={alert.context} count={alert.count}>
                     {alert.message}
                 </ContextAlert>

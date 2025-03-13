@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useId, useState} from 'react';
 import {Button, FormControl, InputGroup} from "react-bootstrap";
 import {saveImage} from "../../actions";
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {selectSelectedForAction} from "../../selectors";
+import {selectSelectedForAction} from "../../selectedImagesSlice";
 import {useSelector} from "react-redux";
 import {selectCanEdit} from "../../../userProfile";
 

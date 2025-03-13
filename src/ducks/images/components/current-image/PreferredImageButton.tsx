@@ -1,10 +1,11 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentImage, selectIsPreferredImage} from "../../selectors";
+import {selectIsPreferredImage} from "../../currentImageSlice";
 import {saveImage} from "../../actions";
-import {useAppDispatch} from "../../../../app/hooks";
-import {selectCanEdit} from "../../../userProfile";
+import {useAppDispatch} from "@/app/hooks";
+import {selectCanEdit} from "@/ducks/userProfile";
 import {Button} from "react-bootstrap";
+import {selectCurrentImage} from "@/ducks/images/currentImageSlice";
 
 const PreferredImageButton: React.FC = () => {
     const dispatch = useAppDispatch();

@@ -1,10 +1,13 @@
 import {createAction, createReducer, isRejected} from "@reduxjs/toolkit";
 import {RootState} from "../../app/configureStore";
-import {BasicAlert} from "chums-components";
+import {BasicAlert} from "@chumsinc/alert-list";
 
 export interface ErrorAlert extends BasicAlert {
     id: number;
     count: number;
+    context?: string;
+    message: string;
+    variant?: string;
 }
 
 export interface AlertsState {
@@ -45,7 +48,7 @@ const alertsReducer = createReducer(initialAlertsState, (builder) => {
             const context = action.type.replace('/rejected', '');
             let [contextAlert] = state.list.filter(alert => alert.context === context);
             if (!contextAlert) {
-                contextAlert = {id: state.nextId, count: 1, message: action.error.message ?? '', context, color: 'danger'}
+                contextAlert = {id: state.nextId, count: 1, message: action.error.message ?? '', context, variant: 'danger'}
                 state.nextId += 1;
             } else {
                 contextAlert.count += 1;

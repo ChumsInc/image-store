@@ -1,8 +1,8 @@
-import {getPreference, localStorageKeys} from "../../api/preferences";
+import {getPreference, localStorageKeys} from "@/api/preferences";
 import {createAction, createReducer} from "@reduxjs/toolkit";
-import {RootState} from "../../app/configureStore";
+import {RootState} from "@/app/configureStore";
 import {ImageSizePath} from "chums-types";
-import {setSearch, toggleFilterUnassigned} from "../images/actions";
+import {setSearch, toggleShowOnlyUnassigned} from "@/ducks/filters/filtersSlice";
 
 export interface SettingsState {
     imagesPerPage: number;
@@ -33,7 +33,7 @@ const settingsReducer = createReducer(initialSettingsState, (builder) => {
         .addCase(setSearch, (state) => {
             state.page = 0;
         })
-        .addCase(toggleFilterUnassigned, (state) => {
+        .addCase(toggleShowOnlyUnassigned, (state) => {
             state.page = 0;
         })
         .addCase(setImagesPerPage, (state, action) => {

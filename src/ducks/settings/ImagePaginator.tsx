@@ -2,7 +2,7 @@ import React from 'react';
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectImagesPerPage, selectPage, setPage} from "./index";
-import {selectFilteredImages} from "../images/selectors";
+import {selectFilteredImages} from "../images/imageListSlice";
 import {Button, Col, Row} from "react-bootstrap";
 
 const ImagePaginator = () => {

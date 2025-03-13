@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useId, useState} from 'react';
 import {useAppDispatch} from "../../../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../selectors";
+import {selectCurrentImage} from "../../currentImageSlice";
 import {saveImage} from "../../actions";
 import {selectCanEdit} from "../../../userProfile";
 import PreferredImageButton from "./PreferredImageButton";

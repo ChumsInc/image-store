@@ -1,5 +1,5 @@
-import {fetchJSON} from "chums-components";
-import {LoadFiltersResult} from "../types";
+import {fetchJSON} from "@chumsinc/ui-utils";
+import {LoadFiltersResult} from "../../types";
 
 
 export async function fetchFilters(): Promise<LoadFiltersResult> {

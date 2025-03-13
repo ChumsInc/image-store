@@ -1,7 +1,7 @@
 import React from 'react';
-import {useAppDispatch} from "../../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../selectors";
+import {clearCurrentImage, selectCurrentFilename, selectCurrentImage} from "../../currentImageSlice";
 import AutoSizeImage from "../AutoSizeImage";
 import ImageFilename from "./ImageFilename";
 import SelectedItemForm from "./SelectedItemForm";
@@ -10,23 +10,39 @@ import {defaultAltItem} from "../../utils";
 import ImageTagList from "./ImageTagList";
 import ImageSizeList from "./ImageSizeList";
 import DeleteImagesButton from "./DeleteImagesButton";
-import {setCurrentImage} from "../../actions";
+import {loadImage} from "../../actions";
 import ImageActiveToggle from "./ImageActiveToggle";
 import {ErrorBoundary} from "react-error-boundary";
-import ErrorBoundaryFallback from "../../../../app/ErrorBoundaryFallback";
+import ErrorBoundaryFallback from "@/app/ErrorBoundaryFallback";
 import {Card, CloseButton, ProgressBar} from "react-bootstrap";
+import {selectStatusById} from "@/ducks/images/imageStatusSlice";
 
 const SelectedImage = () => {
     const dispatch = useAppDispatch();
-    const current = useSelector(selectCurrentImage);
+    const current = useAppSelector(selectCurrentImage);
+    const filename = useAppSelector(selectCurrentFilename);
+    const status = useAppSelector((state) => selectStatusById(state, filename ?? ''));
 
     const clearImagesHandler = () => {
-        dispatch(setCurrentImage(null));
+        dispatch(clearCurrentImage());
     }
 
     if (!current) {
+        if (filename) {
+            return (
+                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+                    <Card className="selected-image">
+                        <Card.Header>{filename}</Card.Header>
+                        <Card.Body>
+                            {status === 'loading' && (<ProgressBar striped animated now={100} style={{height: '5px'}}/>)}
+                        </Card.Body>
+                    </Card>
+                </ErrorBoundary>
+            )
+        }
         return null;
     }
+
     return (
         <Card className="selected-image">
             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
@@ -41,9 +57,7 @@ const SelectedImage = () => {
                             <ImageFilename filename={current.filename}/>
                         </figcaption>
                         <div style={{minHeight: '0.5rem'}}>
-                            {(current.loading || current.saving) && (
-                                <ProgressBar striped animated style={{height: "3px"}} now={100}/>
-                            )}
+                            {status !== 'idle' && (<ProgressBar striped animated now={100} style={{height: '5px'}}/>)}
                         </div>
                     </figure>
                     <h3 className="item-description" style={{fontSize: '18px'}}>{current.ItemCodeDesc}</h3>

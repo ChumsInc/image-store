@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {LinkHTMLAttributes} from 'react';
 import {Badge, BadgeProps} from "react-bootstrap";
 
 
 export interface LinkBadgeProps extends BadgeProps {
-    href?: string,
+    href?: string;
+    target?: string;
+    rel?: string;
 }
 
 const LinkBadge = ({href, ...badgeProps}: LinkBadgeProps) => {

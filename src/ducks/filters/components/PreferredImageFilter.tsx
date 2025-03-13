@@ -1,28 +1,34 @@
-import React, {ChangeEvent, useId} from 'react';
+import React, {ChangeEvent, useEffect, useId} from 'react';
 import {useSelector} from "react-redux";
-import {selectFilter} from "../selectors";
 import FormCheck from 'react-bootstrap/FormCheck'
 import {useSearchParams} from "react-router";
+import {useAppDispatch} from "@/app/hooks";
+import {selectFilterPreferredImages, togglePreferredImages} from "@/ducks/filters/filtersSlice";
 
 const PreferredImageFilter = () => {
+    const dispatch = useAppDispatch()
     const [searchParams, setSearchParams] = useSearchParams();
-    const {preferredImage} = useSelector(selectFilter);
+    const checked = useSelector(selectFilterPreferredImages);
     const id = useId();
 
-    const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
         setSearchParams((prev) => {
-            if (ev.target.checked) {
+            if (checked) {
                 prev.set('preferredImage', '1');
             } else {
                 prev.delete('preferredImage');
             }
             return prev;
         })
+    }, [checked]);
+
+    const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
+        dispatch(togglePreferredImages(ev.target.checked))
     }
 
     return (
-        <FormCheck type={"checkbox"} label={"Filter Preferred Images"} id={id}
-                   checked={preferredImage} onChange={changeHandler}/>
+        <FormCheck type={"checkbox"} label={"Only Preferred Images"} id={id}
+                   checked={checked} onChange={changeHandler}/>
     )
 }
 

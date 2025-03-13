@@ -1,11 +1,10 @@
 import React, {useId} from 'react';
 import {useAppDispatch} from "../../../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectCurrentImage, selectSelectedForAction} from "../../selectors";
 import {selectCanEdit} from "../../../userProfile";
-import {ToggleButton} from "react-bootstrap";
-import {setImageActive, tagImage} from "../../actions";
-import {Col, Row} from "react-bootstrap";
+import {Col, Row, ToggleButton} from "react-bootstrap";
+import {setImageActive} from "../../actions";
+import {selectSelectedForAction} from "@/ducks/images/selectedImagesSlice";
 
 const MultipleImageActiveToggle = () => {
     const dispatch = useAppDispatch();
@@ -47,13 +46,15 @@ const MultipleImageActiveToggle = () => {
             </Col>
             <Col xs="auto">
                 <ToggleButton id={activeButtonId} type="checkbox" value={1}
-                              checked={count === activeImages} onChange={activeClickHandler} variant="outline-success" size="sm" >
+                              checked={count === activeImages} onChange={activeClickHandler} variant="outline-success"
+                              size="sm">
                     Active ({activeImages})
                 </ToggleButton>
             </Col>
             <Col xs="auto">
                 <ToggleButton id={inactiveButtonId} type="checkbox" value={1}
-                              checked={count === inactiveImages} onChange={inactiveClickHandler} variant="outline-danger" size="sm" >
+                              checked={count === inactiveImages} onChange={inactiveClickHandler}
+                              variant="outline-danger" size="sm">
                     Inactive ({inactiveImages})
                 </ToggleButton>
             </Col>

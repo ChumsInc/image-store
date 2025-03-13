@@ -1,5 +1,5 @@
 import {ProductCategory, ProductCollection, ProductImage} from "chums-types";
-import {BasicAlert} from "chums-components";
+import {BasicAlert} from "@chumsinc/alert-list";
 
 export interface ErrorAlert extends BasicAlert {
     id: number;
@@ -103,4 +103,8 @@ export interface SingleImage {
     size?: ImageSize,
     colorSpace?: string;
     imageFormat?: string;
+}
+
+export interface FilterExtraState {
+    value: string|null;
 }

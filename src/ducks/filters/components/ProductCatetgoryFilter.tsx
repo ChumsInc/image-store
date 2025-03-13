@@ -1,30 +1,41 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useEffect, useId} from 'react';
 import {useSelector} from "react-redux";
-import {selectCategories, selectFilter} from "../selectors";
+import {selectCategories, selectCategory, setProductCategory} from "@/ducks/filters/productCategorySlice";
 import {sortCategories} from "../utils";
 import {useSearchParams} from "react-router";
+import Form from "react-bootstrap/Form";
+import {useAppDispatch} from "@/app/hooks";
+import {FormGroupProps} from "react-bootstrap";
 
-const ProductCategoryFilter = () => {
+const ProductCategoryFilter = (props:FormGroupProps) => {
+    const dispatch = useAppDispatch();
     const [searchParams, setSearchParams] = useSearchParams()
     const categories = useSelector(selectCategories);
-    const {category} = useSelector(selectFilter);
+    const value = useSelector(selectCategory);
+    const id = useId();
 
-    const changeHandler = (ev: ChangeEvent<HTMLSelectElement>) => {
+    useEffect(() => {
         setSearchParams((prev) => {
-            if (ev.target.value) {
-                prev.set('cat', ev.target.value);
+            if (value) {
+                prev.set('cat', value);
             } else {
                 prev.delete('cat');
             }
             return prev;
         })
+
+    }, [value]);
+
+    const changeHandler = (ev: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setProductCategory(ev.target.value))
     }
 
     return (
-        <div className="mb-3">
-            <label className="form-label">Product Category</label>
-            <select className="form-select form-select-sm" value={category ?? ''} onChange={changeHandler}>
+        <Form.Group {...props}>
+            <Form.Label htmlFor={id}>Product Category</Form.Label>
+            <Form.Select id={id} size="sm" value={value ?? ''} onChange={changeHandler}>
                 <option value="">All</option>
+                <option disabled>---</option>
                 {[...categories]
                     .sort(sortCategories)
                     .map(cat => (
@@ -33,8 +44,8 @@ const ProductCategoryFilter = () => {
                             </option>
                         )
                     )}
-            </select>
-        </div>
+            </Form.Select>
+        </Form.Group>
     )
 }
 

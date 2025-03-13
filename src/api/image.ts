@@ -1,5 +1,5 @@
 import {ProductImage} from 'chums-types'
-import {fetchJSON} from "chums-components";
+import {fetchJSON} from "@chumsinc/ui-utils";
 import {ProductFilter} from "../ducks/filters";
 
 export const PATH_SET_PREFERRED_ITEM = '/api/images/products/set-preferred-item/:filename/:itemCode';

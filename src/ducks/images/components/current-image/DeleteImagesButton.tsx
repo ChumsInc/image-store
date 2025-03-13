@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../selectors";
+import {selectCurrentImage} from "../../currentImageSlice";
 import {useAppDispatch} from "../../../../app/hooks";
 import {selectCanDelete} from "../../../userProfile";
 import {removeImage} from "../../actions";

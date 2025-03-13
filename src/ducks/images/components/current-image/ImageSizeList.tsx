@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../selectors";
+import {selectCurrentImage} from "../../currentImageSlice";
 import {imageSizeSort, parseSingleImages} from "../../utils";
 import numeral from "numeral";
 import {imagePath} from "../../../../utils";

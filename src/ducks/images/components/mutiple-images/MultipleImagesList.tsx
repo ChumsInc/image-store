@@ -2,9 +2,9 @@ import React from 'react';
 import {Button, Col, Row} from "react-bootstrap";
 import AutoSizeImage from "../AutoSizeImage";
 import {useSelector} from "react-redux";
-import {selectSelectedForAction} from "../../selectors";
 import {useAppDispatch} from "../../../../app/hooks";
-import {clearAdditionalImages} from "../../actions";
+import {clearAdditionalImages} from "../../selectedImagesSlice";
+import {selectSelectedForAction} from "@/ducks/images/selectedImagesSlice";
 
 export default function MultipleImagesList() {
     const dispatch = useAppDispatch();

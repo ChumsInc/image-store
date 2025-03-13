@@ -1,16 +1,17 @@
-import React from 'react';
+import React, {useId} from 'react';
 import {useSelector} from "react-redux";
 import {selectCanEdit} from "./index";
 import {useAppDispatch} from "../../app/hooks";
-import {FormCheck} from "chums-components";
+import {FormCheck} from "react-bootstrap";
 import {toggleEditMode} from "./actions";
 
 const ToggleEditMode = () => {
     const dispatch = useAppDispatch();
     const canEdit = useSelector(selectCanEdit);
+    const id = useId();
 
     return (
-        <FormCheck type="checkbox" label="Edit Mode" checked={canEdit}
+        <FormCheck id={id} type="checkbox" label="Edit Mode" checked={canEdit}
                    onChange={(ev) => dispatch(toggleEditMode(ev.target.checked))} />
     )
 }

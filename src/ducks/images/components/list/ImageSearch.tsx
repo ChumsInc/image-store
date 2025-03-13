@@ -1,19 +1,34 @@
 import React, {ChangeEvent, useEffect, useId} from 'react';
 import {useSelector} from "react-redux";
 import {FormControl, InputGroup} from "react-bootstrap";
-import {selectSearch} from "../../selectors";
-import {useAppDispatch} from "../../../../app/hooks";
-import {setSearch} from "../../actions";
+import {useAppDispatch} from "@/app/hooks";
 import {useDebounceValue} from "usehooks-ts";
+import {selectSearch, setSearch} from "@/ducks/filters/filtersSlice";
+import {useSearchParams} from "react-router";
 
 const ImageSearch = () => {
     const dispatch = useAppDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
     const search = useSelector(selectSearch);
     const id = useId();
     const [value, setValue] = useDebounceValue(search, 500);
 
     useEffect(() => {
         setValue(search);
+        try {
+            const re = new RegExp(search);
+        } catch(err:unknown) {
+            return;
+        }
+        setSearchParams(prev => {
+            if (search) {
+                prev.set('search', search);
+            } else {
+                prev.delete('search');
+            }
+            return prev;
+        })
+
     }, [search]);
 
     useEffect(() => {

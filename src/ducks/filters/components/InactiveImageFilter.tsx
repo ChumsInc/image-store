@@ -1,29 +1,34 @@
-import React, {ChangeEvent, useId, useState} from 'react';
-import {useAppDispatch} from "../../../app/hooks";
+import React, {ChangeEvent, useEffect, useId} from 'react';
 import {useSelector} from "react-redux";
-import {selectFilter} from "../selectors";
-import {toggleInactiveImages} from "../actions";
 import FormCheck from 'react-bootstrap/FormCheck'
 import {useSearchParams} from "react-router";
+import {useAppDispatch} from "@/app/hooks";
+import {selectShowInactiveImages, toggleInactiveImages} from "@/ducks/filters/filtersSlice";
 
 const InactiveProductFilter = () => {
+    const dispatch = useAppDispatch();
     const [searchParams, setSearchParams] = useSearchParams();
-    const {inactiveImages} = useSelector(selectFilter);
+    const showInactive = useSelector(selectShowInactiveImages);
     const id = useId();
 
-    const changeHandler = (ev:ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
         setSearchParams(prev => {
-            if (ev.target.checked) {
+            if (showInactive) {
                 prev.set('inactiveImages', '1');
             } else {
                 prev.delete('inactiveImages');
             }
             return prev;
         })
+    }, [showInactive]);
+
+    const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
+        dispatch(toggleInactiveImages(ev.target.checked));
     }
+
     return (
         <FormCheck type={"checkbox"} label={"Show Inactive Images"} id={id}
-                   checked={inactiveImages} onChange={changeHandler}/>
+                   checked={showInactive} onChange={changeHandler}/>
     )
 }
 

@@ -1,5 +1,5 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {ProductAltItem, ProductImage} from "chums-types";
+import {ProductImage} from "chums-types";
 import {
     deleteAltItemCode,
     deleteImage,
@@ -8,42 +8,44 @@ import {
     fetchImages,
     postAltItemCode,
     postPreferredImage,
-    postTagImage, putImageActive,
+    postTagImage,
+    putImageActive,
     putImageUpdate
 } from "../../api/image";
 import {ProductFilter} from "../filters";
-import {EditableImage, ProductAltItemKey} from "../../types";
+import {ProductAltItemKey} from "../../types";
 import {RootState} from "../../app/configureStore";
-import {selectCurrentLoading, selectCurrentSaving, selectImagesLoading} from "./selectors";
 import {TagImageArgs} from "./types";
+import {selectStatusById} from "@/ducks/images/imageStatusSlice";
+import {selectImagesStatus} from "@/ducks/images/imageListSlice";
 
-export const setCurrentImage = createAsyncThunk<ProductImage | null, string|null, {state:RootState}>(
-    'images/setCurrent',
+export const loadImage = createAsyncThunk<ProductImage | null, string, { state: RootState }>(
+    'images/loadImage',
     async (arg) => {
         return await fetchImage(arg);
     },
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectCurrentLoading(state);
+            return !arg || selectStatusById(state, arg) === 'idle';
         }
     }
 )
 
-export const loadImages = createAsyncThunk<ProductImage[], ProductFilter, {state:RootState}>(
-    'images/load',
+export const loadImages = createAsyncThunk<ProductImage[], ProductFilter, { state: RootState }>(
+    'images/loadImages',
     async (arg) => {
         return await fetchImages(arg);
     },
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectImagesLoading(state);
+            return selectImagesStatus(state) === 'idle';
         }
     }
 )
 
-export const tagImage = createAsyncThunk<ProductImage | null, TagImageArgs, {state:RootState}>(
+export const tagImage = createAsyncThunk<ProductImage | null, TagImageArgs, { state: RootState }>(
     'images/tagImage',
     async (arg) => {
         if (arg.action === 'untag') {
@@ -54,12 +56,14 @@ export const tagImage = createAsyncThunk<ProductImage | null, TagImageArgs, {sta
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectCurrentSaving(state);
+            return selectStatusById(state, arg.filename) === 'idle'
         }
     }
 )
 
-export const saveImage = createAsyncThunk<ProductImage | null, Partial<ProductImage>, {state:RootState}>(
+export const saveImage = createAsyncThunk<ProductImage | null, Partial<ProductImage> & Pick<ProductImage, 'filename'>, {
+    state: RootState
+}>(
     'images/saveImage',
     async (arg) => {
         if (arg.item_code && arg.filename && arg.preferred_image) {
@@ -70,12 +74,12 @@ export const saveImage = createAsyncThunk<ProductImage | null, Partial<ProductIm
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectCurrentSaving(state);
+            return selectStatusById(state, arg.filename) === 'idle'
         }
     }
 )
 
-export const saveAltItemCode = createAsyncThunk<ProductImage|null, ProductAltItemKey, {state:RootState}>(
+export const saveAltItemCode = createAsyncThunk<ProductImage | null, ProductAltItemKey, { state: RootState }>(
     'images/saveAltItemCode',
     async (arg, thunkAPI) => {
         return postAltItemCode(arg.filename, arg.item_code);
@@ -84,12 +88,12 @@ export const saveAltItemCode = createAsyncThunk<ProductImage|null, ProductAltIte
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectCurrentSaving(state);
+            return selectStatusById(state, arg.filename) === 'idle'
         }
     }
 );
 
-export const removeAltItemCode = createAsyncThunk<ProductImage|null, ProductAltItemKey, {state:RootState}>(
+export const removeAltItemCode = createAsyncThunk<ProductImage | null, ProductAltItemKey, { state: RootState }>(
     'images/removeAltItemCode',
     async (arg) => {
         return deleteAltItemCode(arg.filename, arg.item_code);
@@ -97,12 +101,12 @@ export const removeAltItemCode = createAsyncThunk<ProductImage|null, ProductAltI
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectCurrentSaving(state);
+            return selectStatusById(state, arg.filename) === 'idle'
         }
     }
 )
 
-export const removeImage = createAsyncThunk<ProductImage[], string, {state:RootState}>(
+export const removeImage = createAsyncThunk<ProductImage[], string, { state: RootState }>(
     'images/removeImage',
     async (arg) => {
         return await deleteImage(arg);
@@ -110,15 +114,14 @@ export const removeImage = createAsyncThunk<ProductImage[], string, {state:RootS
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectCurrentSaving(state);
+            return selectStatusById(state, arg) === 'idle'
         }
     }
 )
 
-export const addAdditionalImage = createAction<EditableImage>('images/selected/selectImage');
-export const clearAdditionalImages = createAction('images/selected/clear');
-
-export const setImageActive = createAsyncThunk<ProductImage|null, Partial<ProductImage>, {state:RootState}>(
+export const setImageActive = createAsyncThunk<ProductImage | null, Partial<ProductImage> & Pick<ProductImage, 'filename'>, {
+    state: RootState
+}>(
     'images/saveActive',
     async (arg) => {
         return await putImageActive(arg.filename, arg.active)
@@ -126,10 +129,7 @@ export const setImageActive = createAsyncThunk<ProductImage|null, Partial<Produc
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectCurrentSaving(state);
+            return selectStatusById(state, arg.filename) === 'idle'
         }
     }
 )
-
-export const setSearch = createAction<string>(`images/filters/search`);
-export const toggleFilterUnassigned = createAction<boolean | undefined>(`images/filter/toggleFilterUnassigned`);

@@ -1,11 +1,12 @@
 import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
 import {useAppDispatch} from "../../../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectMultipleSaving, selectSelectedForAction} from "../../selectors";
+import {selectMultipleSaving} from "../../selectedImagesSlice";
 import {selectCanEdit} from "../../../userProfile";
 import {saveAltItemCode} from "../../actions";
 import {defaultAltItem} from "../../utils";
 import {Button, FormControl, InputGroup, ProgressBar} from "react-bootstrap";
+import {selectSelectedForAction} from "@/ducks/images/selectedImagesSlice";
 
 
 const AdditionalSKUMultipleImagesForm = () => {

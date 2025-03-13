@@ -1,7 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import classNames from "classnames";
 import {Badge} from "react-bootstrap";
+import styled from "@emotion/styled";
 
+
+const ImageFilenameTarget = styled.div`
+    word-break: break-all;
+    cursor: pointer;
+`
 export interface Props {
     filename: string;
 }
@@ -26,7 +32,7 @@ const ImageFilename = ({filename}:Props) => {
 
     return (
         <div className="d-flex justify-content-between">
-            <div onClick={copyOnClick} className="click-copy image-filename" title="Copy filename">Filename: <strong>{filename}</strong></div>
+            <ImageFilenameTarget onClick={copyOnClick} title="Copy filename">Filename: <strong>{filename}</strong></ImageFilenameTarget>
             <Badge bg="success" className={classNames('fade', {show})} >copied</Badge>
         </div>
     )

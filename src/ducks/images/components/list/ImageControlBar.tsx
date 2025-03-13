@@ -3,11 +3,12 @@ import ImageSearch from "./ImageSearch";
 import {loadImages} from "../../actions";
 import {useAppDispatch} from "../../../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectFilter} from "../../../filters/selectors";
+import {selectFilter} from "../../../filters/filtersSlice";
 import ImagesPerPage from "../../../settings/ImagesPerPage";
 import ImagesSize from "../../../settings/ImagesSize";
 import ImagePaginator from "../../../settings/ImagePaginator";
 import {Button, Col, Row} from "react-bootstrap";
+import FilterBar from "@/components/filters/FilterBar";
 
 const ImageControlBar = () => {
     const dispatch = useAppDispatch();
@@ -20,6 +21,9 @@ const ImageControlBar = () => {
     return (
         <Row className="row g-3">
             <Col xs="auto">
+                <FilterBar />
+            </Col>
+            <Col xs="auto">
                 <Button type="button" size="sm" variant="primary" onClick={() => dispatch(loadImages(filters))}>
                     Reload
                 </Button>
@@ -27,7 +31,7 @@ const ImageControlBar = () => {
             <Col xs="auto">
                 <ImageSearch/>
             </Col>
-            <Col xs/>
+            <Col xs />
             <Col xs="auto">
                 <ImagesSize/>
             </Col>

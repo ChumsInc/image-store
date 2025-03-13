@@ -1,10 +1,9 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {fetchFilters} from "../../api/filters";
+import {fetchFilters} from "./api";
 import {LoadFiltersResult} from "../../types";
 import {RootState} from "../../app/configureStore";
-import {selectFiltersLoading} from "./selectors";
-import {ProductFilter} from "./index";
 import {urlSearchParamsToFilter} from "./utils";
+import {selectFiltersStatus} from "@/ducks/filters/filtersSlice";
 
 
 export const setBaseSKU = createAction<string>(`filters/set-filter/setBaseSKU`);
@@ -32,7 +31,7 @@ export const loadFilters = createAsyncThunk<LoadFiltersResult, void, { state: Ro
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !selectFiltersLoading(state);
+            return selectFiltersStatus(state) === 'idle'
         }
     }
 );
