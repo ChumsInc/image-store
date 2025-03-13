@@ -1,16 +1,16 @@
 import React, {ChangeEvent, useEffect, useId} from 'react';
 import {useAppDispatch} from "@/app/hooks";
 import {useSelector} from "react-redux";
-import {toggleInactiveProducts} from "../actions";
 import FormCheck from 'react-bootstrap/FormCheck'
 import {useSearchParams} from "react-router";
-import {selectShowInactiveProducts} from "@/ducks/filters/filtersSlice";
+import {selectShowInactiveProducts, toggleInactiveProducts} from "@/ducks/filters/filtersSlice";
 
 const InactiveProductFilter = () => {
     const dispatch = useAppDispatch();
     const [searchParams, setSearchParams] = useSearchParams();
     const checked = useSelector(selectShowInactiveProducts);
     const id = useId();
+
 
     useEffect(() => {
         setSearchParams((prev) => {

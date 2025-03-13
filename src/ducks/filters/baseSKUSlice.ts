@@ -1,6 +1,6 @@
 import {createEntityAdapter, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {BaseSKUSearch} from "chums-types";
-import {loadFilters, setFiltersFromSearchParams} from "@/ducks/filters/actions";
+import {loadFilters} from "@/ducks/filters/actions";
 import {FilterExtraState} from "@/src/types";
 
 const adapter = createEntityAdapter<BaseSKUSearch, string>({
@@ -32,9 +32,6 @@ const baseSKUSlice = createSlice({
                 if (state.value) {
                     state.value = selectors.selectById(state, state.value)?.Category4 ?? '';
                 }
-            })
-            .addCase(setFiltersFromSearchParams, (state, action) => {
-
             })
     },
     selectors: {
