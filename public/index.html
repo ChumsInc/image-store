@@ -1,10 +1,10 @@
 <!doctype html public "storage">
 <html lang="en-us">
 <head>
-    <meta charSet="utf-8"/>
-    <meta httpEquiv="x-ua-compatible" content="ie=edge"/>
-    <title>Chums Image Repository</title>
-    <meta name="description" content="Chums App "/>
+    <meta charSet="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Chums Time Clock / localhost</title>
+    <meta name="description" content="Chums Time Clock" />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -12,19 +12,38 @@
     <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="https://intranet.chums.com/css/intranet.css?v=1494436263">
     <link rel="stylesheet" type="text/css" href="https://intranet.chums.com/css/chums.css">
-    <link rel="stylesheet" href="/styles.css"/>
-    <!--    <link rel="icon" type="image/x-icon" href="/favicon.ico" />-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://intranet.chums.com/favicon.ico" />
     <script src="https://intranet.chums.com/js/preferred-theme.js"></script>
 </head>
 <body>
-<header>Site Header</header>
-<main>
-    <div id="app" class="container-fluid"></div>
+<header class="site-header">
+    <nav class="navbar navbar-chums navbar-expand-lg navbar-light bg-body-tertiary fixed-top">
+        <div class="site-logo">
+            <div class="logo-center">
+                <a href="/">
+                    <img class="logo" id="navbar-logo" alt="Chums Logo"
+                         src="https://intranet.chums.com/images/logos/Chums-Logo-Badge-Red-RGB.png"
+                         style="margin-top: 0;">
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="container-fluid">
+    <div>
+        <div>
+            <h1 id="top-title">Chums Image Repository</h1>
+            <div id="PageDescription">
+                <span id="PageDescriptionText"></span>
+            </div>
+        </div>
+    </div>
+    <div id="app">
+        <div class="alert alert-info"><strong>Loading</strong> app.</div>
+    </div>
 </main>
-<footer>Site Footer</footer>
-<script src="/vendors-react.js"></script>
-<script src="/vendors.js"></script>
-<script src="/main.js"></script>
+<script src="main.js"></script>
+<script src="vendors.js"></script>
+<script src="vendors-react.js"></script>
 </body>
 </html>

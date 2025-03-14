@@ -1,10 +1,10 @@
 import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../currentImageSlice";
+import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
 import {Badge, Button, ButtonGroup, FormControl, InputGroup} from "react-bootstrap";
-import {tagImage} from "../../actions";
-import {useAppDispatch} from "../../../../app/hooks";
-import {selectCanEdit} from "../../../userProfile";
+import {tagImage} from "@/ducks/images/actions";
+import {useAppDispatch} from "@/app/hooks";
+import {selectCanEdit} from "@/ducks/userProfile";
 
 const ImageTagList: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -44,7 +44,8 @@ const ImageTagList: React.FC = () => {
                     <InputGroup.Text as="label" htmlFor={id} aria-label="Add Tag">
                         <span className="bi-tag-fill" aria-hidden/>
                     </InputGroup.Text>
-                    <FormControl type="text" size="sm" value={tag} onChange={onChangeTag}/>
+                    <FormControl type="text" size="sm" id={id}
+                                 value={tag} onChange={onChangeTag}/>
                     <Button type="submit" variant="secondary" size="sm" aria-label="Save Tag">
                         <span className="bi-plus" aria-hidden/>
                     </Button>
@@ -56,7 +57,7 @@ const ImageTagList: React.FC = () => {
                         <ButtonGroup key={tag} size="sm">
                             <Button type="button" variant="secondary" size="sm" disabled>{tag}</Button>
                             <Button type="button" variant="secondary" size="sm" onClick={() => onDeleteTag(tag)}>
-                                <span className="bi-x"/>
+                                <span className="bi-x" aria-label="remove tag"/>
                             </Button>
                         </ButtonGroup>
                     ))}

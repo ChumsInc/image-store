@@ -1,16 +1,14 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {selectIsPreferredImage} from "../../currentImageSlice";
-import {saveImage} from "../../actions";
+import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
+import {saveImage} from "@/ducks/images/actions";
 import {useAppDispatch} from "@/app/hooks";
 import {selectCanEdit} from "@/ducks/userProfile";
 import {Button} from "react-bootstrap";
-import {selectCurrentImage} from "@/ducks/images/currentImageSlice";
 
 const PreferredImageButton: React.FC = () => {
     const dispatch = useAppDispatch();
     const current = useSelector(selectCurrentImage);
-    const isPreferredImage = useSelector(selectIsPreferredImage);
     const canEdit = useSelector(selectCanEdit);
 
     const clickHandler = () => {
@@ -26,8 +24,8 @@ const PreferredImageButton: React.FC = () => {
     return (
         <Button type="button" size="sm" variant="outline-secondary" className="text-warning"
                 onClick={clickHandler} title="Set preferred image">
-            <span className={isPreferredImage ? "bi-star-fill" : 'bi-star'}
-                  aria-label={isPreferredImage ? 'preferred image' : ''}/>
+            <span className={current.preferred_image ? "bi-star-fill" : 'bi-star'}
+                  aria-label={current.preferred_image ? 'preferred image' : ''}/>
         </Button>
     )
 }

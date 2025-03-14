@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../currentImageSlice";
-import {imageSizeSort, parseSingleImages} from "../../utils";
+import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
+import {imageSizeSort, parseSingleImages} from "@/ducks/images/utils";
 import numeral from "numeral";
-import {imagePath} from "../../../../utils";
-import {SingleImage} from "../../../../types";
+import {imagePath} from "../../../utils";
+import {SingleImage} from "../../../types";
 import {Badge} from "react-bootstrap";
 
 const ImageLink = ({path, filename, children}:{path:string; filename: string; children:React.ReactNode}) => (
@@ -45,7 +45,7 @@ const ImageSizeList = () => {
                             </ImageLink>
                         </td>
                         <td>
-                            {!!img.imageFormat && <Badge bg="info" className="me-1">{img.imageFormat}</Badge>}
+                            {!!img.imageFormat && <Badge bg="info" text="dark" className="me-1">{img.imageFormat}</Badge>}
                             {!!img.colorSpace && <Badge bg="danger" className="me-1">{img.colorSpace}</Badge>}
                         </td>
                         <td className="text-end">{numeral(img.size?.size ?? 0).format('0.0b')}</td>

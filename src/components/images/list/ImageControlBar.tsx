@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import ImageSearch from "./ImageSearch";
-import {loadImages} from "../../actions";
-import {useAppDispatch} from "../../../../app/hooks";
+import {loadImages} from "@/ducks/images/actions";
+import {useAppDispatch} from "@/app/hooks";
 import {useSelector} from "react-redux";
-import {selectFilter} from "../../../filters/filtersSlice";
-import ImagesPerPage from "../../../settings/ImagesPerPage";
-import ImagesSize from "../../../settings/ImagesSize";
-import ImagePaginator from "../../../settings/ImagePaginator";
+import {selectFilter} from "@/ducks/filters/filtersSlice";
+import ImagesPerPage from "@/ducks/settings/ImagesPerPage";
+import ImagesSize from "@/ducks/settings/ImagesSize";
+import ImagePaginator from "@/ducks/settings/ImagePaginator";
 import {Button, Col, Row} from "react-bootstrap";
 import FilterBar from "@/components/filters/FilterBar";
 

@@ -53,10 +53,7 @@ const imagesSlice = createSlice({
                     imagesAdapter.setOne(state, action.payload);
                     return;
                 }
-
-                if (action.meta.arg) {
-                    imagesAdapter.removeOne(state, action.meta.arg)
-                }
+                imagesAdapter.removeOne(state, action.meta.arg.filename)
             })
             .addCase(saveImage.fulfilled, (state, action) => {
                 if (action.payload) {

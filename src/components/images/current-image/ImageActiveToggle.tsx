@@ -1,10 +1,10 @@
 import React, {useId} from 'react';
-import {useAppDispatch} from "../../../../app/hooks";
+import {useAppDispatch} from "@/app/hooks";
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../currentImageSlice";
-import {selectCanEdit} from "../../../userProfile";
+import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
+import {selectCanEdit} from "@/ducks/userProfile";
 import {ToggleButton} from "react-bootstrap";
-import {setImageActive} from "../../actions";
+import {setImageActive} from "@/ducks/images/actions";
 import {Col, Row} from "react-bootstrap";
 
 const ImageActiveToggle = () => {

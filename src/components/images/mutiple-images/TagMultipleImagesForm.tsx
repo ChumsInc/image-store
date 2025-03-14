@@ -1,21 +1,22 @@
 import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
-import {useAppDispatch} from "../../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useSelector} from "react-redux";
-import {selectMultipleSaving, selectSelectedForAction} from "../../selectedImagesSlice";
-import {selectCanEdit} from "../../../userProfile";
-import {tagImage} from "../../actions";
-import ImageTagBadges from "../../../../components/ImageTagBadges";
+import {selectMultipleBusy, selectCurrentImages} from "@/ducks/images/currentImagesSlice";
+import {selectCanEdit} from "@/ducks/userProfile";
+import {tagImage} from "@/ducks/images/actions";
+import ImageTagBadges from "../../ImageTagBadges";
 import {Button, FormControl, InputGroup, ProgressBar} from "react-bootstrap";
 
 
 const TagMultipleImagesForm = () => {
     const dispatch = useAppDispatch();
-    const images = useSelector(selectSelectedForAction);
+    const images = useSelector(selectCurrentImages);
     const canEdit: boolean = useSelector(selectCanEdit);
     const [tag, setTag] = useState('');
     const [tags, setTags] = useState<string[]>([]);
-    const saving = useSelector(selectMultipleSaving);
+    const saving = useSelector(selectMultipleBusy);
     const [savePending, setSavePending] = useState(false);
+    const busy = useAppSelector(selectMultipleBusy);
     const id = useId();
 
 
@@ -46,16 +47,15 @@ const TagMultipleImagesForm = () => {
 
     const onChangeTag = (ev: ChangeEvent<HTMLInputElement>) => setTag(ev.target.value);
 
-    const submitHandler = (ev: FormEvent) => {
+    const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
         if (!canEdit) {
             return;
         }
-
-        images.forEach(img => {
-            dispatch(tagImage({filename: img.filename, tag}));
-        })
-        // setTag('');
+        for await (const img of images) {
+            await dispatch(tagImage({filename: img.filename, tag}));
+        }
+        setTag('');
     }
 
     if (!canEdit) {
@@ -69,15 +69,16 @@ const TagMultipleImagesForm = () => {
                     <InputGroup.Text as="label" htmlFor={id} aria-label="Add Tag">
                         <span className="bi-tag" aria-hidden/>
                     </InputGroup.Text>
-                    <FormControl type="text" size="sm" value={tag} disabled={saving || savePending}
+                    <FormControl type="text" size="sm" id={id}
+                                 value={tag} disabled={busy}
                                  onChange={onChangeTag}/>
-                    <Button type="submit" variant="secondary" disabled={saving || savePending} aria-label="Save">
+                    <Button type="submit" variant="secondary" disabled={busy} aria-label="Save">
                         <span className="bi-plus" aria-hidden/>
                     </Button>
                 </InputGroup>
                 <ImageTagBadges inactive={false} tags={tags}/>
             </form>
-            {(savePending || saving) && (<ProgressBar striped animated style={{height: '3px'}} now={100}/>)}
+            {busy && (<ProgressBar striped animated style={{height: '3px'}} now={100}/>)}
         </div>
     )
 }

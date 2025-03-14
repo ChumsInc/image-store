@@ -4,13 +4,24 @@ import AdditionalSKUMultipleImagesForm from "./AdditionalSKUMultipleImagesForm";
 import MultipleImageActiveToggle from "./MultipleImageActiveToggle";
 import MultipleImagesList from "./MultipleImagesList";
 import PrimaryItemCodeForm from "./PrimaryItemCodeForm";
-import {Card} from "react-bootstrap";
+import {Card, CloseButton} from "react-bootstrap";
+import {useAppDispatch} from "@/app/hooks";
+import {clearAdditionalImages} from "@/ducks/images/currentImagesSlice";
 
-const MultipleSelectedImages = () => {
+const MultipleImagesCard = () => {
+    const dispatch = useAppDispatch();
+
+    const clearImagesHandler = () => {
+        dispatch(clearAdditionalImages());
+    }
+
     return (
         <Card>
             <Card.Header>
-                <h3>Multiple Images</h3>
+                <div className="d-flex justify-content-between align-items-center">
+                    <h2>Multiple Images</h2>
+                    <CloseButton type="button" onClick={clearImagesHandler}/>
+                </div>
                 <MultipleImagesList/>
             </Card.Header>
             <Card.Body>
@@ -28,4 +39,4 @@ const MultipleSelectedImages = () => {
         </Card>
     )
 }
-export default MultipleSelectedImages;
+export default MultipleImagesCard;

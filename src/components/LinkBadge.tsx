@@ -1,17 +1,16 @@
-import React, {LinkHTMLAttributes} from 'react';
+import React, {AnchorHTMLAttributes, LinkHTMLAttributes} from 'react';
 import {Badge, BadgeProps} from "react-bootstrap";
 
 
 export interface LinkBadgeProps extends BadgeProps {
     href?: string;
-    target?: string;
-    rel?: string;
+    linkProps?: AnchorHTMLAttributes<HTMLAnchorElement>;
 }
 
-const LinkBadge = ({href, ...badgeProps}: LinkBadgeProps) => {
+const LinkBadge = ({href, linkProps, ...badgeProps}: LinkBadgeProps) => {
     if (href) {
         return (
-            <Badge as="a" href={href} {...badgeProps} />
+            <Badge as="a" href={href} {...linkProps} {...badgeProps} />
         )
     }
     return (

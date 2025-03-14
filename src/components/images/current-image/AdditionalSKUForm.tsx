@@ -1,15 +1,16 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
-import {useAppDispatch} from "../../../../app/hooks";
-import {removeAltItemCode, saveAltItemCode} from "../../actions";
+import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
+import {useAppDispatch} from "@/app/hooks";
+import {removeAltItemCode, saveAltItemCode} from "@/ducks/images/actions";
 import {ProductAltItem} from "chums-types";
 import {useSelector} from "react-redux";
-import {selectCanEdit} from "../../../userProfile";
+import {selectCanEdit} from "@/ducks/userProfile";
 import {Button, FormControl, InputGroup} from "react-bootstrap";
 
 const AdditionalSKUForm = ({item}: { item: ProductAltItem }) => {
     const dispatch = useAppDispatch();
     const canEdit = useSelector(selectCanEdit);
     const [value, setValue] = useState(item.item_code);
+    const id = useId();
 
     useEffect(() => {
         setValue(item.item_code);
@@ -47,8 +48,10 @@ const AdditionalSKUForm = ({item}: { item: ProductAltItem }) => {
     return (
         <div className="mb-1">
             <InputGroup as="form" size="sm" onSubmit={submitHandler}>
-                <InputGroup.Text>Item</InputGroup.Text>
-                <FormControl type="text" size="sm" value={value} onChange={changeHandler} readOnly={!!item.id}/>
+                <InputGroup.Text as="label" htmlFor={id}>Item</InputGroup.Text>
+                <FormControl type="text" size="sm" id={id}
+                             value={value} onChange={changeHandler}
+                             readOnly={!!item.id}/>
                 {!item.id && (
                     <Button type="submit" size="sm" aria-label="Add item code">
                         <span className="bi-plus" aria-hidden/>

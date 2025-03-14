@@ -4,8 +4,7 @@ import {combineReducers} from "redux";
 import {default as userProfileReducer} from '../ducks/userProfile';
 import {default as settingsReducer} from "../ducks/settings";
 import alertsReducer from "../ducks/alerts";
-import selectedImagesSlice from "@/ducks/images/selectedImagesSlice";
-import currentImageSlice from "@/ducks/images/currentImageSlice";
+import currentImagesSlice from "@/ducks/images/currentImagesSlice";
 import imageStatusSlice from "@/ducks/images/imageStatusSlice";
 import baseSKUSlice from "@/ducks/filters/baseSKUSlice";
 import productCategorySlice from "@/ducks/filters/productCategorySlice";
@@ -21,8 +20,7 @@ const rootReducer = combineReducers({
     [productLineSlice.reducerPath]: productLineSlice.reducer,
     [filtersSlice.reducerPath]: filtersSlice.reducer,
     [imageListSlice.reducerPath]: imageListSlice.reducer,
-    [selectedImagesSlice.reducerPath]: selectedImagesSlice.reducer,
-    [currentImageSlice.reducerPath]: currentImageSlice.reducer,
+    [currentImagesSlice.reducerPath]: currentImagesSlice.reducer,
     [imageStatusSlice.reducerPath]: imageStatusSlice.reducer,
     settings: settingsReducer,
     userProfile: userProfileReducer,

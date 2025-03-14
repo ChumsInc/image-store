@@ -19,15 +19,28 @@ import {TagImageArgs} from "./types";
 import {selectStatusById} from "@/ducks/images/imageStatusSlice";
 import {selectImagesStatus} from "@/ducks/images/imageListSlice";
 
-export const loadImage = createAsyncThunk<ProductImage | null, string, { state: RootState }>(
+export const loadImage = createAsyncThunk<ProductImage | null, ProductImage, { state: RootState }>(
     'images/loadImage',
     async (arg) => {
-        return await fetchImage(arg);
+        return await fetchImage(arg.filename);
     },
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return !arg || selectStatusById(state, arg) === 'idle';
+            return !arg || selectStatusById(state, arg.filename) === 'idle';
+        }
+    }
+)
+
+export const loadAdditionalImage = createAsyncThunk<ProductImage | null, ProductImage, { state: RootState }>(
+    'images/loadAdditionalImage',
+    async (arg) => {
+        return await fetchImage(arg.filename);
+    },
+    {
+        condition: (arg, {getState}) => {
+            const state = getState();
+            return !arg || selectStatusById(state, arg.filename) === 'idle';
         }
     }
 )

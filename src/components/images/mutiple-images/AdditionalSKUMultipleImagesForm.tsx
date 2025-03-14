@@ -1,22 +1,23 @@
 import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
-import {useAppDispatch} from "../../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useSelector} from "react-redux";
-import {selectMultipleSaving} from "../../selectedImagesSlice";
-import {selectCanEdit} from "../../../userProfile";
-import {saveAltItemCode} from "../../actions";
-import {defaultAltItem} from "../../utils";
+import {selectMultipleBusy} from "@/ducks/images/currentImagesSlice";
+import {selectCanEdit} from "@/ducks/userProfile";
+import {saveAltItemCode} from "@/ducks/images/actions";
+import {defaultAltItem} from "@/ducks/images/utils";
 import {Button, FormControl, InputGroup, ProgressBar} from "react-bootstrap";
-import {selectSelectedForAction} from "@/ducks/images/selectedImagesSlice";
+import {selectCurrentImages} from "@/ducks/images/currentImagesSlice";
 
 
 const AdditionalSKUMultipleImagesForm = () => {
     const dispatch = useAppDispatch();
-    const images = useSelector(selectSelectedForAction);
+    const images = useSelector(selectCurrentImages);
     const canEdit = useSelector(selectCanEdit);
     const [value, setValue] = useState('');
-    const saving = useSelector(selectMultipleSaving);
+    const saving = useSelector(selectMultipleBusy);
     const [savePending, setSavePending] = useState(false);
     const [itemCodes, setItemCodes] = useState<string[]>([]);
+    const busy = useAppSelector(selectMultipleBusy);
     const id = useId()
 
     useEffect(() => {
@@ -48,15 +49,16 @@ const AdditionalSKUMultipleImagesForm = () => {
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => setValue(ev.target.value);
 
-    const submitHandler = (ev: FormEvent) => {
+    const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
         if (!canEdit) {
             return;
         }
 
-        images.forEach(img => {
-            dispatch(saveAltItemCode({...defaultAltItem, filename: img.filename, item_code: value}));
-        })
+        for await (const img of images) {
+            await dispatch(saveAltItemCode({...defaultAltItem, filename: img.filename, item_code: value}));
+        }
+        setValue('');
     }
 
 
@@ -70,13 +72,13 @@ const AdditionalSKUMultipleImagesForm = () => {
             <InputGroup as="form" size="sm" onSubmit={submitHandler}>
                 <InputGroup.Text as="label" htmlFor={id}>Item</InputGroup.Text>
                 <FormControl type="text" id={id} size="sm"
-                             value={value} onChange={changeHandler} disabled={saving || savePending}/>
-                <Button type="submit" variant="primary" size="sm" disabled={saving || savePending} aria-label="Save">
+                             value={value} onChange={changeHandler} disabled={busy}/>
+                <Button type="submit" variant="primary" size="sm" disabled={busy} aria-label="Save">
                     <span className="bi-plus" aria-hidden/>
                 </Button>
             </InputGroup>
             <small className="text-muted">Item Codes: {itemCodes.join(', ')}</small>
-            {(savePending || saving) && (<ProgressBar striped animated style={{height: '3px'}} now={100}/>)}
+            {busy && (<ProgressBar striped animated style={{height: '3px'}} now={100}/>)}
         </div>
     )
 }

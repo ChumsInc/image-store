@@ -17,7 +17,7 @@ const ImagesPerPage = () => {
     }
 
     return (
-        <RowsPerPage value={imagesPerPage} onChange={changeHandler}
+        <RowsPerPage value={imagesPerPage} onChange={changeHandler} aria-label="images per page"
                      label={<span className="bi-images" />} size="sm" id={selectId} aria-labelledby={labelId}/>
     )
 }

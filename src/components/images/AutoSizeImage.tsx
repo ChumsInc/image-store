@@ -1,5 +1,5 @@
 import React from 'react';
-import {imagePath, imagePreferredPath} from "../utils";
+import {imagePath, imagePreferredPath} from "@/ducks/images/utils";
 import {ImageSizePath, ProductImage} from "chums-types";
 
 

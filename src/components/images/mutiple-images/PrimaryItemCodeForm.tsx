@@ -1,17 +1,18 @@
 import React, {FormEvent, useEffect, useId, useState} from 'react';
 import {Button, FormControl, InputGroup} from "react-bootstrap";
-import {saveImage} from "../../actions";
-import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {selectSelectedForAction} from "../../selectedImagesSlice";
+import {saveImage} from "@/ducks/images/actions";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
+import {selectMultipleBusy, selectCurrentImages} from "@/ducks/images/currentImagesSlice";
 import {useSelector} from "react-redux";
-import {selectCanEdit} from "../../../userProfile";
+import {selectCanEdit} from "@/ducks/userProfile";
 
 export default function PrimaryItemCodeForm() {
     const dispatch = useAppDispatch();
-    const images = useAppSelector(selectSelectedForAction);
+    const images = useAppSelector(selectCurrentImages);
     const canEdit = useSelector(selectCanEdit);
     const [itemCode, setItemCode] = useState('');
     const [itemCodes, setItemCodes] = useState<string[]>([]);
+    const busy = useAppSelector(selectMultipleBusy);
     const id = useId();
 
     useEffect(() => {
@@ -24,14 +25,14 @@ export default function PrimaryItemCodeForm() {
         setItemCodes(itemCodes.sort());
     }, [images])
 
-    const primaryItemSubmitHandler = (ev: FormEvent) => {
+    const primaryItemSubmitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
         if (!canEdit) {
             return;
         }
-        images.forEach(img => {
-            dispatch(saveImage({filename: img.filename, item_code: itemCode}));
-        })
+        for (const img of images) {
+            await dispatch(saveImage({filename: img.filename, item_code: itemCode}));
+        }
         setItemCode('');
     }
 
@@ -46,9 +47,9 @@ export default function PrimaryItemCodeForm() {
                 <InputGroup.Text as="label" htmlFor={id} aria-label="Primary Item Code">
                     <span className="bi-key-fill" aria-hidden/>
                 </InputGroup.Text>
-                <FormControl type="text" size="sm"
+                <FormControl type="text" size="sm" id={id}
                              value={itemCode} onChange={(ev) => setItemCode(ev.target.value)}/>
-                <Button type="submit" variant="primary" size="sm">Save</Button>
+                <Button type="submit" variant="primary" size="sm" disabled={busy}>Save</Button>
             </InputGroup>
             <small className="text-muted">Item codes: {itemCodes.join(', ')}</small>
         </div>

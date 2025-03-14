@@ -1,5 +1,6 @@
 import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
 import {
+    loadAdditionalImage,
     loadImage,
     loadImages,
     removeAltItemCode,
@@ -33,17 +34,30 @@ const imageStatusSlice = createSlice({
                 adapter.setAll(state, action.payload.map(file => ({filename: file.filename, status: 'idle'})));
             })
             .addCase(loadImage.pending, (state, action) => {
-                adapter.upsertOne(state, {filename: action.meta.arg, status: 'loading'});
+                adapter.upsertOne(state, {filename: action.meta.arg.filename, status: 'loading'});
             })
             .addCase(loadImage.fulfilled, (state, action) => {
                 if (action.payload) {
                     adapter.updateOne(state, {id: action.payload.filename, changes: {status: 'idle'}})
                     return;
                 }
-                adapter.removeOne(state, action.meta.arg);
+                adapter.removeOne(state, action.meta.arg.filename);
             })
             .addCase(loadImage.rejected, (state, action) => {
-                adapter.upsertOne(state, {filename: action.meta.arg, status: 'idle'});
+                adapter.upsertOne(state, {filename: action.meta.arg.filename, status: 'idle'});
+            })
+            .addCase(loadAdditionalImage.pending, (state, action) => {
+                adapter.upsertOne(state, {filename: action.meta.arg.filename, status: 'loading'});
+            })
+            .addCase(loadAdditionalImage.fulfilled, (state, action) => {
+                if (action.payload) {
+                    adapter.updateOne(state, {id: action.payload.filename, changes: {status: 'idle'}})
+                    return;
+                }
+                adapter.removeOne(state, action.meta.arg.filename);
+            })
+            .addCase(loadAdditionalImage.rejected, (state, action) => {
+                adapter.upsertOne(state, {filename: action.meta.arg.filename, status: 'idle'});
             })
             .addCase(saveImage.pending, (state, action) => {
                 adapter.updateOne(state, {id: action.meta.arg.filename, changes: {status: 'saving'}})
@@ -115,9 +129,10 @@ const imageStatusSlice = createSlice({
     },
     selectors: {
         selectStatusById: (state, id: string) => adapterSelectors.selectById(state, id)?.status ?? 'idle',
+        selectAllActive: (state) => adapterSelectors.selectAll(state).filter(item => item.status !== 'idle'),
     }
 })
 
-export const {selectStatusById} = imageStatusSlice.selectors;
+export const {selectStatusById, selectAllActive} = imageStatusSlice.selectors;
 
 export default imageStatusSlice;

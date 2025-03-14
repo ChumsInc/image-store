@@ -1,9 +1,9 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../currentImageSlice";
-import {useAppDispatch} from "../../../../app/hooks";
-import {selectCanDelete} from "../../../userProfile";
-import {removeImage} from "../../actions";
+import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
+import {useAppDispatch} from "@/app/hooks";
+import {selectCanDelete} from "@/ducks/userProfile";
+import {removeImage} from "@/ducks/images/actions";
 import {Button} from "react-bootstrap";
 
 const DeleteImagesButton = () => {

@@ -1,38 +1,27 @@
 import React, {useId} from 'react';
-import {useAppDispatch} from "../../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useSelector} from "react-redux";
-import {selectCanEdit} from "../../../userProfile";
+import {selectCanEdit} from "@/ducks/userProfile";
 import {Col, Row, ToggleButton} from "react-bootstrap";
-import {setImageActive} from "../../actions";
-import {selectSelectedForAction} from "@/ducks/images/selectedImagesSlice";
+import {setImageActive} from "@/ducks/images/actions";
+import {selectMultipleBusy, selectCurrentImages} from "@/ducks/images/currentImagesSlice";
 
 const MultipleImageActiveToggle = () => {
     const dispatch = useAppDispatch();
-    const images = useSelector(selectSelectedForAction);
+    const images = useSelector(selectCurrentImages);
     const canEdit: boolean = useSelector(selectCanEdit);
     const activeButtonId = useId();
     const inactiveButtonId = useId();
+    const busy = useAppSelector(selectMultipleBusy);
 
     if (!images.length || !canEdit) {
         return null;
     }
 
-    const activeClickHandler = () => {
-        if (!canEdit) {
-            return;
+    const setImageStatus = async (active: boolean) => {
+        for await (const img of images) {
+            await dispatch(setImageActive({filename: img.filename, active}));
         }
-        images.forEach(img => {
-            dispatch(setImageActive({filename: img.filename, active: true}));
-        })
-    }
-
-    const inactiveClickHandler = () => {
-        if (!canEdit) {
-            return;
-        }
-        images.forEach(img => {
-            dispatch(setImageActive({filename: img.filename, active: false}));
-        })
     }
 
     const activeImages = images.filter(img => img.active).length;
@@ -45,15 +34,16 @@ const MultipleImageActiveToggle = () => {
                 Image Status
             </Col>
             <Col xs="auto">
-                <ToggleButton id={activeButtonId} type="checkbox" value={1}
-                              checked={count === activeImages} onChange={activeClickHandler} variant="outline-success"
+                <ToggleButton id={activeButtonId} type="checkbox" value={1} disabled={busy}
+                              checked={count === activeImages} onChange={() => setImageStatus(true)}
+                              variant="outline-success"
                               size="sm">
                     Active ({activeImages})
                 </ToggleButton>
             </Col>
             <Col xs="auto">
-                <ToggleButton id={inactiveButtonId} type="checkbox" value={1}
-                              checked={count === inactiveImages} onChange={inactiveClickHandler}
+                <ToggleButton id={inactiveButtonId} type="checkbox" value={1} disabled={busy}
+                              checked={count === inactiveImages} onChange={() => setImageStatus(false)}
                               variant="outline-danger" size="sm">
                     Inactive ({inactiveImages})
                 </ToggleButton>

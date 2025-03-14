@@ -1,8 +1,8 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {selectImagesStatus} from "../../imageListSlice";
+import {selectImagesStatus} from "@/ducks/images/imageListSlice";
 import ImageControlBar from "./ImageControlBar";
-import {selectImagesPerPage, selectPage} from "../../../settings";
+import {selectImagesPerPage, selectPage} from "@/ducks/settings";
 import ImagePreview from "./ImagePreview";
 import InvalidURLAlert from "./InvalidURLAlert";
 import {ProgressBar} from "react-bootstrap";
@@ -13,8 +13,8 @@ import styled from "@emotion/styled";
 const PreviewImageList = styled.div`
     display: flex;
     flex-wrap: wrap;
+    gap: 2rem;
     justify-content: flex-start;
-    --preview-image-top: calc(1.5rem + 2px / 1.5);
 `
 const ImageList = () => {
     const images = useSelector(selectFilteredImages)
@@ -35,7 +35,9 @@ const ImageList = () => {
             <PreviewImageList>
                 {images
                     .slice(page * imagesPerPage, page * imagesPerPage + imagesPerPage)
-                    .map((img, index) => <ImagePreview key={index} image={img}/>)}
+                    .map((img, index) => (
+                        <ImagePreview key={index} image={img}/>
+                    ))}
             </PreviewImageList>
 
         </div>

@@ -44,7 +44,7 @@ const ImageSearch = () => {
             <InputGroup.Text as="label" htmlFor={id} aria-label="Search for images">
                 <span className="bi-funnel-fill" aria-hidden/>
             </InputGroup.Text>
-            <FormControl type="search" size="sm" defaultValue={search} onChange={changeHandler}/>
+            <FormControl type="search" size="sm" id={id} defaultValue={search} onChange={changeHandler}/>
         </InputGroup>
     )
 }

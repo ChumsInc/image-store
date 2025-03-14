@@ -31,7 +31,7 @@ const ImageFilename = ({filename}:Props) => {
     }
 
     return (
-        <div className="d-flex justify-content-between">
+        <div className="d-flex flex-wrap justify-content-between">
             <ImageFilenameTarget onClick={copyOnClick} title="Copy filename">Filename: <strong>{filename}</strong></ImageFilenameTarget>
             <Badge bg="success" className={classNames('fade', {show})} >copied</Badge>
         </div>

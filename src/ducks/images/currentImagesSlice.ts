@@ -1,6 +1,7 @@
-import {createEntityAdapter, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createEntityAdapter, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {EditableImage} from "@/src/types";
 import {
+    loadAdditionalImage,
     loadImage,
     loadImages,
     removeAltItemCode,
@@ -9,6 +10,8 @@ import {
     setImageActive,
     tagImage
 } from "@/ducks/images/actions";
+import {RootState} from "@/app/configureStore";
+import {selectAllActive} from "@/ducks/images/imageStatusSlice";
 
 const adapter = createEntityAdapter<EditableImage, string>({
     selectId: (arg) => arg.filename,
@@ -24,12 +27,12 @@ export interface SelectImagesExtraState {
 const extraState: SelectImagesExtraState = {
     status: 'idle',
 }
-const selectedImagesSlice = createSlice({
-    name: 'selected-images',
+const currentImagesSlice = createSlice({
+    name: 'currentImages',
     initialState: adapter.getInitialState(extraState),
     reducers: {
-        addAdditionalImage: (state, action: PayloadAction<EditableImage>) => {
-            adapter.setOne(state, action.payload);
+        clearCurrentImage: (state) => {
+            adapter.removeAll(state);
         },
         removeAdditionalImage: (state, action: PayloadAction<string>) => {
             adapter.removeOne(state, action.payload);
@@ -40,17 +43,29 @@ const selectedImagesSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(loadImage.pending, (state, action) => {
+                adapter.setAll(state, [action.meta.arg]);
+            })
+            .addCase(loadImage.fulfilled, (state, action) => {
+                if (action.payload) {
+                    adapter.setOne(state, action.payload);
+                    return
+                }
+                adapter.removeOne(state, action.meta.arg.filename);
+            })
+            .addCase(loadAdditionalImage.pending, (state, action) => {
+                adapter.setOne(state, action.meta.arg);
+            })
+            .addCase(loadAdditionalImage.fulfilled, (state, action) => {
+                if (action.payload) {
+                    adapter.setOne(state, action.payload);
+                    return
+                }
+                adapter.removeOne(state, action.meta.arg.filename);
+            })
             .addCase(loadImages.fulfilled, (state, action) => {
                 const idList = adapterSelectors.selectIds(state);
                 adapter.setAll(state, action.payload.filter(img => idList.includes(img.filename)));
-            })
-            .addCase(loadImage.fulfilled, (state, action) => {
-                if (action.payload && adapterSelectors.selectById(state, action.payload.filename)) {
-                    adapter.setOne(state, action.payload);
-                }
-                if (action.meta.arg && adapterSelectors.selectById(state, action.meta.arg)) {
-                    adapter.removeOne(state, action.meta.arg);
-                }
             })
             .addCase(saveAltItemCode.fulfilled, (state, action) => {
                 if (action.payload && adapterSelectors.selectById(state, action.payload.filename)) {
@@ -86,16 +101,45 @@ const selectedImagesSlice = createSlice({
             })
     },
     selectors: {
-        selectSelectedForAction: (state) => adapterSelectors.selectAll(state),
-        selectMultipleSaving: (state) => state.status === 'saving',
-        selectShowSelectedImageActions: (state) => adapterSelectors.selectIds(state).length > 0,
+        selectCurrentImages: (state) => adapterSelectors.selectAll(state),
+        selectAll: (state) => adapterSelectors.selectAll(state),
+        selectCurrentImagesCount: (state) => adapterSelectors.selectTotal(state),
+        selectCurrentImage: (state) => adapterSelectors.selectAll(state)[0] ?? null,
+        selectCurrentFilename: (state) => adapterSelectors.selectAll(state)[0]?.filename ?? null,
+        selectIsPreferredImage: (state) => adapterSelectors.selectAll(state)[0]?.preferred_image ?? false,
+        selectById: (state, id: string) => adapterSelectors.selectById(state, id),
+        selectIdList: (state) => adapterSelectors.selectIds(state),
     }
 });
 
 export const {
-    selectSelectedForAction,
-    selectMultipleSaving,
-    selectShowSelectedImageActions
-} = selectedImagesSlice.selectors;
-export const {addAdditionalImage, removeAdditionalImage, clearAdditionalImages} = selectedImagesSlice.actions;
-export default selectedImagesSlice;
+    selectCurrentImages,
+    selectAll,
+    selectCurrentImagesCount,
+    selectCurrentImage,
+    selectCurrentFilename,
+    selectById,
+    selectIdList
+} = currentImagesSlice.selectors;
+
+export const {
+    clearCurrentImage,
+    removeAdditionalImage,
+    clearAdditionalImages,
+} = currentImagesSlice.actions;
+
+export const selectIsCurrentImage = createSelector(
+    [(state: RootState) => state, (state: RootState, id: string) => id],
+    (state, id) => {
+        return !!selectById(state, id)
+    }
+)
+
+export const selectMultipleBusy = createSelector(
+    [selectIdList, selectAllActive],
+    (idList, states) => {
+        return states
+            .filter(state => idList.includes(state.filename)).length > 0
+    }
+)
+export default currentImagesSlice;

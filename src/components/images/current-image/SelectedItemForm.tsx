@@ -1,9 +1,9 @@
 import React, {FormEvent, useEffect, useId, useState} from 'react';
-import {useAppDispatch} from "../../../../app/hooks";
+import {useAppDispatch} from "@/app/hooks";
 import {useSelector} from "react-redux";
-import {selectCurrentImage} from "../../currentImageSlice";
-import {saveImage} from "../../actions";
-import {selectCanEdit} from "../../../userProfile";
+import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
+import {saveImage} from "@/ducks/images/actions";
+import {selectCanEdit} from "@/ducks/userProfile";
 import PreferredImageButton from "./PreferredImageButton";
 import {Button, Col, FormControl, InputGroup, Row} from "react-bootstrap";
 
