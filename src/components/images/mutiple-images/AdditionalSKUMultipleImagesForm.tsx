@@ -33,7 +33,6 @@ const AdditionalSKUMultipleImagesForm = () => {
     }, [saving]);
 
     useEffect(() => {
-        const _itemCodes: string[] = [];
         const itemCodes = images.reduce((list, image) => {
             if (image.item_codes) {
                 image.item_codes.forEach(item => {

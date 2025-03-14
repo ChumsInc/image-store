@@ -1,4 +1,4 @@
-import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductImage} from "chums-types";
 import {
     deleteAltItemCode,
@@ -11,10 +11,10 @@ import {
     postTagImage,
     putImageActive,
     putImageUpdate
-} from "../../api/image";
+} from "@/api/image";
 import {ProductFilter} from "../filters";
 import {ProductAltItemKey} from "../../types";
-import {RootState} from "../../app/configureStore";
+import {RootState} from "@/app/configureStore";
 import {TagImageArgs} from "./types";
 import {selectStatusById} from "@/ducks/images/imageStatusSlice";
 import {selectImagesStatus} from "@/ducks/images/imageListSlice";

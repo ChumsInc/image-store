@@ -1,4 +1,4 @@
-import React, {AnchorHTMLAttributes, LinkHTMLAttributes} from 'react';
+import React, {AnchorHTMLAttributes} from 'react';
 import {Badge, BadgeProps} from "react-bootstrap";
 
 

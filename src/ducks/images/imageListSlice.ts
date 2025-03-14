@@ -1,5 +1,5 @@
 import {EditableImage} from "../../types";
-import {createEntityAdapter, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
 import {
     loadImage,
     loadImages,
@@ -38,7 +38,7 @@ const imagesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(loadImages.pending, (state, action) => {
+            .addCase(loadImages.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(loadImages.fulfilled, (state, action) => {
