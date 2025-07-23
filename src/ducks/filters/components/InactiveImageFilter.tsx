@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useId} from 'react';
+import {type ChangeEvent, useEffect, useId} from 'react';
 import {useSelector} from "react-redux";
 import FormCheck from 'react-bootstrap/FormCheck'
 import {useSearchParams} from "react-router";
@@ -7,7 +7,7 @@ import {selectShowInactiveImages, toggleInactiveImages} from "@/ducks/filters/fi
 
 const InactiveProductFilter = () => {
     const dispatch = useAppDispatch();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
     const showInactive = useSelector(selectShowInactiveImages);
     const id = useId();
 

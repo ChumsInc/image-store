@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
 import {parseSingleImages} from "@/ducks/images/utils";

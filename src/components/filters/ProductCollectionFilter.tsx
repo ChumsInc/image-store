@@ -1,15 +1,15 @@
-import React, {ChangeEvent, useEffect, useId} from 'react';
+import {type ChangeEvent, useEffect, useId} from 'react';
 import {useSelector} from "react-redux";
 import {selectCollections, selectCollection, setProductCollection} from "@/ducks/filters/productCollectionSlice";
 import {sortCollections} from "@/ducks/filters/utils";
 import {useSearchParams} from "react-router";
 import {useAppDispatch} from "@/app/hooks";
 import Form from "react-bootstrap/Form";
-import {FormGroupProps} from "react-bootstrap";
+import {type FormGroupProps} from "react-bootstrap";
 
 const ProductCollectionFilter = (props:FormGroupProps) => {
     const dispatch = useAppDispatch();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
     const list = useSelector(selectCollections);
     const value = useSelector(selectCollection);
     const id = useId();

@@ -1,7 +1,7 @@
 import React from 'react';
 import {imagePath} from "../utils";
 import LinkBadge from "./LinkBadge";
-import {ImageSizeList, ImageSizePath} from "chums-types";
+import type {ImageSizeList, ImageSizePath} from "chums-types";
 
 
 export interface ImageSizeBadgedProps {

@@ -1,6 +1,5 @@
-import {BaseSKUSearch, ProductCategory, ProductCollection, ProductLine} from "chums-types";
-import {invalidHashValue, ProductFilter, ProductFilterKey} from "./index";
-import base64 from 'base-64';
+import type {BaseSKUSearch, ProductCategory, ProductCollection, ProductLine} from "chums-types";
+import {type ProductFilter} from "./index";
 
 
 export const sortProductLines = (a: ProductLine, b: ProductLine) => {

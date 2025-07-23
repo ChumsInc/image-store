@@ -1,5 +1,5 @@
-import {ProductCategory, ProductCollection, ProductImage} from "chums-types";
-import {BasicAlert} from "@chumsinc/alert-list";
+import type {ProductCategory, ProductCollection, ProductImage} from "chums-types";
+import {type BasicAlert} from "@chumsinc/alert-list";
 
 export interface ErrorAlert extends BasicAlert {
     id: number;

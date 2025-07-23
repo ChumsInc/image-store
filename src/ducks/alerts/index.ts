@@ -1,6 +1,6 @@
 import {createAction, createReducer, isRejected} from "@reduxjs/toolkit";
-import {RootState} from "../../app/configureStore";
-import {BasicAlert} from "@chumsinc/alert-list";
+import {type RootState} from "@/app/configureStore";
+import {type BasicAlert} from "@chumsinc/alert-list";
 
 export interface ErrorAlert extends BasicAlert {
     id: number;

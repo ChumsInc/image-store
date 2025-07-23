@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import ImageSearch from "./ImageSearch";
 import {loadImages} from "@/ducks/images/actions";
 import {useAppDispatch} from "@/app/hooks";

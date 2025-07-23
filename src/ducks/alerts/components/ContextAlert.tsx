@@ -1,11 +1,11 @@
-import React from 'react'
-import {AlertProps, Badge} from "react-bootstrap";
+import {type ReactNode} from 'react'
+import {type AlertProps, Badge} from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
 
 export interface ContextAlertProps extends AlertProps {
     count: number;
     context?: string;
-    children: React.ReactNode;
+    children: ReactNode;
 }
 export default function ContextAlert({count, context, children, ...alertProps}:ContextAlertProps) {
     return (

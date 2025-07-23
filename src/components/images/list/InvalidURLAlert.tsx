@@ -1,4 +1,3 @@
-import React from 'react';
 import {selectFilter} from "@/ducks/filters/filtersSlice";
 import {invalidHashValue} from "@/ducks/filters";
 import {Alert} from "react-bootstrap";

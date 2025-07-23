@@ -1,15 +1,15 @@
-import React, {ChangeEvent, useEffect, useId} from 'react';
+import {type ChangeEvent, useEffect, useId} from 'react';
 import {useAppDispatch} from "@/app/hooks";
 import {useSelector} from "react-redux";
 import {sortProductLines} from "@/ducks/filters/utils";
 import {useSearchParams} from "react-router";
 import {selectProductLine, selectProductLines, setProductLine} from "@/ducks/filters/productLineSlice";
 import Form from "react-bootstrap/Form";
-import {FormGroupProps} from "react-bootstrap";
+import {type FormGroupProps} from "react-bootstrap";
 
 const ProductLineFilter = (props:FormGroupProps) => {
     const dispatch = useAppDispatch();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
     const productLines = useSelector(selectProductLines);
     const productLine = useSelector(selectProductLine);
     const id = useId();

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
+import {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useSelector} from "react-redux";
 import {selectMultipleBusy, selectCurrentImages} from "@/ducks/images/currentImagesSlice";

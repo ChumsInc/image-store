@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import classNames from "classnames";
+import {useEffect, useState} from 'react';
 import {useAppDispatch} from "@/app/hooks";
 import {useSelector} from "react-redux";
 import {loadFilters} from "@/ducks/filters/actions";
@@ -15,11 +14,9 @@ import UnassignedImageFilter from "@/ducks/filters/components/UnassignedImageFil
 import ToggleEditMode from "@/ducks/userProfile/ToggleEditMode";
 import ShowItemCodeToggle from "@/ducks/settings/ShowItemCodeToggle";
 import InactiveImageFilter from "@/ducks/filters/components/InactiveImageFilter";
-import {Button, NavbarToggle, Offcanvas} from "react-bootstrap";
-import {useMediaQuery} from "react-responsive";
+import {Button, Offcanvas} from "react-bootstrap";
 import {
     selectFiltersLoaded,
-    selectFiltersStatus,
     selectShowFilterBar,
     toggleFilterBar
 } from "@/ducks/filters/filtersSlice";
@@ -28,13 +25,11 @@ import {
 const FilterBar = () => {
     const dispatch = useAppDispatch();
     const showFilterBar = useSelector(selectShowFilterBar);
-    const isSmall = useMediaQuery({query: '(max-width: 600px)'});
-    const [inTransition, setInTransition] = useState(false);
+    const [_, setInTransition] = useState(false);
     const [timer, setTimer] = useState(0);
     const isUser = useSelector(selectIsUser);
     const userLoading = useSelector(selectUserIsLoading);
     const userLoaded = useSelector(selectUserIsLoaded);
-    const filtersLoading = useSelector(selectFiltersStatus);
     const filtersLoaded = useSelector(selectFiltersLoaded);
 
 
@@ -65,10 +60,10 @@ const FilterBar = () => {
         dispatch(toggleFilterBar());
     }
 
-    const asideClassName = classNames("drawer navbar bg-body-tertiary", {
-        'drawer--open': showFilterBar,
-        'drawer--in-transition': inTransition
-    });
+    // const asideClassName = classNames("drawer navbar bg-body-tertiary", {
+    //     'drawer--open': showFilterBar,
+    //     'drawer--in-transition': inTransition
+    // });
 
     if (!isUser) {
         return null;

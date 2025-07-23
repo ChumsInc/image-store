@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useId} from 'react';
+import {type ChangeEvent, useEffect, useId} from 'react';
 import {useSelector} from "react-redux";
 import FormCheck from 'react-bootstrap/FormCheck'
 import {useSearchParams} from "react-router";
@@ -7,7 +7,7 @@ import {selectFilterPreferredImages, togglePreferredImages} from "@/ducks/filter
 
 const PreferredImageFilter = () => {
     const dispatch = useAppDispatch()
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [_, setSearchParams] = useSearchParams();
     const checked = useSelector(selectFilterPreferredImages);
     const id = useId();
 

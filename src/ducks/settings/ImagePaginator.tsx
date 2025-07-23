@@ -1,4 +1,3 @@
-import React from 'react';
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectImagesPerPage, selectPage, setPage} from "./index";

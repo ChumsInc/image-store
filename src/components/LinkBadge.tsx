@@ -1,5 +1,5 @@
-import React, {AnchorHTMLAttributes} from 'react';
-import {Badge, BadgeProps} from "react-bootstrap";
+import {type AnchorHTMLAttributes} from 'react';
+import {Badge, type BadgeProps} from "react-bootstrap";
 
 
 export interface LinkBadgeProps extends BadgeProps {

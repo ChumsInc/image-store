@@ -1,4 +1,4 @@
-import {UserProfile, UserRole} from "chums-types";
+import type {UserProfile, UserRole} from "chums-types";
 
 interface ProfileResponse {
     user?: UserProfile,

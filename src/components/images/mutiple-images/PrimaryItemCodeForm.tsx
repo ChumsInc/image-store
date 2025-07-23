@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useId, useState} from 'react';
+import {type FormEvent, useEffect, useId, useState} from 'react';
 import {Button, FormControl, InputGroup} from "react-bootstrap";
 import {saveImage} from "@/ducks/images/actions";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";

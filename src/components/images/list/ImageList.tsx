@@ -1,4 +1,3 @@
-import React from 'react';
 import {useSelector} from "react-redux";
 import {selectImagesStatus} from "@/ducks/images/imageListSlice";
 import ImageControlBar from "./ImageControlBar";

@@ -1,5 +1,5 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {fetchUser, FetchUserResponse} from "../../api/user";
+import {fetchUser, type FetchUserResponse} from "../../api/user";
 
 export const loadUser = createAsyncThunk<FetchUserResponse>(
     'userProfile/loadUser',

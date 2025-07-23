@@ -1,6 +1,6 @@
-import {ProductImage} from 'chums-types'
+import type {ProductImage} from 'chums-types'
 import {fetchJSON} from "@chumsinc/ui-utils";
-import {ProductFilter} from "../ducks/filters";
+import type {ProductFilter} from "@/ducks/filters";
 
 export const PATH_SET_PREFERRED_ITEM = '/api/images/products/set-preferred-item/:filename/:itemCode';
 export const PATH_SET_ALT_ITEM_CODE = '/api/images/products/alt-item/:filename/:itemCode';
@@ -71,10 +71,10 @@ export async function putImageUpdate(productImage: Partial<ProductImage>): Promi
         if (!productImage || !productImage.filename) {
             return Promise.reject(new Error('putImageUpdate(): Filename is required'))
         }
-        const url = '/api/images/products/:filename'
+        const url = '/api/images/products/:filename/props.json'
             .replace(':filename', encodeURIComponent(productImage.filename));
         const body = JSON.stringify(productImage);
-        const res = await fetchJSON<{ image: ProductImage | null }>(url, {method: 'put', body});
+        const res = await fetchJSON<{ image: ProductImage | null }>(url, {method: 'PUT', body});
         return res?.image ?? null;
     } catch (err: unknown) {
         if (err instanceof Error) {
@@ -145,7 +145,7 @@ export async function putImageActive(filename?: string, active?: boolean): Promi
         if (!filename) {
             return Promise.reject(new Error('Invalid filename: missing filename'));
         }
-        const url = '/api/images/products/:filename/:active'
+        const url = '/api/images/products/:filename/active/:active.json'
             .replace(':filename', encodeURIComponent(filename))
             .replace(':active', encodeURIComponent(active ? 1 : 0));
         const res = await fetchJSON<{ image?: ProductImage }>(url, {method: 'put'});

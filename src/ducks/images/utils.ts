@@ -1,5 +1,5 @@
-import {ImageSize, ImageSizeList, ImageSizePath, ProductImage, SortProps} from "chums-types";
-import {EditableImage, ProductAltItemKey, SingleImage} from "../../types";
+import type {ImageSize, ImageSizeList, ImageSizePath, ProductImage, SortProps} from "chums-types";
+import type {EditableImage, ProductAltItemKey, SingleImage} from "../../types";
 import {IMAGE_ALL_SIZES} from "./constants";
 
 export const defaultImageSort: SortProps<EditableImage> = {

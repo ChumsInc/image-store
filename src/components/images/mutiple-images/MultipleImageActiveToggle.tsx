@@ -1,4 +1,4 @@
-import React, {useId} from 'react';
+import {useId} from 'react';
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useSelector} from "react-redux";
 import {selectCanEdit} from "@/ducks/userProfile";

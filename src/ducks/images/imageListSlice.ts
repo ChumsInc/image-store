@@ -1,4 +1,4 @@
-import {EditableImage} from "../../types";
+import type {EditableImage} from "../../types";
 import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
 import {
     loadImage,
@@ -10,7 +10,7 @@ import {
     setImageActive,
     tagImage
 } from "./actions";
-import {SortProps} from "chums-types";
+import type {SortProps} from "chums-types";
 import {selectSearch, selectShowOnlyUnassigned} from "@/ducks/filters/filtersSlice";
 
 const imagesAdapter = createEntityAdapter<EditableImage, string>({

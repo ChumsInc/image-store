@@ -1,4 +1,3 @@
-import React from 'react';
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {clearCurrentImage, selectCurrentFilename, selectCurrentImage} from "@/ducks/images/currentImagesSlice";
 import AutoSizeImage from "../AutoSizeImage";

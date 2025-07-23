@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {fetchFilters} from "./api";
-import {LoadFiltersResult} from "../../types";
-import {RootState} from "@/app/configureStore";
+import type {LoadFiltersResult} from "../../types";
+import {type RootState} from "@/app/configureStore";
 import {selectFiltersStatus} from "@/ducks/filters/filtersSlice";
 
 
@@ -11,7 +11,7 @@ export const loadFilters = createAsyncThunk<LoadFiltersResult, void, { state: Ro
         return await fetchFilters();
     },
     {
-        condition: (arg, {getState}) => {
+        condition: (_, {getState}) => {
             const state = getState();
             return selectFiltersStatus(state) === 'idle'
         }

@@ -1,5 +1,5 @@
-import {createEntityAdapter, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {EditableImage} from "@/src/types";
+import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import type {EditableImage} from "@/src/types";
 import {
     loadAdditionalImage,
     loadImage,
@@ -10,7 +10,7 @@ import {
     setImageActive,
     tagImage
 } from "@/ducks/images/actions";
-import {RootState} from "@/app/configureStore";
+import {type RootState} from "@/app/configureStore";
 import {selectAllActive} from "@/ducks/images/imageStatusSlice";
 
 const adapter = createEntityAdapter<EditableImage, string>({
@@ -129,7 +129,7 @@ export const {
 } = currentImagesSlice.actions;
 
 export const selectIsCurrentImage = createSelector(
-    [(state: RootState) => state, (state: RootState, id: string) => id],
+    [(state: RootState) => state, (_, id: string) => id],
     (state, id) => {
         return !!selectById(state, id)
     }

@@ -19,5 +19,5 @@ $ui = new WebUI2([
     'contentFile' => 'body.inc.php',
 ]);
 $ui->addCSS('public/styles.css', CSSOptions::parse(['useTimestampVersion' => true]))
-    ->addManifestJSON('public/js/manifest.json')
+    ->addViteManifest()
     ->render();

@@ -1,15 +1,15 @@
-import React, {ChangeEvent, useEffect, useId} from 'react';
+import {type ChangeEvent, useEffect, useId} from 'react';
 import {useSelector} from "react-redux";
 import {selectBaseSKU, selectBaseSKUs, setBaseSKU} from "@/ducks/filters/baseSKUSlice";
 import {sortBaseSKUs} from "@/ducks/filters/utils";
 import {useSearchParams} from "react-router";
 import Form from "react-bootstrap/Form";
 import {useAppDispatch} from "@/app/hooks";
-import {FormGroupProps} from "react-bootstrap";
+import {type FormGroupProps} from "react-bootstrap";
 
 const ProductBaseSKUFilter = (props:FormGroupProps) => {
     const dispatch = useAppDispatch();
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [_, setSearchParams] = useSearchParams()
     const list = useSelector(selectBaseSKUs);
     const baseSKU = useSelector(selectBaseSKU);
     const id = useId();

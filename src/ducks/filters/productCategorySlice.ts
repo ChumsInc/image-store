@@ -1,7 +1,7 @@
-import {createEntityAdapter, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ProductCategory} from "chums-types";
+import {createEntityAdapter, createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import type {ProductCategory} from "chums-types";
 import {loadFilters} from "@/ducks/filters/actions";
-import {FilterExtraState} from "@/src/types";
+import type {FilterExtraState} from "@/src/types";
 
 const adapter = createEntityAdapter<ProductCategory, string>({
     selectId: (arg) => arg.Category2,

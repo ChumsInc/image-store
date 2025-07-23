@@ -1,8 +1,8 @@
 const reLocal = /^local/;
 
 
-const sessionStoragePrefix:string = 'session/image-store';
-const localStoragePrefix:string = 'local/image-store';
+export const sessionStoragePrefix:string = 'session/image-store';
+export const localStoragePrefix:string = 'local/image-store';
 
 
 export const sessionStorageKeys = {

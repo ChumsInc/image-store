@@ -1,7 +1,7 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
+import {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
 import {useAppDispatch} from "@/app/hooks";
 import {removeAltItemCode, saveAltItemCode} from "@/ducks/images/actions";
-import {ProductAltItem} from "chums-types";
+import type {ProductAltItem} from "chums-types";
 import {useSelector} from "react-redux";
 import {selectCanEdit} from "@/ducks/userProfile";
 import {Button, FormControl, InputGroup} from "react-bootstrap";

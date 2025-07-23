@@ -1,4 +1,3 @@
-import React from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
 import {useAppDispatch} from "@/app/hooks";

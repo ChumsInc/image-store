@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useId} from 'react';
+import {type ChangeEvent, useEffect, useId} from 'react';
 import {useAppDispatch} from "@/app/hooks";
 import {useSelector} from "react-redux";
 import FormCheck from 'react-bootstrap/FormCheck'
@@ -7,7 +7,7 @@ import {selectShowInactiveProducts, toggleInactiveProducts} from "@/ducks/filter
 
 const InactiveProductFilter = () => {
     const dispatch = useAppDispatch();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [_, setSearchParams] = useSearchParams();
     const checked = useSelector(selectShowInactiveProducts);
     const id = useId();
 

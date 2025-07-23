@@ -1,10 +1,5 @@
-import React from 'react';
 import LinkBadge from "./LinkBadge";
 import styled from "@emotion/styled";
-
-const tagTypes = {
-    inactive: 'danger',
-}
 
 const BadgeContainer = styled('div')`
     display: flex;
@@ -16,7 +11,7 @@ export interface ImageTagBadgesProps {
     tags: string[],
     inactive: boolean,
 }
-const ImageTagBadges:React.FC<ImageTagBadgesProps> = ({tags, inactive}) => {
+const ImageTagBadges = ({tags, inactive}:ImageTagBadgesProps) => {
     const hasInactive = inactive || tags.filter(tag => tag.toLowerCase() === 'inactive').length > 0;
     return (
         <BadgeContainer>

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
+import {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
 import {Badge, Button, ButtonGroup, FormControl, InputGroup} from "react-bootstrap";
@@ -6,7 +6,7 @@ import {tagImage} from "@/ducks/images/actions";
 import {useAppDispatch} from "@/app/hooks";
 import {selectCanEdit} from "@/ducks/userProfile";
 
-const ImageTagList: React.FC = () => {
+const ImageTagList = () => {
     const dispatch = useAppDispatch();
     const current = useSelector(selectCurrentImage);
     const canEdit: boolean = useSelector(selectCanEdit);

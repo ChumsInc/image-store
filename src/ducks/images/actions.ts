@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ProductImage} from "chums-types";
+import type {ProductImage} from "chums-types";
 import {
     deleteAltItemCode,
     deleteImage,
@@ -12,10 +12,10 @@ import {
     putImageActive,
     putImageUpdate
 } from "@/api/image";
-import {ProductFilter} from "../filters";
-import {ProductAltItemKey} from "../../types";
-import {RootState} from "@/app/configureStore";
-import {TagImageArgs} from "./types";
+import {type ProductFilter} from "../filters";
+import {type ProductAltItemKey} from "../../types";
+import {type RootState} from "@/app/configureStore";
+import {type TagImageArgs} from "./types";
 import {selectStatusById} from "@/ducks/images/imageStatusSlice";
 import {selectImagesStatus} from "@/ducks/images/imageListSlice";
 
@@ -51,7 +51,7 @@ export const loadImages = createAsyncThunk<ProductImage[], ProductFilter, { stat
         return await fetchImages(arg);
     },
     {
-        condition: (arg, {getState}) => {
+        condition: (_, {getState}) => {
             const state = getState();
             return selectImagesStatus(state) === 'idle';
         }
@@ -94,7 +94,7 @@ export const saveImage = createAsyncThunk<ProductImage | null, Partial<ProductIm
 
 export const saveAltItemCode = createAsyncThunk<ProductImage | null, ProductAltItemKey, { state: RootState }>(
     'images/saveAltItemCode',
-    async (arg, thunkAPI) => {
+    async (arg) => {
         return postAltItemCode(arg.filename, arg.item_code);
     }
     ,

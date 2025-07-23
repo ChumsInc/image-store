@@ -1,9 +1,9 @@
-import React, {ChangeEvent, MouseEvent} from 'react';
-import {ProductImage} from "chums-types";
+import {type MouseEvent} from 'react';
+import type {ProductImage} from "chums-types";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useSelector} from "react-redux";
 import {selectImagePath, selectShowItemCode} from "@/ducks/settings";
-import {selectCurrentImage} from "@/ducks/images/currentImagesSlice";
+import {removeAdditionalImage, selectIsCurrentImage} from "@/ducks/images/currentImagesSlice";
 import classNames from "classnames";
 import AutoSizeImage from "../AutoSizeImage";
 import ImageSizeBadges from "../../ImageSizeBadges";
@@ -12,7 +12,6 @@ import ImageTagBadges from "../../ImageTagBadges";
 import {selectCanEdit} from "@/ducks/userProfile";
 import {loadAdditionalImage, loadImage} from "@/ducks/images/actions";
 import {Badge} from "react-bootstrap";
-import {removeAdditionalImage, selectIsCurrentImage} from "@/ducks/images/currentImagesSlice";
 import styled from "@emotion/styled";
 
 const PreviewImage = styled.div`
@@ -32,6 +31,7 @@ const PreviewImage = styled.div`
         align-items: center;
         cursor: pointer;
     }
+
     &.checked .preview-image-selector {
         border: var(--bs-border-width) solid var(--bs-border-color);
     }
@@ -103,21 +103,8 @@ const ImagePreview = ({image}: ImagePreviewProps) => {
     const dispatch = useAppDispatch();
     const path = useSelector(selectImagePath);
     const checked = useAppSelector((state) => selectIsCurrentImage(state, image.filename));
-    const currentImage = useSelector(selectCurrentImage);
     const canEdit = useSelector(selectCanEdit);
     const showItemCode = useSelector(selectShowItemCode);
-
-    const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-        if (canEdit) {
-            ev.stopPropagation();
-            if (ev.target.checked) {
-                dispatch(loadAdditionalImage(image));
-            } else {
-                dispatch(removeAdditionalImage(image.filename));
-            }
-
-        }
-    }
 
     const selectImageHandler = (ev: MouseEvent) => {
         if (canEdit && (ev.ctrlKey || ev.shiftKey)) {

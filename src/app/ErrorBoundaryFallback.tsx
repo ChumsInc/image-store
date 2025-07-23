@@ -1,9 +1,8 @@
-import React from 'react';
 import Alert from "react-bootstrap/Alert";
-import {SerializedError} from "@reduxjs/toolkit";
+import {type SerializedError} from "@reduxjs/toolkit";
 
-export default function ErrorBoundaryFallback({error, resetErrorBoundary}:{
-    error: Error|SerializedError;
+export default function ErrorBoundaryFallback({error}: {
+    error: Error | SerializedError;
     resetErrorBoundary: () => void;
 }) {
     return (

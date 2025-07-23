@@ -1,4 +1,3 @@
-import React from 'react';
 import TagMultipleImagesForm from "./TagMultipleImagesForm";
 import AdditionalSKUMultipleImagesForm from "./AdditionalSKUMultipleImagesForm";
 import MultipleImageActiveToggle from "./MultipleImageActiveToggle";

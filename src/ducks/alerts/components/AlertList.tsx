@@ -1,4 +1,3 @@
-import React from 'react';
 import {useSelector} from "react-redux";
 import {dismissAlert, selectAlerts} from "../index";
 import {useAppDispatch} from "@/app/hooks";

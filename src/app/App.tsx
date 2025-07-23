@@ -1,4 +1,3 @@
-import React from 'react';
 import {selectCurrentImagesCount} from "@/ducks/images/currentImagesSlice";
 import {useAppSelector} from "./hooks";
 import ImageList from "@/components/images/list/ImageList";

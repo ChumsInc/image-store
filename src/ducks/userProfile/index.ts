@@ -1,7 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {UserProfile, UserRole} from "chums-types";
+import type {UserProfile, UserRole} from "chums-types";
 import {loadUser, toggleEditMode} from "./actions";
-import {RootState} from "../../app/configureStore";
+import {type RootState} from "../../app/configureStore";
 
 interface UserProfileState {
     profile: UserProfile | null,
@@ -41,7 +41,7 @@ const canDeleteReducer = (roles:UserRole[]):boolean => {
 
 const userProfileReducer = createReducer(initialUserProfileState, (builder) => {
     builder
-        .addCase(loadUser.pending, (state, action) => {
+        .addCase(loadUser.pending, (state) => {
             state.loading = true;
         })
         .addCase(loadUser.fulfilled, (state, action) => {
@@ -52,7 +52,7 @@ const userProfileReducer = createReducer(initialUserProfileState, (builder) => {
             state.canEdit = canEditReducer(action.payload.roles);
             state.canDelete = canDeleteReducer(action.payload.roles);
         })
-        .addCase(loadUser.rejected, (state, action) => {
+        .addCase(loadUser.rejected, (state) => {
             state.loading = false;
             state.canEdit = false;
             state.canDelete = false;

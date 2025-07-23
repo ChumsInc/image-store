@@ -1,4 +1,4 @@
-import React, {useId} from 'react';
+import {useId} from 'react';
 import {useAppDispatch} from "@/app/hooks";
 import {useSelector} from "react-redux";
 import {selectImagesPerPage, setImagesPerPage} from "./index";

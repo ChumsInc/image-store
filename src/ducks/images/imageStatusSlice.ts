@@ -9,7 +9,7 @@ import {
     saveImage, setImageActive,
     tagImage
 } from "@/ducks/images/actions";
-import {ImageStatus} from "@/ducks/images/types";
+import {type ImageStatus} from "@/ducks/images/types";
 
 export interface ImageStatusEntry {
     filename: string;
